@@ -1,5 +1,7 @@
+import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/event.dart';
 import 'package:ceib/providers/events.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'package:provider/provider.dart';
@@ -27,18 +29,30 @@ class _NewEventState extends State<NewEvent> {
     super.dispose();
   }
 
-  Future<void> _saveForm() async {
+  Future<void> _saveForm(User? user) async {
     final isValid = _form.currentState?.validate();
-    if (!isValid!) {
+    if (isValid == null) {
+      print('Hola');
+      return;
+    }
+    if (!isValid) {
       return;
     }
     _form.currentState?.save();
-    await Provider.of<Events>(context, listen: false).addEvent(_newEvent);
+    if (user == null) {
+      print("Algo salió mal");
+
+      return;
+    }
+    final result = await Provider.of<Events>(context, listen: false)
+        .addEvent(_newEvent, user);
+    print(result);
     Navigator.of(context).pop();
   }
 
   @override
   Widget build(BuildContext context) {
+    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: Text("Nuevo Evento"),
@@ -115,7 +129,8 @@ class _NewEventState extends State<NewEvent> {
                       isUrgent: isUrgent!);
                 },
               ),
-              TextButton(onPressed: _saveForm, child: Text("Guardar"))
+              TextButton(
+                  onPressed: () => _saveForm(_user), child: Text("Guardar"))
             ]),
           )),
     );

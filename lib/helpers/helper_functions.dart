@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore_web/cloud_firestore_web.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -35,4 +38,12 @@ SnackBar buildSnackBar(
     behavior: SnackBarBehavior.floating,
     action: createAction(actionLabel, actionHandler),
   );
+}
+
+Future<bool> isEditor(User user) async {
+  final result = await FirebaseFirestore.instance
+      .collection('editors')
+      .snapshots()
+      .contains(user.email);
+  return result;
 }

@@ -1,10 +1,8 @@
-import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/screens/events_screen.dart';
 import 'package:ceib/screens/home_screen.dart';
 import 'package:ceib/widgets/logout_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key? key}) : super(key: key);
@@ -41,38 +39,6 @@ class _MainScreenState extends State<MainScreen> {
         centerTitle: true,
         actions: [
           LogOutButton(),
-          // Padding(
-          //     padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 5),
-          //     child: TextButton(
-          //       style: ButtonStyle(
-          //           backgroundColor: MaterialStateProperty.all(
-          //               Color.fromRGBO(255, 230, 234, 1))),
-          //       child: Text('Cerrar sesión'),
-          //       onPressed: () {
-          //         showDialog(
-          //             context: context,
-          //             builder: (BuildContext context) {
-          //               return AlertDialog(
-          //                 title: Text("Cerrar sesión"),
-          //                 content: Text("Seguro que querés cerrar sesión?"),
-          //                 actions: [
-          //                   TextButton(
-          //                       onPressed: () {
-          //                         _user.logout();
-          //                         Navigator.pop(context, 'Si');
-          //                       },
-          //                       child: Text("Sí")),
-          //                   TextButton(
-          //                       onPressed: () {
-          //                         Navigator.pop(context, 'No');
-          //                       },
-          //                       child: Text("No"))
-          //                 ],
-          //               );
-          //             });
-
-          //       },
-          //     )),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

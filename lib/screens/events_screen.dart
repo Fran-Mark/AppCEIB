@@ -1,4 +1,4 @@
-import 'package:ceib/providers/events.dart';
+import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/widgets/event_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +14,7 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final eventsData = Provider.of<Events>(context);
+    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
     return Stack(alignment: AlignmentDirectional.bottomEnd, children: [
       RefreshIndicator(
         onRefresh: () => _refreshEvents(context),
@@ -32,12 +33,13 @@ class EventsScreen extends StatelessWidget {
                   ],
                 )),
       ),
+      Text("Hola usuatrio"),
+      Divider(),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
           onPressed: () {
             Navigator.of(context).pushNamed('/new-event');
-            print(eventsData.items.length);
           },
           child: Icon(Icons.add),
         ),
