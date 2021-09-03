@@ -32,7 +32,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
         .resetPassword(email);
     if (result == null) {
       final _authProvider = Provider.of<AuthServices>(context, listen: false);
-      final snackBar = buildSnackbar(
+      final snackBar = buildSnackBar(
         context: context,
         text: _authProvider.errorMessage,
       );
@@ -40,7 +40,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
     } else {
       Navigator.of(context).pop();
       final snackBar =
-          buildSnackbar(context: context, text: 'Se envió el correo');
+          buildSnackBar(context: context, text: 'Se envió el correo');
 
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }

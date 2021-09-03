@@ -9,16 +9,18 @@ String stringifyDate(DateTime date) {
       date.year.toString();
 }
 
-SnackBar buildSnackbar(
+SnackBar buildSnackBar(
     {required BuildContext context,
     required String text,
     String? actionLabel,
     Function? actionHandler}) {
   final device = MediaQuery.of(context);
 
-  SnackBarAction? createAction(String? actionLabel, Function? actionHandler) {
-    if (actionLabel == null || actionHandler == null) actionLabel = 'Cerrar';
-    actionHandler = ScaffoldMessenger.of(context).hideCurrentSnackBar;
+  SnackBarAction createAction(String? actionLabel, Function? actionHandler) {
+    if (actionLabel == null || actionHandler == null) {
+      actionLabel = 'Cerrar';
+      actionHandler = ScaffoldMessenger.of(context).hideCurrentSnackBar;
+    }
     return SnackBarAction(label: actionLabel, onPressed: () => actionHandler);
   }
 

@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
       final _authProvider = Provider.of<AuthServices>(context, listen: false);
       if (_authProvider.errorMessage != "")
         ScaffoldMessenger.of(context).showSnackBar(
-            buildSnackbar(context: context, text: _authProvider.errorMessage));
+            buildSnackBar(context: context, text: _authProvider.errorMessage));
     }
   }
 
