@@ -16,23 +16,23 @@ class EventsScreen extends StatelessWidget {
     final eventsData = Provider.of<Events>(context);
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
     return Stack(alignment: AlignmentDirectional.bottomEnd, children: [
-      RefreshIndicator(
-        onRefresh: () => _refreshEvents(context),
-        child: ListView.builder(
-            itemCount: eventsData.items.length,
-            itemBuilder: (_, index) => Column(
-                  children: [
-                    EventItem(
-                      id: eventsData.items[index].id,
-                      title: eventsData.items[index].title,
-                      description: eventsData.items[index].description,
-                      date: eventsData.items[index].date,
-                      isUrgent: eventsData.items[index].isUrgent,
-                    ),
-                    Divider()
-                  ],
-                )),
-      ),
+      // RefreshIndicator(
+      //   onRefresh: () => _refreshEvents(context),
+      //   child: ListView.builder(
+      //       itemCount: eventsData.items.length,
+      //       itemBuilder: (_, index) => Column(
+      //             children: [
+      //               EventItem(
+      //                 id: eventsData.items[index].id,
+      //                 title: eventsData.items[index].title,
+      //                 description: eventsData.items[index].description,
+      //                 date: eventsData.items[index].date,
+      //                 isUrgent: eventsData.items[index].isUrgent,
+      //               ),
+      //               Divider()
+      //             ],
+      //           )),
+      // ),
       Text("Hola usuatrio"),
       Divider(),
       Padding(

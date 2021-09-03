@@ -9,6 +9,8 @@ import 'package:flutter/material.dart';
 import './event.dart';
 
 class Events with ChangeNotifier {
+  final _eventsCollection = FirebaseFirestore.instance.collection('events');
+
   List<Event> _items = [
     Event(
         id: "1",
@@ -69,13 +71,12 @@ class Events with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _eventsSubscription;
 
   Future<void> fetchEvents() async {
-    _eventsSubscription = FirebaseFirestore.instance
-        .collection('events')
+    _eventsSubscription = _eventsCollection
         .orderBy('timestamp', descending: true)
         .snapshots()
-        .listen((event) {
+        .listen((data) {
       _items = [];
-      event.docs.forEach((element) {
+      data.docs.forEach((element) {
         final newEvent = Event(
             id: element.id,
             title: element.data()['title'],
@@ -94,9 +95,7 @@ class Events with ChangeNotifier {
       throw Exception("No tenés permisos de escritura");
     }
     try {
-      final response = await FirebaseFirestore.instance
-          .collection('events')
-          .add(<String, dynamic>{
+      final response = await _eventsCollection.add(<String, dynamic>{
         'title': event.title,
         'description': event.description,
         'date': event.date,
