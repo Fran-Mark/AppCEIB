@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './event.dart';
 
 class Events with ChangeNotifier {
@@ -14,6 +15,24 @@ class Events with ChangeNotifier {
       return true;
     else
       return false;
+  }
+
+  Future<String> updateEvent(Event event, User user) async {
+    try {
+      final _isEditor = await isEditor(user.email!);
+      if (_isEditor) {
+        await _eventsCollection.doc(event.id).update({
+          'title': event.title,
+          'description': event.description,
+          'date': event.date.toString(),
+          'isUrgent': event.isUrgent,
+        });
+        return "Editado!";
+      }
+      return "No se pudo editar";
+    } catch (e) {
+      return "Algo salió mal";
+    }
   }
 
   Future<String> deleteEvent(Event event, User user) async {

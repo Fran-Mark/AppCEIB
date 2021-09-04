@@ -3,6 +3,7 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/event.dart';
 import 'package:ceib/providers/events.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:date_field/date_field.dart';
 import 'package:provider/provider.dart';
@@ -11,12 +12,16 @@ import '../widgets/checkbox_form_field.dart';
 class EventBuilder extends StatefulWidget {
   EventBuilder(
       {Key? key,
+      required this.createNew,
       this.title = '',
       this.description = '',
       this.date,
-      this.isUrgent = false})
+      this.isUrgent = false,
+      this.id = ''})
       : super(key: key);
   static const routeName = '/edit-event';
+  final createNew;
+  final id;
   final title;
   final description;
   final date;
@@ -29,35 +34,16 @@ class _EventBuilderState extends State<EventBuilder> {
   final _descriptionFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
 
-  // final _titleController = TextEditingController();
-  // final _descriptionController = TextEditingController();
-  // final _dateTimeController = TextEditingController();
-
-  var _EventBuilder =
+  var _eventBuilder =
       Event(id: '', title: '', description: '', date: DateTime(1998));
 
   @override
   void dispose() {
     _descriptionFocusNode.dispose();
-    // _titleController.dispose();
-    // _descriptionController.dispose();
-    // _dateTimeController.dispose();
     super.dispose();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   final routeArgs =
-  //       ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
-  //   if (routeArgs != null) {
-  //     _titleController.text = routeArgs['title'];
-  //     _descriptionController.text = routeArgs['description'];
-  //     _dateTimeController.text = routeArgs['date'].toString();
-  //   }
-  //   super.didChangeDependencies();
-  // }
-
-  Future<void> _saveForm(User? user) async {
+  Future<void> _newEntry(User? user) async {
     final isValid = _form.currentState?.validate();
     if (!isValid!) {
       return;
@@ -65,7 +51,22 @@ class _EventBuilderState extends State<EventBuilder> {
     _form.currentState?.save();
     if (user == null) return;
     final result = await Provider.of<Events>(context, listen: false)
-        .addEvent(_EventBuilder, user);
+        .addEvent(_eventBuilder, user);
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context)
+        .showSnackBar(buildSnackBar(context: context, text: result));
+  }
+
+  Future<void> _updateEntry(User? user, Event event) async {
+    final isValid = _form.currentState?.validate();
+    if (!isValid!) {
+      return;
+    }
+    _form.currentState?.save();
+    if (user == null) return;
+    final result = await Provider.of<Events>(context, listen: false)
+        .updateEvent(event, user);
     Navigator.of(context).pop();
 
     ScaffoldMessenger.of(context)
@@ -88,7 +89,6 @@ class _EventBuilderState extends State<EventBuilder> {
             child: ListView(children: [
               TextFormField(
                   decoration: InputDecoration(labelText: "Título"),
-                  //controller: _titleController,
                   initialValue: widget.title,
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
@@ -100,16 +100,15 @@ class _EventBuilderState extends State<EventBuilder> {
                     }
                   },
                   onSaved: (title) {
-                    _EventBuilder = Event(
-                        id: _EventBuilder.id,
+                    _eventBuilder = Event(
+                        id: _eventBuilder.id,
                         title: title!,
-                        description: _EventBuilder.description,
-                        date: _EventBuilder.date);
+                        description: _eventBuilder.description,
+                        date: _eventBuilder.date);
                   }),
               TextFormField(
                   decoration: InputDecoration(labelText: 'Descripción'),
                   initialValue: widget.description,
-                  //controller: _descriptionController,
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
@@ -120,14 +119,13 @@ class _EventBuilderState extends State<EventBuilder> {
                   },
                   focusNode: _descriptionFocusNode,
                   onSaved: (description) {
-                    _EventBuilder = Event(
-                        id: _EventBuilder.id,
-                        title: _EventBuilder.title,
+                    _eventBuilder = Event(
+                        id: _eventBuilder.id,
+                        title: _eventBuilder.title,
                         description: description!,
-                        date: _EventBuilder.date);
+                        date: _eventBuilder.date);
                   }),
               DateTimeFormField(
-                //initialValue: DateTime.parse(_dateTimeController.text),
                 initialValue: widget.date,
                 decoration: InputDecoration(
                     labelText: 'Fecha y hora',
@@ -140,10 +138,10 @@ class _EventBuilderState extends State<EventBuilder> {
                     return 'No podés crear eventos en el pasado';
                 },
                 onSaved: (date) {
-                  _EventBuilder = Event(
-                      id: _EventBuilder.id,
-                      title: _EventBuilder.title,
-                      description: _EventBuilder.description,
+                  _eventBuilder = Event(
+                      id: _eventBuilder.id,
+                      title: _eventBuilder.title,
+                      description: _eventBuilder.description,
                       date: date!);
                 },
               ),
@@ -151,16 +149,19 @@ class _EventBuilderState extends State<EventBuilder> {
                 title: Text("Es urgente?"),
                 initialValue: widget.isUrgent,
                 onSaved: (isUrgent) {
-                  _EventBuilder = Event(
-                      id: _EventBuilder.id,
-                      title: _EventBuilder.title,
-                      description: _EventBuilder.description,
-                      date: _EventBuilder.date,
+                  _eventBuilder = Event(
+                      id: _eventBuilder.id,
+                      title: _eventBuilder.title,
+                      description: _eventBuilder.description,
+                      date: _eventBuilder.date,
                       isUrgent: isUrgent!);
                 },
               ),
               TextButton(
-                  onPressed: () => _saveForm(_user), child: Text("Guardar"))
+                  onPressed: widget.createNew
+                      ? () => _newEntry(_user)
+                      : () => _updateEntry(_user, _eventBuilder),
+                  child: Text("Guardar"))
             ]),
           )),
     );

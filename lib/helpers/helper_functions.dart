@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore_web/cloud_firestore_web.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -41,8 +38,9 @@ SnackBar buildSnackBar(
 }
 
 Map<String, dynamic> passArgumentsToEdit(
-    String title, String description, DateTime date, bool isUrgent) {
+    String id, String title, String description, DateTime date, bool isUrgent) {
   return {
+    'id': id,
     'title': title,
     'description': description,
     'date': date,

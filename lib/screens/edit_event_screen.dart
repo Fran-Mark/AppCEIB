@@ -14,6 +14,7 @@ class EditEvent extends StatelessWidget {
       final _date = routeArgs['date'];
       final _isUrgent = routeArgs['isUrgent'];
       return EventBuilder(
+        createNew: false,
         title: _title,
         description: _description,
         date: _date,
@@ -21,6 +22,8 @@ class EditEvent extends StatelessWidget {
       );
     }
 
-    return EventBuilder();
+    return EventBuilder(
+      createNew: true,
+    );
   }
 }
