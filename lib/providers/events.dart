@@ -1,10 +1,12 @@
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import './event.dart';
 
 class Events with ChangeNotifier {
+  final _eventsCollection = FirebaseFirestore.instance.collection('events');
+  final _editorsCollection = FirebaseFirestore.instance.collection('editors');
+
   List<Event> _items = [
     Event(
         id: "1",
@@ -17,48 +19,35 @@ class Events with ChangeNotifier {
     return [..._items];
   }
 
-  Future<void> fetchEvents() async {
-    final url =
-        Uri.https('appceib-default-rtdb.firebaseio.com', '/events.json');
+  Future<bool> isEditor(String email) async {
+    final _query = await _editorsCollection.doc(email).get();
 
-    try {
-      final response = await http.get(url);
-      final responseBody = json.decode(response.body) as Map<String, dynamic>;
-      final List<Event> _loadedEvents = [];
-      responseBody.forEach((eventId, eventData) {
-        if (DateTime.parse(eventData['date']).isAfter(DateTime.now())) {
-          _loadedEvents.add(Event(
-              id: eventId,
-              title: eventData['title'],
-              description: eventData['description'],
-              date: DateTime.parse(eventData['date']),
-              isUrgent: eventData['isUrgent']));
-        }
-      });
-      _items = _loadedEvents;
-      notifyListeners();
-    } catch (error) {
-      throw error;
-    }
+    if (_query.exists)
+      return true;
+    else
+      return false;
   }
 
-  Future<void> addEvent(Event event) async {
-    final url =
-        Uri.https('appceib-default-rtdb.firebaseio.com', '/events.json');
-    final response = await http.post(url,
-        body: json.encode({
+  Future<String> addEvent(Event event, User user) async {
+    try {
+      final _isEditor = await isEditor(user.email!);
+
+      if (_isEditor) {
+        await _eventsCollection.add({
           'title': event.title,
           'description': event.description,
           'date': event.date.toString(),
-          'isUrgent': event.isUrgent
-        }));
-    final responseBody = json.decode(response.body) as Map<String, dynamic>;
-    final newEvent = Event(
-        id: responseBody['name'],
-        title: event.title,
-        description: event.description,
-        date: event.date);
-    _items.add(newEvent);
-    notifyListeners();
+          'isUrgent': event.isUrgent,
+          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'uid': user.uid,
+          'username': user.displayName
+        });
+        return "Evento agregado!";
+      } else {
+        return "No tenés permisos!";
+      }
+    } catch (e) {
+      return "Algo salió mal";
+    }
   }
 }

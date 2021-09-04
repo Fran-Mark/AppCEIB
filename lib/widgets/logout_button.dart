@@ -28,12 +28,32 @@ class LogOutButton extends StatelessWidget {
                             _user.logout();
                             Navigator.pop(context, 'Si');
                           },
-                          child: Text("Sí")),
+                          child: Container(
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                      color: Color.fromRGBO(255, 230, 234, 1))),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0, horizontal: 15),
+                                child: Text("Sí"),
+                              ))),
                       TextButton(
                           onPressed: () {
                             Navigator.pop(context, 'No');
                           },
-                          child: Text("No"))
+                          child: Container(
+                            decoration: BoxDecoration(
+                                color: Color.fromRGBO(255, 230, 234, 1),
+                                borderRadius: BorderRadius.circular(10)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 8.0, horizontal: 15),
+                              child: Text(
+                                "No",
+                              ),
+                            ),
+                          ))
                     ],
                   );
                 });

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../extensions/datetime_extension.dart';
 
 class EventItem extends StatelessWidget {
@@ -17,31 +18,54 @@ class EventItem extends StatelessWidget {
   });
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(
-              title,
-            ),
-          ),
-          Container(
-            height: 10,
-          ),
-          Row(children: [
-            Expanded(
-                child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    child: Text(
-                      description,
-                    ))),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
             Padding(
-              padding: const EdgeInsets.only(right: 8),
-              child: Text(date.formatDate()),
-            )
-          ])
-        ],
+              padding: const EdgeInsets.only(top: 10),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8),
+                      child: Text(
+                        title,
+                        textAlign: TextAlign.left,
+                        style: GoogleFonts.alfaSlabOne(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Text(
+                  date.formatDate(),
+                  style: GoogleFonts.hindMadurai(),
+                ),
+              ),
+            ),
+            Row(children: [
+              Expanded(
+                  child: Padding(
+                      padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                      child: Text(
+                        description,
+                        style: GoogleFonts.hindMadurai(),
+                      ))),
+            ])
+          ],
+        ),
       ),
     );
   }
