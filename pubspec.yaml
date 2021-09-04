@@ -33,12 +33,9 @@ dependencies:
   date_field: ^2.0.1
   google_fonts: ^2.1.0
   firebase_auth: ^3.1.0
-  #firebase_core: ^1.6.0
+  firebase_core: ^1.6.0
   cloud_firestore: ^2.5.1
-  html: ^0.15.0
-  js: ^0.6.3
-
-
+  flutter_slidable: ^0.6.0
 
 dev_dependencies:
   flutter_test:

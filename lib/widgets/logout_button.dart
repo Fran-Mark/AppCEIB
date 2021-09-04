@@ -1,4 +1,5 @@
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/widgets/my_alert_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -7,7 +8,13 @@ class LogOutButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of<AuthServices>(context);
+    final _authService = Provider.of<AuthServices>(context);
+
+    Future<void> _logOut(AuthServices authService) async {
+      await authService.logout();
+      Navigator.of(context).pop();
+    }
+
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 11, horizontal: 5),
         child: TextButton(
@@ -19,22 +26,10 @@ class LogOutButton extends StatelessWidget {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text("Cerrar sesión"),
-                    content: Text("Seguro que querés cerrar sesión?"),
-                    actions: [
-                      TextButton(
-                          onPressed: () {
-                            _user.logout();
-                            Navigator.pop(context, 'Si');
-                          },
-                          child: Text("Sí")),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pop(context, 'No');
-                          },
-                          child: Text("No"))
-                    ],
+                  return MyAlertDialog(
+                    title: "Cerrar sesión",
+                    content: "Seguro que querés cerrar sesión?",
+                    handler: () => _logOut(_authService),
                   );
                 });
           },

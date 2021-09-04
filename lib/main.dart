@@ -1,5 +1,6 @@
 import 'package:ceib/auth/auth_service.dart';
 import 'package:ceib/auth/auth_wrapper.dart';
+import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/error_screen.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/screens/login_screen.dart';
@@ -57,6 +58,7 @@ class MyApp extends StatelessWidget {
                   MainScreen.routeName: (context) => MainScreen(),
                   ResetPasswordScreen.routeName: (context) =>
                       ResetPasswordScreen(),
+                  EditEvent.routeName: (context) => EditEvent(),
                 },
                 onUnknownRoute: (_) {
                   return MaterialPageRoute(builder: (_) => ErrorWidget());

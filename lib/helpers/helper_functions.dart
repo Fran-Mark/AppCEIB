@@ -40,10 +40,12 @@ SnackBar buildSnackBar(
   );
 }
 
-Future<bool> isEditor(User user) async {
-  final result = await FirebaseFirestore.instance
-      .collection('editors')
-      .snapshots()
-      .contains(user.email);
-  return result;
+Map<String, dynamic> passArgumentsToEdit(
+    String title, String description, DateTime date, bool isUrgent) {
+  return {
+    'title': title,
+    'description': description,
+    'date': date,
+    'isUrgent': isUrgent
+  };
 }
