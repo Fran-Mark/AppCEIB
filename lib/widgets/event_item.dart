@@ -1,21 +1,11 @@
+import 'package:ceib/providers/event.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../extensions/datetime_extension.dart';
 
 class EventItem extends StatelessWidget {
-  final String id;
-  final DateTime date;
-  final String title;
-  final String description;
-  final bool isUrgent;
-
-  EventItem({
-    required this.id,
-    required this.title,
-    required this.description,
-    required this.date,
-    required this.isUrgent,
-  });
+  EventItem({required this.event});
+  final Event event;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -33,7 +23,7 @@ class EventItem extends StatelessWidget {
                     child: Padding(
                       padding: EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
-                        title,
+                        event.title,
                         textAlign: TextAlign.left,
                         style: GoogleFonts.alfaSlabOne(fontSize: 20),
                       ),
@@ -50,7 +40,7 @@ class EventItem extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: Text(
-                  date.formatDate(),
+                  event.date.formatDate(),
                   style: GoogleFonts.hindMadurai(),
                 ),
               ),
@@ -60,7 +50,7 @@ class EventItem extends StatelessWidget {
                   child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
                       child: Text(
-                        description,
+                        event.description,
                         style: GoogleFonts.hindMadurai(),
                       ))),
             ])

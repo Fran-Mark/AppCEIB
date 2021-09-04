@@ -7,18 +7,6 @@ class Events with ChangeNotifier {
   final _eventsCollection = FirebaseFirestore.instance.collection('events');
   final _editorsCollection = FirebaseFirestore.instance.collection('editors');
 
-  List<Event> _items = [
-    Event(
-        id: "1",
-        title: 'Test Event',
-        description: "This is a test eent",
-        date: DateTime.now())
-  ];
-
-  List<Event> get items {
-    return [..._items];
-  }
-
   Future<bool> isEditor(String email) async {
     final _query = await _editorsCollection.doc(email).get();
 
@@ -26,6 +14,19 @@ class Events with ChangeNotifier {
       return true;
     else
       return false;
+  }
+
+  Future<String> deleteEvent(Event event, User user) async {
+    try {
+      final _isEditor = await isEditor(user.email!);
+      if (_isEditor) {
+        await _eventsCollection.doc('${event.id}').delete();
+        return "Borrado exitosamente";
+      } else
+        return "No tenés permisos para borrar";
+    } catch (e) {
+      return "Algo salió mal";
+    }
   }
 
   Future<String> addEvent(Event event, User user) async {
