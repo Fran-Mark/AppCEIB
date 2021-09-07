@@ -9,12 +9,15 @@ class EditEvent extends StatelessWidget {
     final routeArgs =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     if (routeArgs != null) {
+      final _id = routeArgs['id'];
       final _title = routeArgs['title'];
       final _description = routeArgs['description'];
       final _date = routeArgs['date'];
       final _isUrgent = routeArgs['isUrgent'];
+
       return EventBuilder(
         createNew: false,
+        id: _id,
         title: _title,
         description: _description,
         date: _date,

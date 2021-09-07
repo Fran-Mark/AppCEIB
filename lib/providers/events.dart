@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import './event.dart';
 
 class Events with ChangeNotifier {
@@ -21,12 +20,17 @@ class Events with ChangeNotifier {
     try {
       final _isEditor = await isEditor(user.email!);
       if (_isEditor) {
+        event.printEvent();
         await _eventsCollection.doc(event.id).update({
           'title': event.title,
           'description': event.description,
           'date': event.date.toString(),
           'isUrgent': event.isUrgent,
+          // 'timestamp': 0,
+          // 'uid': user.uid,
+          // 'username': user.displayName
         });
+
         return "Editado!";
       }
       return "No se pudo editar";

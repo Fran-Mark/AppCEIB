@@ -15,6 +15,17 @@ class Event with ChangeNotifier {
     this.isUrgent = false,
   });
 
+  void printEvent() {
+    print(id +
+        '\n' +
+        title +
+        '\n' +
+        description +
+        '\n' +
+        date.toString() +
+        '\n' +
+        isUrgent.toString());
+  }
   // void _setUrgency(bool value) {
   //   isUrgent = value;
   //   notifyListeners();

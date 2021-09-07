@@ -24,8 +24,8 @@ class EventsScreen extends StatelessWidget {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
 
     Future<void> _deleteEvent(Event event, User user) async {
-      final result = await _eventsData.deleteEvent(event, user);
       Navigator.of(context).pop();
+      final result = await _eventsData.deleteEvent(event, user);
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: result));
     }

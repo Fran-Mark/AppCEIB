@@ -34,8 +34,18 @@ class _EventBuilderState extends State<EventBuilder> {
   final _descriptionFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
 
-  var _eventBuilder =
-      Event(id: '', title: '', description: '', date: DateTime(1998));
+  late Event _eventBuilder;
+
+  @override
+  void initState() {
+    _eventBuilder = Event(
+        id: widget.id,
+        title: widget.title,
+        description: widget.description,
+        date: widget.date == null ? DateTime(1998) : widget.date);
+
+    super.initState();
+  }
 
   @override
   void dispose() {
