@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../extensions/user_extension.dart';
 
 import '../providers/events.dart';
 
@@ -21,8 +22,8 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _eventsData = Provider.of<Events>(context);
-    final _auth = Provider.of<AuthServices>(context);
-    final _user = _auth.firebaseAuth.currentUser;
+
+    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
 
     Future<void> _deleteEvent(Event event, User user) async {
       Navigator.of(context).pop();
@@ -106,15 +107,24 @@ class EventsScreen extends StatelessWidget {
               }).toList(),
             );
           }),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/new-event');
-          },
-          child: Icon(Icons.add),
-        ),
-      )
+      FutureBuilder(
+          future: _user?.isEditor(),
+          builder: (context, isEditor) {
+            final _isEditor = isEditor.data as bool?;
+            if (_isEditor == true) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/new-event');
+                  },
+                  child: Icon(Icons.add),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          })
     ]);
   }
 }
