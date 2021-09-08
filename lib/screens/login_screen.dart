@@ -72,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 600,
                 child: Column(children: [
                   Image.asset(
-                    "lib/assets/logo_ceib.jpg",
+                    "lib/assets/logo_ceib.png",
                     height: 200,
                     width: 200,
                   ),

@@ -21,7 +21,8 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _eventsData = Provider.of<Events>(context);
-    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
+    final _auth = Provider.of<AuthServices>(context);
+    final _user = _auth.firebaseAuth.currentUser;
 
     Future<void> _deleteEvent(Event event, User user) async {
       Navigator.of(context).pop();
@@ -80,13 +81,8 @@ class EventsScreen extends StatelessWidget {
                       color: Colors.blue,
                       icon: Icons.edit,
                       onTap: () {
-                        Navigator.of(context).pushNamed(EditEvent.routeName,
-                            arguments: passArgumentsToEdit(
-                                _event.id,
-                                _event.title,
-                                _event.description,
-                                _event.date,
-                                _event.isUrgent));
+                        Navigator.of(context)
+                            .pushNamed(EditEvent.routeName, arguments: e);
                       },
                     ),
                     IconSlideAction(

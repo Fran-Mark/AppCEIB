@@ -16,24 +16,20 @@ class Events with ChangeNotifier {
       return false;
   }
 
-  Future<String> updateEvent(Event event, User user) async {
+  Future<String> updateEvent(
+      User user, Event newEvent, DocumentSnapshot originalEvent) async {
     try {
       final _isEditor = await isEditor(user.email!);
       if (_isEditor) {
-        event.printEvent();
-        await _eventsCollection.doc(event.id).update({
-          'title': event.title,
-          'description': event.description,
-          'date': event.date.toString(),
-          'isUrgent': event.isUrgent,
-          // 'timestamp': 0,
-          // 'uid': user.uid,
-          // 'username': user.displayName
+        await originalEvent.reference.update({
+          'title': newEvent.title,
+          'description': newEvent.description,
+          'date': newEvent.date.toString(),
+          'isUrgent': newEvent.isUrgent,
         });
-
         return "Editado!";
-      }
-      return "No se pudo editar";
+      } else
+        return "No tenés permisos";
     } catch (e) {
       return "Algo salió mal";
     }

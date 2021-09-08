@@ -7,8 +7,6 @@ class NewEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EventBuilder(
-      createNew: true,
-    );
+    return EventBuilder();
   }
 }

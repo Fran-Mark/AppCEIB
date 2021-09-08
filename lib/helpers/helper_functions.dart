@@ -36,14 +36,3 @@ SnackBar buildSnackBar(
     action: createAction(actionLabel, actionHandler),
   );
 }
-
-Map<String, dynamic> passArgumentsToEdit(
-    String id, String title, String description, DateTime date, bool isUrgent) {
-  return {
-    'id': id,
-    'title': title,
-    'description': description,
-    'date': date,
-    'isUrgent': isUrgent
-  };
-}
