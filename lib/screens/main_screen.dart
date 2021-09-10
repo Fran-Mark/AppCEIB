@@ -1,5 +1,6 @@
 import 'package:ceib/screens/events_screen.dart';
 import 'package:ceib/screens/home_screen.dart';
+import 'package:ceib/screens/reservations_screen.dart';
 import 'package:ceib/widgets/logout_button.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,7 @@ class _MainScreenState extends State<MainScreen> {
     const _navigationHandler = {
       0: HomeScreen(),
       1: EventsScreen(),
-      2: Center(
-        child: Text("Fran Crack"),
-      ),
+      2: ReservationsScreen(),
       3: Center(
         child: Text(
             "Como quieres que te quiera si el que quiero que me quiera no me quiere como quiero que me quiera"),

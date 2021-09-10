@@ -68,8 +68,9 @@ class EventsScreen extends StatelessWidget {
                     description: e['description'],
                     date: DateTime.parse(e['date']),
                     isUrgent: e['isUrgent']);
+
                 return Slidable(
-                  actionExtentRatio: 0.1,
+                  actionExtentRatio: .2,
                   secondaryActions: [
                     IconSlideAction(
                       caption: 'Cerrar',

@@ -17,19 +17,27 @@ import 'screens/new_event.dart';
 import 'screens/register_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _init = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    final _init = Firebase.initializeApp();
     return FutureBuilder(
         future: _init,
         builder: (context, snapshot) {
           if (snapshot.hasError)
             return ErrorWidget();
-          else if (snapshot.hasData) {
+          else if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
               providers: [
                 ChangeNotifierProvider<AuthServices>.value(

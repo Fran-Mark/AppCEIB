@@ -68,8 +68,8 @@ class _LoginScreenState extends State<LoginScreen> {
           child: SingleChildScrollView(
             child: Form(
               key: _form,
-              child: SizedBox(
-                width: 600,
+              child: FractionallySizedBox(
+                widthFactor: 0.85,
                 child: Column(children: [
                   Image.asset(
                     "lib/assets/logo_ceib.png",
@@ -82,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "Bienvenido a la app del CEIB",
                     style: GoogleFonts.alfaSlabOne(fontSize: 22),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(
                     height: 10,
@@ -166,8 +167,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Wrap(
+                    alignment: WrapAlignment.center,
                     children: [
                       TextButton(
                           onPressed: () => Navigator.of(context).pushNamed(

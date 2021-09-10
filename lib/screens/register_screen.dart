@@ -80,8 +80,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: SingleChildScrollView(
             child: Form(
               key: _form,
-              child: SizedBox(
-                width: 600,
+              child: FractionallySizedBox(
+                widthFactor: .85,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
