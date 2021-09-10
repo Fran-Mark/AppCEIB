@@ -1,7 +1,7 @@
 import 'package:ceib/providers/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../helpers/helper_functions.dart';
+import '../../helpers/helper_functions.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);

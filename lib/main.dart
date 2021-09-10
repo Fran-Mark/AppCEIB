@@ -3,9 +3,9 @@ import 'package:ceib/auth/auth_wrapper.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/error_screen.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/screens/login_screen.dart';
-import 'package:ceib/screens/main_screen.dart';
-import 'package:ceib/screens/reset_password_screen.dart';
+import 'package:ceib/screens/auth/login_screen.dart';
+import 'package:ceib/screens/initial_tabs/main_screen.dart';
+import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +14,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import './providers/events.dart';
 import 'screens/new_event.dart';
-import 'screens/register_screen.dart';
+import 'screens/auth/register_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

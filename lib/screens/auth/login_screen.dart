@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/screens/register_screen.dart';
-import 'package:ceib/screens/reset_password_screen.dart';
+import 'package:ceib/screens/auth/register_screen.dart';
+import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
