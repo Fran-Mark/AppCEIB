@@ -1,5 +1,9 @@
 import 'package:ceib/auth/auth_service.dart';
 import 'package:ceib/auth/auth_wrapper.dart';
+import 'package:ceib/screens/categories/bicis_screen.dart';
+import 'package:ceib/screens/categories/raquetas_screen.dart';
+import 'package:ceib/screens/categories/ski_screen.dart';
+import 'package:ceib/screens/categories/lavarropas_screen.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/error_screen.dart';
 import 'package:ceib/providers/auth_service.dart';
@@ -67,6 +71,10 @@ class _MyAppState extends State<MyApp> {
                   ResetPasswordScreen.routeName: (context) =>
                       ResetPasswordScreen(),
                   EditEvent.routeName: (context) => EditEvent(),
+                  LavarropasScreen.routeName: (context) => LavarropasScreen(),
+                  BicisScreen.routeName: (context) => BicisScreen(),
+                  SkiScreen.routeName: (context) => SkiScreen(),
+                  RaquetasScreen.routeName: (context) => RaquetasScreen(),
                 },
                 onUnknownRoute: (_) {
                   return MaterialPageRoute(builder: (_) => ErrorWidget());

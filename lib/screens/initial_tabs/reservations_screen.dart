@@ -23,7 +23,7 @@ class ReservationsScreen extends StatelessWidget {
           imageName: "lavarropas",
         ),
         ReservationCategory(
-          title: "Ski/Snow",
+          title: "Ski",
           imageName: 'snow',
         ),
         ReservationCategory(
