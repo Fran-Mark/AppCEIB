@@ -20,10 +20,10 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ceib">
+  <meta name="apple-mobile-web-app-title" content="hi">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
-  <title>ceib</title>
+  <title>hi</title>
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
@@ -94,29 +94,25 @@
       loadMainDartJs();
     }
   </script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
 
- <!-- Add this line -->
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.6.1/firebase-firestore.js"></script>
 
+  
   <script>
-      var firebaseConfig = {
-            apiKey: "AIzaSyBdUkcqI_oORi3jzrobnYTEkyLKS6j65rY",
-            authDomain: "app-del-ceib.firebaseapp.com",
-            databaseURL: "https://app-del-ceib-default-rtdb.firebaseio.com",
-            projectId: "app-del-ceib",
-            storageBucket: "app-del-ceib.appspot.com",
-            messagingSenderId: "467323286530",
-            appId: "1:467323286530:web:6217aaf93ca83dbdc5e31b"
-          };
-
-        firebase.initalizeApp(firebaseConfig);
+    var firebaseConfig = {
+  apiKey: "AIzaSyBdUkcqI_oORi3jzrobnYTEkyLKS6j65rY",
+  authDomain: "app-del-ceib.firebaseapp.com",
+  databaseURL: "https://app-del-ceib-default-rtdb.firebaseio.com",
+  projectId: "app-del-ceib",
+  storageBucket: "app-del-ceib.appspot.com",
+  messagingSenderId: "467323286530",
+  appId: "1:467323286530:web:6217aaf93ca83dbdc5e31b",
+  measurementId: "G-EEDCQZ9N82"
+};
+firebase.initializeApp(firebaseConfig);
   </script>
-   
-    
-
-  <script src="main.dart.js" type="application/javascript"></script> 
-
+  <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

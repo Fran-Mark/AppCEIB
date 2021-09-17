@@ -61,15 +61,16 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final _loginProvider = Provider.of<AuthServices>(context);
-
+    final _device = MediaQuery.of(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
             child: Form(
               key: _form,
-              child: FractionallySizedBox(
-                widthFactor: 0.85,
+              child: SizedBox(
+                width:
+                    _device.size.width > 800 ? 680 : _device.size.width * 0.85,
                 child: Column(children: [
                   Image.asset(
                     "lib/assets/logo_ceib.png",

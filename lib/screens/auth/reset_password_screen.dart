@@ -56,14 +56,16 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthServices>(context);
+    final _device = MediaQuery.of(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
             child: Form(
               key: _form,
-              child: FractionallySizedBox(
-                widthFactor: .85,
+              child: SizedBox(
+                width:
+                    _device.size.width > 800 ? 680 : _device.size.width * 0.85,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
