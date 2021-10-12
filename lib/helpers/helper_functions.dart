@@ -36,3 +36,10 @@ SnackBar buildSnackBar(
     action: createAction(actionLabel, actionHandler),
   );
 }
+
+AppBar buildAppBar() {
+  return AppBar(
+    title: const Text('CEIB'),
+    centerTitle: true,
+  );
+}

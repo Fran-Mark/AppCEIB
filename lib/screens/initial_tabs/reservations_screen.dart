@@ -7,7 +7,11 @@ class ReservationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _device = MediaQuery.of(context);
-    final _itemsPerRow = _device.orientation == Orientation.portrait ? 1 : 2;
+    final _itemsPerRow = _device.size.width > 700
+        ? _device.size.width > 1400
+            ? 3
+            : 2
+        : 1;
     return GridView(
       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: _itemsPerRow,

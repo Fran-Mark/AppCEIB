@@ -36,6 +36,8 @@ dependencies:
   cloud_firestore: ^2.5.2
   flutter_slidable: ^0.6.0
   outlined_text: ^1.0.1
+  syncfusion_flutter_calendar: ^19.2.62
+  gsheets: ^0.3.2
   
 
 dev_dependencies:
@@ -58,6 +60,7 @@ flutter:
     - lib/assets/bicis.gif
     - lib/assets/raquetas.gif
     - lib/assets/lavarropas.gif
+    - lib/assets/lavarropas_icon.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
