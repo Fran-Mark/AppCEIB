@@ -20,9 +20,11 @@ import './providers/events.dart';
 import 'screens/new_event.dart';
 import 'screens/auth/register_screen.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
+import './sheets/sheets_api.dart';
 
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SheetsAPI.init();
   runApp(MyApp());
 }
 
