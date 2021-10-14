@@ -17,6 +17,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:provider/provider.dart';
 import './providers/events.dart';
+import 'providers/bicis.dart';
 import 'screens/new_event.dart';
 import 'screens/auth/register_screen.dart';
 
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
           else if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
               providers: [
+                ChangeNotifierProvider.value(value: Bicis()),
                 ChangeNotifierProvider<AuthServices>.value(
                     value: AuthServices()),
                 ChangeNotifierProvider.value(value: Events()),

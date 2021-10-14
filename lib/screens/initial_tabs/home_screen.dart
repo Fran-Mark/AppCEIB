@@ -20,7 +20,9 @@ class HomeScreen extends StatelessWidget {
       return Center(
         child: Container(
           decoration: BoxDecoration(
-              color: Colors.grey, borderRadius: BorderRadius.circular(20)),
+              border: Border.all(
+                  color: Color.fromRGBO(255, 230, 234, 1), width: 10),
+              borderRadius: BorderRadius.circular(20)),
           height: _device.size.height * 0.7,
           width: _device.size.width * 0.8,
           child: Column(
@@ -28,7 +30,7 @@ class HomeScreen extends StatelessWidget {
             children: [
               Text(
                 _user.displayName!,
-                style: GoogleFonts.raleway(fontSize: 50),
+                style: GoogleFonts.raleway(fontSize: 25),
                 textAlign: TextAlign.center,
               ),
               Divider(),
