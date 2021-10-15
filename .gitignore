@@ -48,3 +48,4 @@ app.*.map.json
 
 #google-sevices
 /android/app/google-services.json
+/lib/sheets/sheets_credentials.dart
