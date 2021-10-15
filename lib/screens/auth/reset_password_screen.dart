@@ -1,7 +1,7 @@
 import 'package:ceib/providers/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../helpers/helper_functions.dart';
+import '../../helpers/helper_functions.dart';
 
 class ResetPasswordScreen extends StatefulWidget {
   const ResetPasswordScreen({Key? key}) : super(key: key);
@@ -56,6 +56,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     final authProvider = Provider.of<AuthServices>(context);
+    final _device = MediaQuery.of(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -63,7 +64,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
             child: Form(
               key: _form,
               child: SizedBox(
-                width: 600,
+                width:
+                    _device.size.width > 800 ? 680 : _device.size.width * 0.85,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

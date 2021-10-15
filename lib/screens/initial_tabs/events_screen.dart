@@ -3,7 +3,6 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/event.dart';
 import 'package:ceib/providers/events.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
-import 'package:ceib/widgets/event_screen_builder.dart';
 import 'package:ceib/widgets/my_alert_dialog.dart';
 import 'package:ceib/widgets/event_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,8 +12,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../extensions/user_extension.dart';
 
-import '../providers/events.dart';
+import '../../providers/events.dart';
 
 class EventsScreen extends StatelessWidget {
   const EventsScreen({Key? key}) : super(key: key);
@@ -22,11 +22,12 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _eventsData = Provider.of<Events>(context);
+
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
 
     Future<void> _deleteEvent(Event event, User user) async {
-      final result = await _eventsData.deleteEvent(event, user);
       Navigator.of(context).pop();
+      final result = await _eventsData.deleteEvent(event, user);
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: result));
     }
@@ -67,8 +68,9 @@ class EventsScreen extends StatelessWidget {
                     description: e['description'],
                     date: DateTime.parse(e['date']),
                     isUrgent: e['isUrgent']);
+
                 return Slidable(
-                  actionExtentRatio: 0.1,
+                  actionExtentRatio: .2,
                   secondaryActions: [
                     IconSlideAction(
                       caption: 'Cerrar',
@@ -81,12 +83,8 @@ class EventsScreen extends StatelessWidget {
                       color: Colors.blue,
                       icon: Icons.edit,
                       onTap: () {
-                        Navigator.of(context).pushNamed(EditEvent.routeName,
-                            arguments: passArgumentsToEdit(
-                                _event.title,
-                                _event.description,
-                                _event.date,
-                                _event.isUrgent));
+                        Navigator.of(context)
+                            .pushNamed(EditEvent.routeName, arguments: e);
                       },
                     ),
                     IconSlideAction(
@@ -110,15 +108,24 @@ class EventsScreen extends StatelessWidget {
               }).toList(),
             );
           }),
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: FloatingActionButton(
-          onPressed: () {
-            Navigator.of(context).pushNamed('/new-event');
-          },
-          child: Icon(Icons.add),
-        ),
-      )
+      FutureBuilder(
+          future: _user?.isEditor(),
+          builder: (context, isEditor) {
+            final _isEditor = isEditor.data as bool?;
+            if (_isEditor == true) {
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: FloatingActionButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/new-event');
+                  },
+                  child: Icon(Icons.add),
+                ),
+              );
+            } else {
+              return Container();
+            }
+          })
     ]);
   }
 }

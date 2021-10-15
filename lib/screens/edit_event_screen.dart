@@ -1,4 +1,5 @@
 import 'package:ceib/widgets/event_screen_builder.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class EditEvent extends StatelessWidget {
@@ -7,17 +8,12 @@ class EditEvent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final routeArgs =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+        ModalRoute.of(context)?.settings.arguments as DocumentSnapshot?;
     if (routeArgs != null) {
-      final _title = routeArgs['title'];
-      final _description = routeArgs['description'];
-      final _date = routeArgs['date'];
-      final _isUrgent = routeArgs['isUrgent'];
+      final event = routeArgs;
+
       return EventBuilder(
-        title: _title,
-        description: _description,
-        date: _date,
-        isUrgent: _isUrgent,
+        event: event,
       );
     }
 

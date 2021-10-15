@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/screens/register_screen.dart';
-import 'package:ceib/screens/reset_password_screen.dart';
+import 'package:ceib/screens/auth/register_screen.dart';
+import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +61,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final _loginProvider = Provider.of<AuthServices>(context);
-
+    final _device = MediaQuery.of(context);
     return SafeArea(
       child: Scaffold(
         body: Center(
@@ -69,10 +69,11 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Form(
               key: _form,
               child: SizedBox(
-                width: 600,
+                width:
+                    _device.size.width > 800 ? 680 : _device.size.width * 0.85,
                 child: Column(children: [
                   Image.asset(
-                    "lib/assets/logo_ceib.jpg",
+                    "lib/assets/logo_ceib.png",
                     height: 200,
                     width: 200,
                   ),
@@ -82,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Text(
                     "Bienvenido a la app del CEIB",
                     style: GoogleFonts.alfaSlabOne(fontSize: 22),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(
                     height: 10,
@@ -166,8 +168,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 30,
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Wrap(
+                    alignment: WrapAlignment.center,
                     children: [
                       TextButton(
                           onPressed: () => Navigator.of(context).pushNamed(

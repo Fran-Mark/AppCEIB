@@ -1,11 +1,15 @@
 import 'package:ceib/auth/auth_service.dart';
 import 'package:ceib/auth/auth_wrapper.dart';
+import 'package:ceib/screens/categories/bicis_screen.dart';
+import 'package:ceib/screens/categories/raquetas_screen.dart';
+import 'package:ceib/screens/categories/ski_screen.dart';
+import 'package:ceib/screens/categories/lavarropas_screen.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/error_screen.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/screens/login_screen.dart';
-import 'package:ceib/screens/main_screen.dart';
-import 'package:ceib/screens/reset_password_screen.dart';
+import 'package:ceib/screens/auth/login_screen.dart';
+import 'package:ceib/screens/initial_tabs/main_screen.dart';
+import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,25 +17,37 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:provider/provider.dart';
 import './providers/events.dart';
+import 'providers/bicis.dart';
 import 'screens/new_event.dart';
-import 'screens/register_screen.dart';
+import 'screens/auth/register_screen.dart';
 
-void main() {
+import './sheets/sheets_api.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SheetsAPI.init();
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  final _init = Firebase.initializeApp();
+
   @override
   Widget build(BuildContext context) {
-    final _init = Firebase.initializeApp();
     return FutureBuilder(
         future: _init,
         builder: (context, snapshot) {
           if (snapshot.hasError)
             return ErrorWidget();
-          else if (snapshot.hasData) {
+          else if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
               providers: [
+                ChangeNotifierProvider.value(value: Bicis()),
                 ChangeNotifierProvider<AuthServices>.value(
                     value: AuthServices()),
                 ChangeNotifierProvider.value(value: Events()),
@@ -59,6 +75,10 @@ class MyApp extends StatelessWidget {
                   ResetPasswordScreen.routeName: (context) =>
                       ResetPasswordScreen(),
                   EditEvent.routeName: (context) => EditEvent(),
+                  LavarropasScreen.routeName: (context) => LavarropasScreen(),
+                  BicisScreen.routeName: (context) => BicisScreen(),
+                  SkiScreen.routeName: (context) => SkiScreen(),
+                  RaquetasScreen.routeName: (context) => RaquetasScreen(),
                 },
                 onUnknownRoute: (_) {
                   return MaterialPageRoute(builder: (_) => ErrorWidget());

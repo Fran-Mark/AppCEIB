@@ -37,12 +37,9 @@ SnackBar buildSnackBar(
   );
 }
 
-Map<String, dynamic> passArgumentsToEdit(
-    String title, String description, DateTime date, bool isUrgent) {
-  return {
-    'title': title,
-    'description': description,
-    'date': date,
-    'isUrgent': isUrgent
-  };
+AppBar buildAppBar() {
+  return AppBar(
+    title: const Text('CEIB'),
+    centerTitle: true,
+  );
 }

@@ -1,6 +1,6 @@
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/screens/login_screen.dart';
-import 'package:ceib/screens/main_screen.dart';
+import 'package:ceib/screens/auth/login_screen.dart';
+import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
