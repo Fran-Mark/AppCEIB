@@ -5,13 +5,9 @@ class SkiScreen extends StatelessWidget {
   static const routeName = '/ski-screen';
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: "Ski",
-      child: Scaffold(
-        body: Container(
-            child: Center(
-          child: Text("Ski"),
-        )),
+    return const Scaffold(
+      body: Center(
+        child: Text("Ski"),
       ),
     );
   }

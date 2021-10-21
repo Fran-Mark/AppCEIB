@@ -7,11 +7,11 @@ import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
-  LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({Key? key}) : super(key: key);
   static const routeName = '/login';
 
   @override
@@ -45,9 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     if (user == null) {
       final _authProvider = Provider.of<AuthServices>(context, listen: false);
-      if (_authProvider.errorMessage != "")
+      if (_authProvider.errorMessage != "") {
         ScaffoldMessenger.of(context).showSnackBar(
-            buildSnackBar(context: context, text: _authProvider.errorMessage));
+          buildSnackBar(context: context, text: _authProvider.errorMessage),
+        );
+      }
     }
   }
 
@@ -77,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 200,
                     width: 200,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -85,12 +87,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: GoogleFonts.alfaSlabOne(fontSize: 22),
                     textAlign: TextAlign.center,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Text('Logueate para entrar',
                       style: GoogleFonts.patrickHandSc(fontSize: 20)),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -100,19 +102,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       FocusScope.of(context).requestFocus(_focusPassword);
                     },
                     validator: (email) {
-                      if (email!.isEmpty)
+                      if (email!.isEmpty) {
                         return "Ingresa el email";
-                      else
+                      } else {
                         _emailController.text = email;
+                      }
                       return null;
                     },
                     decoration: InputDecoration(
                         hintText: "Email",
-                        prefixIcon: Icon(Icons.email),
+                        prefixIcon: const Icon(Icons.email),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   TextFormField(
@@ -120,27 +123,28 @@ class _LoginScreenState extends State<LoginScreen> {
                     textInputAction: TextInputAction.done,
                     onFieldSubmitted: (_) => _saveForm(),
                     validator: (password) {
-                      if (password!.isEmpty)
+                      if (password!.isEmpty) {
                         return "Ingresa una contraseña";
-                      else
+                      } else {
                         _passwordController.text = password;
+                      }
                       return null;
                     },
                     controller: _passwordController,
                     obscureText: _isHidden,
                     decoration: InputDecoration(
                         suffixIcon: InkWell(
-                          child: _isHidden
-                              ? Icon(CupertinoIcons.eye_slash_fill)
-                              : Icon(CupertinoIcons.eye),
                           onTap: _toggleHidePassword,
+                          child: _isHidden
+                              ? const Icon(CupertinoIcons.eye_slash_fill)
+                              : const Icon(CupertinoIcons.eye),
                         ),
                         hintText: "Contraseña",
-                        prefixIcon: Icon(Icons.password),
+                        prefixIcon: const Icon(Icons.password),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10))),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Center(
@@ -153,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20)),
                       child: _loginProvider.isLoading
-                          ? CircularProgressIndicator(
+                          ? const CircularProgressIndicator(
                               valueColor:
                                   AlwaysStoppedAnimation<Color>(Colors.white))
-                          : Text(
+                          : const Text(
                               "Ingresar",
                               style: TextStyle(
                                   fontSize: 20,
@@ -165,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   Wrap(
@@ -175,15 +179,15 @@ class _LoginScreenState extends State<LoginScreen> {
                           onPressed: () => Navigator.of(context).pushNamed(
                               RegisterScreen.routeName,
                               arguments: _emailController.text),
-                          child: Text('No tenés cuenta? Registrate')),
+                          child: const Text('No tenés cuenta? Registrate')),
                       TextButton(
                           onPressed: () => Navigator.of(context).pushNamed(
                               ResetPasswordScreen.routeName,
                               arguments: _emailController.text),
-                          child: Text('Me olvidé la contraseña')),
+                          child: const Text('Me olvidé la contraseña')),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ]),

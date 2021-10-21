@@ -43,7 +43,7 @@ class Bicis extends ChangeNotifier {
     try {
       final _bikeData = await _bikes.doc('$_bikeNumber').get();
       if (_bikeData.data() == null) return "Algo salió mal";
-      final _holder = _bikeData.data()!['holder'];
+      final _holder = _bikeData.data()!['holder'] as String;
       return _holder;
     } catch (e) {
       return "Algo salió mal";
@@ -56,7 +56,7 @@ class Bicis extends ChangeNotifier {
       if (_bikeData.data() == null) {
         return null;
       }
-      final _isAvailable = _bikeData.data()!['isAvailable'];
+      final _isAvailable = _bikeData.data()!['isAvailable'] as bool;
       if (_isAvailable) {
         notifyListeners();
         return true;

@@ -12,13 +12,13 @@ class LavarropasItem extends StatelessWidget {
         Container(
           height: 195,
           width: 150,
+          alignment: AlignmentDirectional.bottomCenter,
           child: Image.asset(
             'lib/assets/lavarropas_icon.png',
           ),
         ),
         Text(number)
       ],
-      alignment: AlignmentDirectional.bottomCenter,
     );
   }
 }

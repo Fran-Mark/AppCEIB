@@ -5,13 +5,9 @@ class RaquetasScreen extends StatelessWidget {
   static const routeName = '/raquetas-screen';
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: "Raquetas",
-      child: Scaffold(
-        body: Container(
-            child: Center(
-          child: Text("Raquetas"),
-        )),
+    return const Scaffold(
+      body: Center(
+        child: Text("Raquetas"),
       ),
     );
   }

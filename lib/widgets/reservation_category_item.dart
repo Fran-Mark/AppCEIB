@@ -1,25 +1,25 @@
 import 'dart:ui';
-import 'package:outlined_text/outlined_text.dart';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:outlined_text/outlined_text.dart';
 
 class ReservationCategory extends StatelessWidget {
   const ReservationCategory(
-      {Key? key, required String this.title, this.imageName})
+      {Key? key, required this.title, required this.imageName})
       : super(key: key);
-  final title;
-  final imageName;
+  final String title;
+  final String imageName;
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.of(context).pushNamed('/' + title.toLowerCase() + '-screen');
+        Navigator.of(context).pushNamed('/${title.toLowerCase()}-screen');
       },
       child: Container(
           decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              border: Border.all(color: Colors.black)),
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(),
+          ),
           child: Stack(
             alignment: AlignmentDirectional.bottomStart,
             fit: StackFit.expand,

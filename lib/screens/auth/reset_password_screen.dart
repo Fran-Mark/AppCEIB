@@ -77,22 +77,22 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           Icons.arrow_back_ios,
                           color: Theme.of(context).primaryColor,
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
-                    Text(
+                    const Text(
                       "Me olvidé la contraseña",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Genera una nueva contraseña',
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
@@ -103,12 +103,12 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                           email!.isEmpty ? "Ingresa el email" : null,
                       decoration: InputDecoration(
                           hintText: "Email",
-                          prefixIcon: Icon(Icons.email),
+                          prefixIcon: const Icon(Icons.email),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10))),
                       onFieldSubmitted: (_) => _saveForm(),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Center(
@@ -121,11 +121,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)),
                         child: authProvider.isLoading
-                            ? CircularProgressIndicator(
+                            ? const CircularProgressIndicator(
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.white),
                               )
-                            : Text(
+                            : const Text(
                                 "Cambiar contraseña",
                                 style: TextStyle(
                                     fontSize: 20,
@@ -134,7 +134,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],

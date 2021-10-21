@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
   static const routeName = 'main-screen';
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -27,8 +27,7 @@ class _MainScreenState extends State<MainScreen> {
       1: EventsScreen(),
       2: ReservationsScreen(),
       3: Center(
-        child: Text(
-            "Como quieres que te quiera si el que quiero que me quiera no me quiere como quiero que me quiera"),
+        child: Text('Odio el Linting'),
       )
     };
 
@@ -36,7 +35,7 @@ class _MainScreenState extends State<MainScreen> {
       appBar: AppBar(
         title: const Text('CEIB'),
         centerTitle: true,
-        actions: [
+        actions: const [
           LogOutButton(),
         ],
       ),

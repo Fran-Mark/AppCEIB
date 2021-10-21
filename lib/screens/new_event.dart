@@ -7,6 +7,6 @@ class NewEvent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EventBuilder();
+    return const EventBuilder();
   }
 }

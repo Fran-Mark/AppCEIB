@@ -17,7 +17,9 @@ class ReservationsScreen extends StatelessWidget {
           crossAxisCount: _itemsPerRow,
           crossAxisSpacing: 40,
           mainAxisSpacing: 40),
-      children: [
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.all(30),
+      children: const [
         ReservationCategory(
           title: "Bicis",
           imageName: "bicis",
@@ -35,8 +37,6 @@ class ReservationsScreen extends StatelessWidget {
           imageName: "raquetas",
         )
       ],
-      physics: BouncingScrollPhysics(),
-      padding: EdgeInsets.all(30),
     );
   }
 }

@@ -31,38 +31,37 @@ class BicisScreen extends StatelessWidget {
             itemCount: 7,
             itemBuilder: (context, index) {
               return Container(
-                margin: EdgeInsets.all(5),
-                padding: EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(5),
+                decoration: BoxDecoration(border: Border.all(width: 2)),
                 child: ListTile(
                     leading: Text("Bici ${index + 1}"),
                     trailing: FutureBuilder(
                       future: _bikeBookingsCollection.getHolder(index + 1),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final _holder = snapshot.data as String;
+                          final _holder = snapshot.data as String?;
                           if (_holder == "")
                             return TextButton(
                                 onPressed: () {
                                   final _bikeNumber = index + 1;
                                   _bookBike(_bikeNumber);
                                 },
-                                child: Text("Reservar!"));
+                                child: const Text("Reservar!"));
                           else if (_holder == _user.displayName) {
                             return TextButton(
                                 onPressed: () {},
-                                child: Text("Ya la devolví!"));
+                                child: const Text("Ya la devolví!"));
                           } else {
-                            return Text(
+                            return const Text(
                               "Reservada :(",
                               style: TextStyle(color: Colors.grey),
                             );
                           }
                         } else
-                          return CircularProgressIndicator.adaptive();
+                          return const CircularProgressIndicator.adaptive();
                       },
                     )),
-                decoration: BoxDecoration(
-                    border: Border.all(width: 2, color: Colors.black)),
               );
             }));
   }

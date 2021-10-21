@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import './event.dart';
 import '../extensions/user_extension.dart';
+import '../models/event.dart';
 
 class Events with ChangeNotifier {
   final _eventsCollection = FirebaseFirestore.instance.collection('events');

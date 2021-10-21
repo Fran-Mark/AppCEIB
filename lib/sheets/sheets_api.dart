@@ -7,7 +7,6 @@ class SheetsAPI {
   static Future init() async {
     final spreadsheet = await _gSheets.spreadsheet(spreadsheetId);
     _sociosSheet = spreadsheet.worksheetByTitle('Socios');
-    //_sociosSheet!.values.insertRow(1, ["Yhibo", "es", "disca"]);
   }
 
   static Future<String> getDebt(String email) async {

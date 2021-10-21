@@ -1,10 +1,10 @@
 import 'package:ceib/helpers/helper_functions.dart';
+import 'package:ceib/models/event.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/providers/event.dart';
 import 'package:ceib/providers/events.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
-import 'package:ceib/widgets/my_alert_dialog.dart';
 import 'package:ceib/widgets/event_item.dart';
+import 'package:ceib/widgets/my_alert_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -37,9 +37,9 @@ class EventsScreen extends StatelessWidget {
           stream: FirebaseFirestore.instance.collection('events').snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData)
-              return Center(child: const CircularProgressIndicator.adaptive());
+              return const Center(child: CircularProgressIndicator.adaptive());
             if (snapshot.data == null)
-              return Center(child: const CircularProgressIndicator.adaptive());
+              return const Center(child: CircularProgressIndicator.adaptive());
 
             final _events = snapshot.data!.docs;
             final _lenght = _events.length;
@@ -49,8 +49,7 @@ class EventsScreen extends StatelessWidget {
                 heightFactor: .8,
                 widthFactor: .6,
                 child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2)),
+                  decoration: BoxDecoration(border: Border.all(width: 2)),
                   child: Center(
                     child: Text(
                       "No hay eventos",
@@ -60,14 +59,14 @@ class EventsScreen extends StatelessWidget {
                 ),
               ));
             return ListView(
-              physics: BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               children: _events.map((e) {
                 final _event = Event(
                     id: e.id,
-                    title: e['title'],
-                    description: e['description'],
-                    date: DateTime.parse(e['date']),
-                    isUrgent: e['isUrgent']);
+                    title: e['title'] as String,
+                    description: e['description'] as String,
+                    date: DateTime.parse(e['date'] as String),
+                    isUrgent: e['isUrgent'] as bool);
 
                 return Slidable(
                   actionExtentRatio: .2,
@@ -102,7 +101,7 @@ class EventsScreen extends StatelessWidget {
                           }),
                     )
                   ],
-                  actionPane: SlidableDrawerActionPane(),
+                  actionPane: const SlidableDrawerActionPane(),
                   child: EventItem(event: _event),
                 );
               }).toList(),
@@ -119,7 +118,7 @@ class EventsScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.of(context).pushNamed('/new-event');
                   },
-                  child: Icon(Icons.add),
+                  child: const Icon(Icons.add),
                 ),
               );
             } else {
