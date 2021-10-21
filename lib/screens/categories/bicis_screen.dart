@@ -25,10 +25,18 @@ class BicisScreen extends StatelessWidget {
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
 
+    Future<void> _returnBike(int _bikeNumber) async {
+      print("Workingg");
+      final _result = await _bikeBookingsCollection.returnBike(_bikeNumber);
+      print(_result);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildSnackBar(context: context, text: _result));
+    }
+
     return Scaffold(
         appBar: buildAppBar(),
         body: ListView.builder(
-            itemCount: 7,
+            itemCount: 6,
             itemBuilder: (context, index) {
               return Container(
                 margin: const EdgeInsets.all(5),
@@ -50,7 +58,10 @@ class BicisScreen extends StatelessWidget {
                                 child: const Text("Reservar!"));
                           else if (_holder == _user.displayName) {
                             return TextButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  final _bikeNumber = index + 1;
+                                  _returnBike(_bikeNumber);
+                                },
                                 child: const Text("Ya la devolví!"));
                           } else {
                             return const Text(
