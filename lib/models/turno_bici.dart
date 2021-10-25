@@ -8,5 +8,6 @@ class BiciRequest {
   final String username;
   final int bikeNumber;
   final DateTime requestDate;
+  bool isAproved = false;
   DateTime? devolutionDate;
 }

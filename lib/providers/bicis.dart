@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 class Bicis extends ChangeNotifier {
   final _bikes = FirebaseFirestore.instance.collection('bikes');
 
+  final _numberOfBikes = 6;
+
   Future<String> bookBike(BiciRequest request) async {
     final _bikeNumber = request.bikeNumber;
     try {
@@ -16,13 +18,14 @@ class Bicis extends ChangeNotifier {
           "userEmail": request.userEmail,
           "userName": request.username,
           "requestDate": request.requestDate.toString(),
-          "devolutionDate": ""
+          "devolutionDate": "",
+          "isRequestAproved": false
         });
         final _id = _request.id;
         await _updateBikeInfo(_bikeNumber, false, request.username,
             request.requestDate.toString(), _id);
         notifyListeners();
-        return "Se pidió la bici!";
+        return "Se envió la solicitud!";
       } else
         return "Bici no disponible";
     } catch (e) {
@@ -69,10 +72,11 @@ class Bicis extends ChangeNotifier {
       "started": startingDate,
       "requestID": id
     });
+    await _bikes.doc("currentHolders").update({"$_bikeNumber": holder});
     notifyListeners();
   }
 
-  Future<String> getHolder(int _bikeNumber) async {
+  Future<String> _getHolder(int _bikeNumber) async {
     try {
       final _bikeData = await _bikes.doc('$_bikeNumber').get();
       if (_bikeData.data() == null) return "Algo salió mal";
@@ -81,6 +85,20 @@ class Bicis extends ChangeNotifier {
     } catch (e) {
       return "Algo salió mal";
     }
+  }
+
+  Future<DocumentSnapshot> getAllHolders() async {
+    final _holders = await _bikes.doc("currentHolders").get();
+    notifyListeners();
+    return _holders;
+  }
+
+  Future<int?> getBikeByHolder(String username) async {
+    for (int i = 0; i < _numberOfBikes; i++) {
+      final _holder = await _getHolder(i);
+      if (_holder == username) return i + 1;
+    }
+    return null;
   }
 
   Future<bool?> _checkAvailability(int bikeNumber) async {
@@ -99,4 +117,14 @@ class Bicis extends ChangeNotifier {
       return null;
     }
   }
+
+  // Future<bool?> isHolder(String username) async {
+  //   try {
+  //     final _query = await _bikes.where('holder', isEqualTo: username).get();
+  //     if (_query.size == 0) return false;
+  //     return true;
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // }
 }

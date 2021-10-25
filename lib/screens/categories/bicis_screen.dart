@@ -2,6 +2,7 @@ import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/models/turno_bici.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/bicis.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,8 @@ class BicisScreen extends StatelessWidget {
     }
 
     Future<void> _returnBike(int _bikeNumber) async {
-      print("Workingg");
       final _result = await _bikeBookingsCollection.returnBike(_bikeNumber);
-      print(_result);
+
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
@@ -45,25 +45,38 @@ class BicisScreen extends StatelessWidget {
                 child: ListTile(
                     leading: Text("Bici ${index + 1}"),
                     trailing: FutureBuilder(
-                      future: _bikeBookingsCollection.getHolder(index + 1),
+                      future: _bikeBookingsCollection.getAllHolders(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final _holder = snapshot.data as String?;
-                          if (_holder == "")
-                            return TextButton(
-                                onPressed: () {
-                                  final _bikeNumber = index + 1;
-                                  _bookBike(_bikeNumber);
-                                },
-                                child: const Text("Reservar!"));
-                          else if (_holder == _user.displayName) {
+                          final _holdersDoc = snapshot.data
+                              as DocumentSnapshot<Map<String, dynamic>>?;
+                          if (_holdersDoc == null ||
+                              _holdersDoc.data() == null) {
+                            return const Icon(Icons.error);
+                          }
+                          final _holder = _holdersDoc.data()!;
+                          final _isHolder =
+                              _holder.containsValue(_user.displayName);
+                          if (_holder['${index + 1}'] == _user.displayName) {
                             return TextButton(
                                 onPressed: () {
                                   final _bikeNumber = index + 1;
                                   _returnBike(_bikeNumber);
                                 },
                                 child: const Text("Ya la devolví!"));
-                          } else {
+                          } else if (_isHolder) {
+                            return const Text(
+                              "Ya reservaste una bici",
+                              style: TextStyle(color: Colors.grey),
+                            );
+                          } else if (_holder['${index + 1}'] == "")
+                            return TextButton(
+                                onPressed: () {
+                                  final _bikeNumber = index + 1;
+                                  _bookBike(_bikeNumber);
+                                },
+                                child: const Text("Reservar!"));
+                          else {
                             return const Text(
                               "Reservada :(",
                               style: TextStyle(color: Colors.grey),
