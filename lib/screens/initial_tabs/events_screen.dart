@@ -108,7 +108,7 @@ class EventsScreen extends StatelessWidget {
             );
           }),
       FutureBuilder(
-          future: _user?.isEditor(),
+          future: _user?.isEventsEditor(),
           builder: (context, isEditor) {
             final _isEditor = isEditor.data as bool?;
             if (_isEditor == true) {

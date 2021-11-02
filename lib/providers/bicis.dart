@@ -4,8 +4,7 @@ import 'package:flutter/material.dart';
 
 class Bicis extends ChangeNotifier {
   final _bikes = FirebaseFirestore.instance.collection('bikes');
-
-  final _numberOfBikes = 6;
+  //final _numberOfBikes = 6;
 
   Future<String> bookBike(BiciRequest request) async {
     final _bikeNumber = request.bikeNumber;
@@ -22,8 +21,13 @@ class Bicis extends ChangeNotifier {
           "isRequestAproved": false
         });
         final _id = _request.id;
-        await _updateBikeInfo(_bikeNumber, false, request.username,
-            request.requestDate.toString(), _id);
+        await _updateBikeInfo(
+            bikeNumber: _bikeNumber,
+            holder: request.username,
+            id: _id,
+            isAvailable: false,
+            isRequestApproved: false,
+            startingDate: request.requestDate.toString());
         notifyListeners();
         return "Se envió la solicitud!";
       } else
@@ -56,7 +60,13 @@ class Bicis extends ChangeNotifier {
             .delete();
       }
 
-      await _updateBikeInfo(_bikeNumber, true, '', '', '');
+      await _updateBikeInfo(
+          bikeNumber: _bikeNumber,
+          isAvailable: true,
+          holder: '',
+          id: '',
+          isRequestApproved: false,
+          startingDate: '');
       notifyListeners();
       return "Devuelta!";
     } catch (e) {
@@ -64,42 +74,67 @@ class Bicis extends ChangeNotifier {
     }
   }
 
-  Future<void> _updateBikeInfo(int _bikeNumber, bool isAvailable, String holder,
-      String startingDate, String id) async {
-    await _bikes.doc("$_bikeNumber").update({
+  Future<void> _updateBikeInfo(
+      {required int bikeNumber,
+      required bool isAvailable,
+      required String holder,
+      required String startingDate,
+      required String id,
+      required bool isRequestApproved}) async {
+    await _bikes.doc("$bikeNumber").update({
       "isAvailable": isAvailable,
       "holder": holder,
       "started": startingDate,
-      "requestID": id
+      "requestID": id,
+      "isRequestApproved": isRequestApproved
     });
-    await _bikes.doc("currentHolders").update({"$_bikeNumber": holder});
+    await _bikes.doc("currentHolders").update({"$bikeNumber": holder});
     notifyListeners();
   }
 
-  Future<String> _getHolder(int _bikeNumber) async {
+  Future<String> approveRequest(int _bikeNumber) async {
     try {
-      final _bikeData = await _bikes.doc('$_bikeNumber').get();
-      if (_bikeData.data() == null) return "Algo salió mal";
-      final _holder = _bikeData.data()!['holder'] as String?;
-      return _holder ?? '';
+      final bike = await _bikes.doc('$_bikeNumber').get();
+      final _id = bike.data()!['requestID'] as String;
+      await _bikes
+          .doc('$_bikeNumber')
+          .collection('bookingHistory')
+          .doc(_id)
+          .update({"isApproved": true});
+      await _bikes.doc('$_bikeNumber').update({"isRequestApproved": true});
+      return "Bici concedida!";
     } catch (e) {
       return "Algo salió mal";
     }
   }
 
-  Future<DocumentSnapshot> getAllHolders() async {
-    final _holders = await _bikes.doc("currentHolders").get();
+//Holders functions
+  // Future<String> _getHolder(int _bikeNumber) async {
+  //   try {
+  //     final _bikeData = await _bikes.doc('$_bikeNumber').get();
+  //     if (_bikeData.data() == null) return "Algo salió mal";
+  //     final _holder = _bikeData.data()!['holder'] as String?;
+  //     return _holder ?? '';
+  //   } catch (e) {
+  //     return "Algo salió mal";
+  //   }
+  // }
+
+  Future<List<QueryDocumentSnapshot>> getStatus() async {
+    final _info = await _bikes.doc('currentStatus').collection('info').get();
+    final _docs = _info.docs;
+
     notifyListeners();
-    return _holders;
+    return _docs;
   }
 
-  Future<int?> getBikeByHolder(String username) async {
-    for (int i = 0; i < _numberOfBikes; i++) {
-      final _holder = await _getHolder(i);
-      if (_holder == username) return i + 1;
-    }
-    return null;
-  }
+  // Future<int?> getBikeByHolder(String username) async {
+  //   for (int i = 0; i < _numberOfBikes; i++) {
+  //     final _holder = await _getHolder(i);
+  //     if (_holder == username) return i + 1;
+  //   }
+  //   return null;
+  // }
 
   Future<bool?> _checkAvailability(int bikeNumber) async {
     try {

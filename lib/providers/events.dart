@@ -10,7 +10,7 @@ class Events with ChangeNotifier {
   Future<String> updateEvent(
       User user, Event newEvent, DocumentSnapshot originalEvent) async {
     try {
-      final _isEditor = await user.isEditor();
+      final _isEditor = await user.isEventsEditor();
       if (_isEditor) {
         await originalEvent.reference.update({
           'title': newEvent.title,
@@ -28,7 +28,7 @@ class Events with ChangeNotifier {
 
   Future<String> deleteEvent(Event event, User user) async {
     try {
-      final _isEditor = await user.isEditor();
+      final _isEditor = await user.isEventsEditor();
       if (_isEditor) {
         await _eventsCollection.doc(event.id).delete();
         return "Borrado exitosamente";
@@ -41,7 +41,7 @@ class Events with ChangeNotifier {
 
   Future<String> addEvent(Event event, User user) async {
     try {
-      final _isEditor = await user.isEditor();
+      final _isEditor = await user.isEventsEditor();
 
       if (_isEditor) {
         await _eventsCollection.add({

@@ -5,6 +5,7 @@ import 'package:ceib/providers/bicis.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../extensions/user_extension.dart';
 
 class BicisScreen extends StatelessWidget {
   const BicisScreen({Key? key}) : super(key: key);
@@ -33,6 +34,19 @@ class BicisScreen extends StatelessWidget {
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
 
+    Future<void> _approveRequest(int _bikeNumber) async {
+      final _hasPermissions = await _user.isSportsEditor();
+      if (_hasPermissions) {
+        final _result =
+            await _bikeBookingsCollection.approveRequest(_bikeNumber);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(buildSnackBar(context: context, text: _result));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar(context: context, text: "No tenes permisos"));
+      }
+    }
+
     return Scaffold(
         appBar: buildAppBar(),
         body: ListView.builder(
@@ -45,7 +59,7 @@ class BicisScreen extends StatelessWidget {
                 child: ListTile(
                     leading: Text("Bici ${index + 1}"),
                     trailing: FutureBuilder(
-                      future: _bikeBookingsCollection.getAllHolders(),
+                      future: _bikeBookingsCollection.getStatus(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
                           final _holdersDoc = snapshot.data
@@ -66,7 +80,7 @@ class BicisScreen extends StatelessWidget {
                                 child: const Text("Ya la devolví!"));
                           } else if (_isHolder) {
                             return const Text(
-                              "Ya reservaste una bici",
+                              "Ya pediste una bici",
                               style: TextStyle(color: Colors.grey),
                             );
                           } else if (_holder['${index + 1}'] == "")
