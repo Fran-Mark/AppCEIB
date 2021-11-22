@@ -88,7 +88,11 @@ class Bicis extends ChangeNotifier {
       "requestID": id,
       "isRequestApproved": isRequestApproved
     });
-    await _bikes.doc("currentHolders").update({"$bikeNumber": holder});
+    await _bikes
+        .doc("currentStatus")
+        .collection("info")
+        .doc('$bikeNumber')
+        .update({"holder": holder});
     notifyListeners();
   }
 
@@ -120,12 +124,19 @@ class Bicis extends ChangeNotifier {
   //   }
   // }
 
-  Future<List<QueryDocumentSnapshot>> getStatus() async {
+  Future<List<Map<String, dynamic>>> getStatus() async {
     final _info = await _bikes.doc('currentStatus').collection('info').get();
     final _docs = _info.docs;
-
+    final Future<List<Map<String, dynamic>>> _data = Future.value([]);
+    for (final e in _docs) {
+      final element = e.data();
+      _data.then((value) => value.add(element));
+    }
+    _data.then((e) {
+      print(e);
+    });
     notifyListeners();
-    return _docs;
+    return _data;
   }
 
   // Future<int?> getBikeByHolder(String username) async {

@@ -62,28 +62,51 @@ class BicisScreen extends StatelessWidget {
                       future: _bikeBookingsCollection.getStatus(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final _holdersDoc = snapshot.data
-                              as DocumentSnapshot<Map<String, dynamic>>?;
-                          if (_holdersDoc == null ||
-                              _holdersDoc.data() == null) {
+                          final _status =
+                              snapshot.data as List<Map<String, dynamic>>?;
+                          // final _holdersDoc = snapshot.data
+                          //     as DocumentSnapshot<Map<String, dynamic>>?;
+                          if (_status == null) {
                             return const Icon(Icons.error);
                           }
-                          final _holder = _holdersDoc.data()!;
+                          final _holders =
+                              _status.map((e) => e['holder']).toList();
+                          final _requestsStatus = _status
+                              .map((e) => e['isApproved'] as bool)
+                              .toList();
+
+                          // final _holder = _holdersDoc.data()!;
+
                           final _isHolder =
-                              _holder.containsValue(_user.displayName);
-                          if (_holder['${index + 1}'] == _user.displayName) {
-                            return TextButton(
-                                onPressed: () {
-                                  final _bikeNumber = index + 1;
-                                  _returnBike(_bikeNumber);
-                                },
-                                child: const Text("Ya la devolví!"));
+                              _holders.contains(_user.displayName);
+                          if (_holders[index] == _user.displayName) {
+                            final _bikeNumber = index + 1;
+                            if (_requestsStatus[index]) {
+                              return TextButton(
+                                  onPressed: () {
+                                    _returnBike(_bikeNumber);
+                                  },
+                                  child: const Text("Ya la devolví!"));
+                            } else {
+                              return FittedBox(
+                                child: Row(
+                                  children: [
+                                    const Text("Esperando aprobación"),
+                                    TextButton(
+                                        onPressed: () {
+                                          _returnBike(_bikeNumber);
+                                        },
+                                        child: const Text("Cancelar"))
+                                  ],
+                                ),
+                              );
+                            }
                           } else if (_isHolder) {
                             return const Text(
                               "Ya pediste una bici",
                               style: TextStyle(color: Colors.grey),
                             );
-                          } else if (_holder['${index + 1}'] == "")
+                          } else if (_holders[index] == "")
                             return TextButton(
                                 onPressed: () {
                                   final _bikeNumber = index + 1;
