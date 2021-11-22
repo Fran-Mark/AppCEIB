@@ -1,10 +1,10 @@
-import 'package:ceib/providers/event.dart';
+import 'package:ceib/models/event.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../extensions/datetime_extension.dart';
 
 class EventItem extends StatelessWidget {
-  EventItem({required this.event});
+  const EventItem({required this.event});
   final Event event;
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class EventItem extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           event.title,
                           textAlign: TextAlign.left,
@@ -36,24 +36,24 @@ class EventItem extends StatelessWidget {
                         ),
                       ),
                     ),
-                    event.isUrgent
-                        ? Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Container(
-                              decoration: BoxDecoration(color: Colors.red),
-                              padding: EdgeInsets.all(5),
-                              child: Text(
-                                "IMPORTANTE",
-                                style:
-                                    GoogleFonts.secularOne(color: Colors.white),
-                              ),
-                            ),
-                          )
-                        : Container()
+                    if (event.isUrgent)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 15),
+                        child: Container(
+                          decoration: const BoxDecoration(color: Colors.red),
+                          padding: const EdgeInsets.all(5),
+                          child: Text(
+                            "IMPORTANTE",
+                            style: GoogleFonts.secularOne(color: Colors.white),
+                          ),
+                        ),
+                      )
+                    else
+                      Container()
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               SizedBox(
@@ -69,8 +69,8 @@ class EventItem extends StatelessWidget {
               Row(children: [
                 Expanded(
                     child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 5, horizontal: 8),
                         child: Text(
                           event.description,
                           style: GoogleFonts.hindMadurai(),

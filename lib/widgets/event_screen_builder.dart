@@ -1,17 +1,17 @@
 import 'package:ceib/helpers/helper_functions.dart';
+import 'package:ceib/models/event.dart';
 import 'package:ceib/providers/auth_service.dart';
-import 'package:ceib/providers/event.dart';
 import 'package:ceib/providers/events.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:date_field/date_field.dart';
 import 'package:provider/provider.dart';
 import '../widgets/checkbox_form_field.dart';
 
 class EventBuilder extends StatefulWidget {
-  EventBuilder({
+  const EventBuilder({
     Key? key,
     this.event,
   }) : super(key: key);
@@ -26,12 +26,8 @@ class _EventBuilderState extends State<EventBuilder> {
   final _descriptionFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
 
-  var _eventBuilder = Event(
-      id: '',
-      title: '',
-      description: '',
-      date: DateTime.now(),
-      isUrgent: false);
+  var _eventBuilder =
+      Event(id: '', title: '', description: '', date: DateTime.now());
 
   @override
   void dispose() {
@@ -75,18 +71,19 @@ class _EventBuilderState extends State<EventBuilder> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text("Nuevo Evento"),
+        title: const Text("Nuevo Evento"),
         centerTitle: true,
       ),
       body: Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Form(
             key: _form,
             child: ListView(children: [
               TextFormField(
-                  decoration: InputDecoration(labelText: "Título"),
-                  initialValue:
-                      widget.event != null ? widget.event!['title'] : '',
+                  decoration: const InputDecoration(labelText: "Título"),
+                  initialValue: widget.event != null
+                      ? widget.event!['title'] as String
+                      : '',
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_descriptionFocusNode);
@@ -104,9 +101,10 @@ class _EventBuilderState extends State<EventBuilder> {
                         date: _eventBuilder.date);
                   }),
               TextFormField(
-                  decoration: InputDecoration(labelText: 'Descripción'),
-                  initialValue:
-                      widget.event != null ? widget.event!['description'] : '',
+                  decoration: const InputDecoration(labelText: 'Descripción'),
+                  initialValue: widget.event != null
+                      ? widget.event!['description'] as String
+                      : '',
                   textInputAction: TextInputAction.done,
                   keyboardType: TextInputType.multiline,
                   maxLines: 3,
@@ -125,17 +123,19 @@ class _EventBuilderState extends State<EventBuilder> {
                   }),
               DateTimeFormField(
                 initialValue: widget.event != null
-                    ? DateTime.parse(widget.event!['date'])
+                    ? DateTime.parse(widget.event!['date'] as String)
                     : DateTime.now(),
-                decoration: InputDecoration(
-                    labelText: 'Fecha y hora',
-                    suffixIcon: Icon(Icons.calendar_today)),
+                decoration: const InputDecoration(
+                  labelText: 'Fecha y hora',
+                  suffixIcon: Icon(Icons.calendar_today),
+                ),
                 validator: (fecha) {
                   if (fecha == null) {
                     return 'Ingresa una fecha';
                   }
-                  if (fecha.isBefore(DateTime.now()))
+                  if (fecha.isBefore(DateTime.now())) {
                     return 'No podés crear eventos en el pasado';
+                  }
                 },
                 onSaved: (date) {
                   _eventBuilder = Event(
@@ -146,9 +146,11 @@ class _EventBuilderState extends State<EventBuilder> {
                 },
               ),
               CheckboxFormField(
-                title: Text("Es urgente?"),
-                initialValue:
-                    widget.event != null ? widget.event!['isUrgent'] : false,
+                title: const Text("Es urgente?"),
+                // ignore: avoid_bool_literals_in_conditional_expressions
+                initialValue: widget.event != null
+                    ? widget.event!['isUrgent'] as bool
+                    : false,
                 onSaved: (isUrgent) {
                   _eventBuilder = Event(
                       id: _eventBuilder.id,
@@ -159,10 +161,11 @@ class _EventBuilderState extends State<EventBuilder> {
                 },
               ),
               TextButton(
-                  onPressed: widget.event == null
-                      ? () => _newEntry(_user)
-                      : () => _updateEntry(_user),
-                  child: Text("Guardar"))
+                onPressed: widget.event == null
+                    ? () => _newEntry(_user)
+                    : () => _updateEntry(_user),
+                child: const Text("Guardar"),
+              )
             ]),
           )),
     );

@@ -21,16 +21,16 @@ class AuthWrapper extends StatelessWidget {
     final _authProvider = Provider.of<AuthServices>(context);
     final user = _authProvider.firebaseAuth.currentUser;
     if (user == null) {
-      return LoginScreen();
+      return const LoginScreen();
     }
     if (user.emailVerified) {
-      return MainScreen();
+      return const MainScreen();
     } else {
       final device = MediaQuery.of(context);
       return Scaffold(
           appBar: AppBar(
-            title: Text("Verificando..."),
-            actions: [LogOutButton()],
+            title: const Text("Verificando..."),
+            actions: const [LogOutButton()],
           ),
           body: Center(
               child: SizedBox(
@@ -47,8 +47,8 @@ class AuthWrapper extends StatelessWidget {
                           _reloadData(_authProvider);
                         },
                         child: _authProvider.isLoading
-                            ? CircularProgressIndicator()
-                            : Text("Recargar"))
+                            ? const CircularProgressIndicator()
+                            : const Text("Recargar"))
                   ]))));
     }
   }

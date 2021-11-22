@@ -1,10 +1,9 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:flutter/material.dart';
 
 class VerticalTextLine extends StatefulWidget {
-  VerticalTextLine(
+  const VerticalTextLine(
       {required this.onFinished,
       this.speed = 20.0,
       this.maxLength = 10,
@@ -22,22 +21,23 @@ class VerticalTextLine extends StatefulWidget {
 class _VerticalTextLineState extends State<VerticalTextLine> {
   late int _maxLength;
   late Duration _stepInterval;
-  List<String> _characters = [];
+  final List<String> _characters = [];
   late Timer timer;
 
   @override
   void initState() {
     _maxLength = widget.maxLength;
-    _stepInterval = Duration(milliseconds: (1000 ~/ widget.speed));
+    _stepInterval = Duration(milliseconds: 1000 ~/ widget.speed);
     _startTimer();
     super.initState();
   }
 
   void _startTimer() {
     timer = Timer.periodic(_stepInterval, (timer) {
-      final _random = new Random();
-      String element = String.fromCharCode(_random.nextInt(512));
+      final _random = Random();
+      final String element = String.fromCharCode(_random.nextInt(512));
 
+      // ignore: cast_nullable_to_non_nullable
       final box = context.findRenderObject() as RenderBox;
 
       if (box.size.height > MediaQuery.of(context).size.height * 1.5) {
@@ -57,7 +57,7 @@ class _VerticalTextLineState extends State<VerticalTextLine> {
     List<Color> colors = [];
 
     double greenStart = 0.3;
-    double whiteStart = (_characters.length - 1) / (_characters.length);
+    final double whiteStart = (_characters.length - 1) / (_characters.length);
 
     colors = [Colors.transparent, Colors.green, Colors.green, Colors.white];
 
@@ -77,7 +77,6 @@ class _VerticalTextLineState extends State<VerticalTextLine> {
         blendMode: BlendMode.srcIn,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: _getCharacters(),
         ));
   }
@@ -89,11 +88,11 @@ class _VerticalTextLineState extends State<VerticalTextLine> {
   }
 
   List<Widget> _getCharacters() {
-    List<Widget> textWidgets = [];
+    const List<Widget> textWidgets = [];
 
-    for (var character in _characters) {
+    for (final character in _characters) {
       textWidgets.add(Text(character,
-          style: TextStyle(fontFamily: "Monospace", fontSize: 14)));
+          style: const TextStyle(fontFamily: "Monospace", fontSize: 14)));
     }
 
     return textWidgets;

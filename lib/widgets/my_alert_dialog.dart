@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 
 class MyAlertDialog extends StatelessWidget {
-  MyAlertDialog({Key? key, this.title, this.content, this.handler})
+  const MyAlertDialog(
+      {Key? key,
+      required this.title,
+      required this.content,
+      required this.handler})
       : super(key: key);
 
-  final title;
-  final content;
-  final handler;
+  final String title;
+  final String content;
+  final void Function() handler;
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +23,10 @@ class MyAlertDialog extends StatelessWidget {
             child: Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
-                    border:
-                        Border.all(color: Color.fromRGBO(255, 230, 234, 1))),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+                    border: Border.all(
+                        color: const Color.fromRGBO(255, 230, 234, 1))),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                   child: Text("Sí"),
                 ))),
         TextButton(
@@ -32,11 +35,10 @@ class MyAlertDialog extends StatelessWidget {
             },
             child: Container(
               decoration: BoxDecoration(
-                  color: Color.fromRGBO(255, 230, 234, 1),
+                  color: const Color.fromRGBO(255, 230, 234, 1),
                   borderRadius: BorderRadius.circular(10)),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
+              child: const Padding(
+                padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 15),
                 child: Text(
                   "No",
                 ),

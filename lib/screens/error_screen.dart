@@ -12,7 +12,7 @@ class ErrorScreen extends StatefulWidget {
 }
 
 class _ErrorScreenState extends State<ErrorScreen> {
-  List<Widget> _verticalLines = [];
+  final List<Widget> _verticalLines = [];
   late Timer timer;
 
   @override
@@ -27,7 +27,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
   }
 
   void _startTimer() {
-    timer = Timer.periodic(Duration(milliseconds: 300), (timer) {
+    timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       setState(() {
         _verticalLines.add(_getVerticalTextLine(context));
       });
@@ -41,7 +41,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
   }
 
   Widget _getVerticalTextLine(BuildContext context) {
-    Key key = GlobalKey();
+    final Key key = GlobalKey();
     return Positioned(
       key: key,
       left: Random().nextDouble() * MediaQuery.of(context).size.width,

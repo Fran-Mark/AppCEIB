@@ -28,7 +28,7 @@ class _LavarropasScreenState extends State<LavarropasScreen> {
                         alignment: WrapAlignment.center,
                         spacing: 30,
                         runSpacing: 30,
-                        children: [
+                        children: const [
                           LavarropasItem(number: '1'),
                           LavarropasItem(number: '2'),
                           LavarropasItem(
@@ -43,19 +43,18 @@ class _LavarropasScreenState extends State<LavarropasScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Container(
-                          constraints: BoxConstraints.expand(),
+                          constraints: const BoxConstraints.expand(),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(20),
-                              border:
-                                  Border.all(color: Colors.black, width: 2)),
+                              border: Border.all(width: 2)),
                           child: Column(
                             children: [
-                              Text("Cuándo querés lavar?"),
+                              const Text("Cuándo querés lavar?"),
                               Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
-                                    TextButton(
+                                    const TextButton(
                                         onPressed: null,
                                         child: Text("Lo antes posible!")),
                                     TextButton(
@@ -63,8 +62,8 @@ class _LavarropasScreenState extends State<LavarropasScreen> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    MyCalendar())),
-                                        child: Text("Elegir fecha"))
+                                                    const MyCalendar())),
+                                        child: const Text("Elegir fecha"))
                                   ])
                             ],
                           ),
@@ -77,7 +76,7 @@ class _LavarropasScreenState extends State<LavarropasScreen> {
 }
 
 class MyCalendar extends StatefulWidget {
-  MyCalendar({Key? key}) : super(key: key);
+  const MyCalendar({Key? key}) : super(key: key);
 
   @override
   _MyCalendarState createState() => _MyCalendarState();
@@ -100,7 +99,7 @@ class _MyCalendarState extends State<MyCalendar> {
             view: CalendarView.week,
             //specialRegions: _getTimeRegions(),
             showWeekNumber: true,
-            timeSlotViewSettings: TimeSlotViewSettings(
+            timeSlotViewSettings: const TimeSlotViewSettings(
               timeFormat: 'HH:mm',
               timeInterval: Duration(hours: 2),
               timeIntervalHeight:
@@ -111,8 +110,8 @@ class _MyCalendarState extends State<MyCalendar> {
               return Container(
                 width: cellDetail.bounds.width,
                 height: cellDetail.bounds.height,
-                child: Text("HOLA"),
                 color: Colors.amber,
+                child: const Text("HOLA"),
               );
             }));
   }

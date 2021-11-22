@@ -12,16 +12,16 @@ class HomeScreen extends StatelessWidget {
     final _device = MediaQuery.of(context);
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
 
-    if (_user == null) return Text("Hannah Montana");
+    if (_user == null) return const Text("Hannah Montana");
     final _userDebt = SheetsAPI.getDebt(_user.email!);
     if (_user.displayName == null) {
-      return Text("Jason Bourne");
+      return const Text("Jason Bourne");
     } else
       return Center(
         child: Container(
           decoration: BoxDecoration(
               border: Border.all(
-                  color: Color.fromRGBO(255, 230, 234, 1), width: 10),
+                  color: const Color.fromRGBO(255, 230, 234, 1), width: 10),
               borderRadius: BorderRadius.circular(20)),
           height: _device.size.height * 0.7,
           width: _device.size.width * 0.8,
@@ -33,21 +33,23 @@ class HomeScreen extends StatelessWidget {
                 style: GoogleFonts.raleway(fontSize: 25),
                 textAlign: TextAlign.center,
               ),
-              Divider(),
+              const Divider(),
               FutureBuilder(
                   future: _userDebt,
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      final _deuda = snapshot.data as String;
-                      //La 2da condicion es por un bug, deberia poder removerse
+                      final _deuda = snapshot.data as String?;
                       if (_deuda == '0' || _deuda == "-0.0")
-                        return Text("No tenés deuda! :)");
+                        return const Text("No tenés deuda! :)");
                       else
                         return Wrap(
-                          children: [Text("Tu deuda es: "), Text("\$$_deuda")],
+                          children: [
+                            const Text("Tu deuda es: "),
+                            Text("\$$_deuda")
+                          ],
                         );
                     } else
-                      return CircularProgressIndicator();
+                      return const CircularProgressIndicator();
                   })
             ],
           ),

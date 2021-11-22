@@ -17,6 +17,6 @@ class EditEvent extends StatelessWidget {
       );
     }
 
-    return EventBuilder();
+    return const EventBuilder();
   }
 }

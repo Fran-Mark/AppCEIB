@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
-  RegisterScreen({Key? key}) : super(key: key);
+  const RegisterScreen({Key? key}) : super(key: key);
   static const routeName = '/register';
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -41,9 +41,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
     if (_user == null) {
       final _authProvider = Provider.of<AuthServices>(context, listen: false);
-      if (_authProvider.errorMessage != "")
+      if (_authProvider.errorMessage != "") {
         ScaffoldMessenger.of(context).showSnackBar(
-            buildSnackBar(context: context, text: _authProvider.errorMessage));
+          buildSnackBar(context: context, text: _authProvider.errorMessage),
+        );
+      }
     } else {
       Navigator.of(context).pop();
     }
@@ -94,108 +96,117 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           Icons.arrow_back_ios,
                           color: Theme.of(context).primaryColor,
                         )),
-                    SizedBox(
+                    const SizedBox(
                       height: 60,
                     ),
-                    Text(
+                    const Text(
                       "Registrarse",
                       style:
                           TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       'Crear una cuenta',
                       style: TextStyle(fontSize: 14, color: Colors.grey),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
                       controller: _emailController,
                       textInputAction: TextInputAction.next,
                       validator: (email) {
-                        if (email!.isEmpty)
+                        if (email!.isEmpty) {
                           return "Ingresa el email";
-                        else if (email.endsWith('@ib.edu.ar')) {
+                        } else if (email.endsWith('@ib.edu.ar')) {
                           _emailController.text = email;
                           return null;
-                        } else
+                        } else {
                           _emailController.text = email;
+                        }
                         return "Usá tu mail del IB";
                       },
                       decoration: InputDecoration(
-                          hintText: "Email",
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                        hintText: "Email",
+                        prefixIcon: const Icon(Icons.email),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       onFieldSubmitted: (_) {
                         FocusScope.of(context).requestFocus(_focusPassword);
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
                       focusNode: _focusPassword,
                       textInputAction: TextInputAction.next,
                       validator: (password) {
-                        if (password!.isEmpty)
+                        if (password!.isEmpty) {
                           return "Ingresa una contraseña";
-                        else
+                        } else {
                           _passwordController.text = password;
+                        }
                         return null;
                       },
                       controller: _passwordController,
                       obscureText: _isHidden,
                       decoration: InputDecoration(
-                          hintText: "Contraseña",
-                          prefixIcon: Icon(Icons.password),
-                          suffixIcon: InkWell(
-                            child: _isHidden
-                                ? Icon(CupertinoIcons.eye_slash_fill)
-                                : Icon(CupertinoIcons.eye),
-                            onTap: _toggleHidePassword,
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                        hintText: "Contraseña",
+                        prefixIcon: const Icon(Icons.password),
+                        suffixIcon: InkWell(
+                          onTap: _toggleHidePassword,
+                          child: _isHidden
+                              ? const Icon(CupertinoIcons.eye_slash_fill)
+                              : const Icon(CupertinoIcons.eye),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       onFieldSubmitted: (_) {
                         FocusScope.of(context)
                             .requestFocus(_focusConfirmPassword);
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     TextFormField(
                       focusNode: _focusConfirmPassword,
                       textInputAction: TextInputAction.done,
                       validator: (password) {
-                        if (password != _passwordController.text)
+                        if (password != _passwordController.text) {
                           return "Las contraseñas no coinciden";
-                        else
+                        } else {
                           _passwordController.text = password!;
+                        }
                         return null;
                       },
                       controller: _confirmPasswordController,
                       obscureText: _isConfirmHidden,
                       decoration: InputDecoration(
-                          hintText: "Confirmar contraseña",
-                          prefixIcon: Icon(Icons.password),
-                          suffixIcon: InkWell(
-                            child: _isConfirmHidden
-                                ? Icon(CupertinoIcons.eye_slash_fill)
-                                : Icon(CupertinoIcons.eye),
-                            onTap: _toggleHideConfirmPassword,
-                          ),
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10))),
+                        hintText: "Confirmar contraseña",
+                        prefixIcon: const Icon(Icons.password),
+                        suffixIcon: InkWell(
+                          onTap: _toggleHideConfirmPassword,
+                          child: _isConfirmHidden
+                              ? const Icon(CupertinoIcons.eye_slash_fill)
+                              : const Icon(CupertinoIcons.eye),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                      ),
                       onFieldSubmitted: (_) {
                         _saveForm();
                       },
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 30,
                     ),
                     Center(
@@ -206,22 +217,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         minWidth:
                             registerProvider.isLoading ? null : double.infinity,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
                         child: registerProvider.isLoading
-                            ? CircularProgressIndicator(
+                            ? const CircularProgressIndicator(
                                 valueColor:
                                     AlwaysStoppedAnimation<Color>(Colors.white),
                               )
-                            : Text(
+                            : const Text(
                                 "Registrarse",
                                 style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                   ],
