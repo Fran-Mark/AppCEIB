@@ -1,15 +1,16 @@
+import 'dart:async';
+
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/models/turno_bici.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/bicis.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../extensions/user_extension.dart';
+import '../../../extensions/user_extension.dart';
 
-class BicisScreen extends StatelessWidget {
-  const BicisScreen({Key? key}) : super(key: key);
-  static const routeName = '/bicis-screen';
+class BicisAdminScreen extends StatelessWidget {
+  const BicisAdminScreen({Key? key}) : super(key: key);
+  static const routeName = '/bicis-admin-screen';
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +23,28 @@ class BicisScreen extends StatelessWidget {
           username: _user.displayName!,
           bikeNumber: _bikeNumber,
           requestDate: DateTime.now());
-      final _result = await _bikeBookingsCollection.bookBike(_request);
+      final _requestData = await _bikeBookingsCollection.requestBike(_request);
+      if (_requestData == "Se envió la solicitud!") {
+        final _result =
+            await _bikeBookingsCollection.approveRequest(_bikeNumber);
+        ScaffoldMessenger.of(context)
+            .showSnackBar(buildSnackBar(context: context, text: _result));
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar(context: context, text: "No hay conexión"));
+      }
+    }
+
+    Future<void> _returnBike(int _bikeNumber) async {
+      await _bikeBookingsCollection.requestReturn(_bikeNumber);
+      final _result = await _bikeBookingsCollection.confirmReturn(_bikeNumber);
+
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
 
-    Future<void> _returnBike(int _bikeNumber) async {
-      final _result = await _bikeBookingsCollection.returnBike(_bikeNumber);
-
+    Future<void> _confirmReturn(int _bikeNumber) async {
+      final _result = await _bikeBookingsCollection.confirmReturn(_bikeNumber);
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
@@ -45,6 +60,12 @@ class BicisScreen extends StatelessWidget {
         ScaffoldMessenger.of(context).showSnackBar(
             buildSnackBar(context: context, text: "No tenes permisos"));
       }
+    }
+
+    Future<void> _denyRequest(int _bikeNumber) async {
+      final _result = await _bikeBookingsCollection.cancelRequest(_bikeNumber);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildSnackBar(context: context, text: _result));
     }
 
     return Scaffold(
@@ -64,8 +85,6 @@ class BicisScreen extends StatelessWidget {
                         if (snapshot.hasData) {
                           final _status =
                               snapshot.data as List<Map<String, dynamic>>?;
-                          // final _holdersDoc = snapshot.data
-                          //     as DocumentSnapshot<Map<String, dynamic>>?;
                           if (_status == null) {
                             return const Icon(Icons.error);
                           }
@@ -75,10 +94,6 @@ class BicisScreen extends StatelessWidget {
                               .map((e) => e['isApproved'] as bool)
                               .toList();
 
-                          // final _holder = _holdersDoc.data()!;
-
-                          final _isHolder =
-                              _holders.contains(_user.displayName);
                           if (_holders[index] == _user.displayName) {
                             final _bikeNumber = index + 1;
                             if (_requestsStatus[index]) {
@@ -88,24 +103,9 @@ class BicisScreen extends StatelessWidget {
                                   },
                                   child: const Text("Ya la devolví!"));
                             } else {
-                              return FittedBox(
-                                child: Row(
-                                  children: [
-                                    const Text("Esperando aprobación"),
-                                    TextButton(
-                                        onPressed: () {
-                                          _returnBike(_bikeNumber);
-                                        },
-                                        child: const Text("Cancelar"))
-                                  ],
-                                ),
-                              );
+                              return const Text(
+                                  "La solicitud debería autoaprobarse");
                             }
-                          } else if (_isHolder) {
-                            return const Text(
-                              "Ya pediste una bici",
-                              style: TextStyle(color: Colors.grey),
-                            );
                           } else if (_holders[index] == "")
                             return TextButton(
                                 onPressed: () {
@@ -113,10 +113,43 @@ class BicisScreen extends StatelessWidget {
                                   _bookBike(_bikeNumber);
                                 },
                                 child: const Text("Reservar!"));
-                          else {
-                            return const Text(
-                              "Reservada :(",
-                              style: TextStyle(color: Colors.grey),
+                          else if (_requestsStatus[index]) {
+                            return FittedBox(
+                              child: Column(
+                                children: [
+                                  Text("Bici reservada por ${_holders[index]}"),
+                                  TextButton(
+                                      onPressed: () {
+                                        final _bikeNumber = index + 1;
+                                        _confirmReturn(_bikeNumber);
+                                      },
+                                      child: const Text("Ya la devolvió"))
+                                ],
+                              ),
+                            );
+                          } else {
+                            return FittedBox(
+                              child: Column(
+                                children: [
+                                  Text("Bici pedida por ${_holders[index]}"),
+                                  Row(
+                                    children: [
+                                      TextButton(
+                                          onPressed: () {
+                                            final _bikeNumber = index + 1;
+                                            _approveRequest(_bikeNumber);
+                                          },
+                                          child: const Text("Aprobar")),
+                                      TextButton(
+                                          onPressed: () {
+                                            final _bikeNumber = index + 1;
+                                            _denyRequest(_bikeNumber);
+                                          },
+                                          child: const Text("Rechazar"))
+                                    ],
+                                  ),
+                                ],
+                              ),
                             );
                           }
                         } else

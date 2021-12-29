@@ -2,7 +2,6 @@ import 'package:ceib/screens/initial_tabs/events_screen.dart';
 import 'package:ceib/screens/initial_tabs/home_screen.dart';
 import 'package:ceib/screens/initial_tabs/reservations_screen.dart';
 import 'package:ceib/widgets/logout_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MainScreen extends StatefulWidget {

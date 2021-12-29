@@ -14,9 +14,13 @@ extension UserExtension on User {
   Future<bool> isSportsEditor() async {
     final _permissionsCollection =
         FirebaseFirestore.instance.collection('permissions');
-    final _query = await _permissionsCollection.doc('sports').get();
-    final _names = _query.data()! as Map<String, bool>;
-    if (_names[email] == true) return true;
-    return false;
+    try {
+      final _query = await _permissionsCollection.doc('sports').get();
+      final _names = _query.data()!;
+      if (_names[email] == true) return true;
+      return false;
+    } on Exception {
+      return false;
+    }
   }
 }

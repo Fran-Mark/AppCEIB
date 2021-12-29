@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 
 class LavarropasItem extends StatelessWidget {
   const LavarropasItem({Key? key, required this.number}) : super(key: key);

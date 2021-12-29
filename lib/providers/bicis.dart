@@ -4,27 +4,18 @@ import 'package:flutter/material.dart';
 
 class Bicis extends ChangeNotifier {
   final _bikes = FirebaseFirestore.instance.collection('bikes');
-  //final _numberOfBikes = 6;
 
-  Future<String> bookBike(BiciRequest request) async {
+  Future<String> requestBike(BiciRequest request) async {
     final _bikeNumber = request.bikeNumber;
     try {
       final _isAvailable = await _checkAvailability(_bikeNumber);
       if (_isAvailable == null) return "Hay un problema de conexión";
       if (_isAvailable) {
-        final _request =
-            await _bikes.doc("$_bikeNumber").collection('bookingHistory').add({
-          "userEmail": request.userEmail,
-          "userName": request.username,
-          "requestDate": request.requestDate.toString(),
-          "devolutionDate": "",
-          "isRequestAproved": false
-        });
-        final _id = _request.id;
         await _updateBikeInfo(
+            id: '',
             bikeNumber: _bikeNumber,
             holder: request.username,
-            id: _id,
+            email: request.userEmail,
             isAvailable: false,
             isRequestApproved: false,
             startingDate: request.requestDate.toString());
@@ -37,33 +28,91 @@ class Bicis extends ChangeNotifier {
     }
   }
 
-  Future<String> returnBike(int _bikeNumber) async {
+  Future<String> approveRequest(int _bikeNumber) async {
     try {
       final bike = await _bikes.doc('$_bikeNumber').get();
-      final _id = bike.data()!['requestID'] as String;
-      final _requestDate = DateTime.parse(bike.data()!['started'] as String);
-      final _devolutionDate = DateTime.now();
-      final _minutesElapsed =
-          _devolutionDate.difference(_requestDate).inMinutes;
-      //Requests de menos de 10 minutos de duración se borran
-      if (_minutesElapsed > 10) {
-        await _bikes
-            .doc('$_bikeNumber')
-            .collection('bookingHistory')
-            .doc(_id)
-            .update({"devolutionDate": _devolutionDate.toString()});
-      } else {
-        await _bikes
-            .doc('$_bikeNumber')
-            .collection('bookingHistory')
-            .doc(_id)
-            .delete();
-      }
+      final _email = bike['email'] as String;
+      final _username = bike['holder'] as String;
+      final _requestDate = bike['started'] as String;
 
+      final _info =
+          await _bikes.doc("$_bikeNumber").collection('bookingHistory').add({
+        "userEmail": _email,
+        "userName": _username,
+        "requestDate": _requestDate,
+        "approvedDate": DateTime.now().toString(),
+        "devolutionDate": "",
+        "isRequestAproved": true,
+        "wantsToReturn": false,
+        "returnRequestDate": ""
+      });
+      await _bikes
+          .doc('$_bikeNumber')
+          .update({"requestID": _info.id, "isRequestApproved": true});
+      await _bikes
+          .doc("currentStatus")
+          .collection("info")
+          .doc('$_bikeNumber')
+          .update({"isApproved": true});
+      notifyListeners();
+      return "Bici concedida!";
+    } catch (e) {
+      return "Algo salió mal";
+    }
+  }
+
+  Future<String> cancelRequest(int _bikeNumber) async {
+    try {
       await _updateBikeInfo(
           bikeNumber: _bikeNumber,
           isAvailable: true,
           holder: '',
+          email: '',
+          id: '',
+          isRequestApproved: false,
+          startingDate: '');
+      notifyListeners();
+      return "Solicitud cancelada!";
+    } on Exception {
+      return "Algo salió mal";
+    }
+  }
+
+  Future<String> requestReturn(int _bikeNumber) async {
+    try {
+      final bike = await _bikes.doc('$_bikeNumber').get();
+      final _id = bike.data()!['requestID'] as String;
+
+      await _bikes
+          .doc('$_bikeNumber')
+          .collection('bookingHistory')
+          .doc(_id)
+          .update({
+        "wantsToReturn": true,
+        "returnRequestDate": DateTime.now().toString()
+      });
+
+      notifyListeners();
+      return "Solicitud registrada! Falta la confirmación del sec de deportes";
+    } catch (e) {
+      return "Algo salió mal";
+    }
+  }
+
+  Future<String> confirmReturn(int _bikeNumber) async {
+    try {
+      final bike = await _bikes.doc('$_bikeNumber').get();
+      final _id = bike.data()!['requestID'] as String;
+      await _bikes
+          .doc('$_bikeNumber')
+          .collection('bookingHistory')
+          .doc(_id)
+          .update({"devolutionDate": DateTime.now().toString()});
+      await _updateBikeInfo(
+          bikeNumber: _bikeNumber,
+          isAvailable: true,
+          holder: '',
+          email: '',
           id: '',
           isRequestApproved: false,
           startingDate: '');
@@ -78,12 +127,14 @@ class Bicis extends ChangeNotifier {
       {required int bikeNumber,
       required bool isAvailable,
       required String holder,
+      required String email,
       required String startingDate,
       required String id,
       required bool isRequestApproved}) async {
     await _bikes.doc("$bikeNumber").update({
       "isAvailable": isAvailable,
       "holder": holder,
+      "email": email,
       "started": startingDate,
       "requestID": id,
       "isRequestApproved": isRequestApproved
@@ -92,37 +143,9 @@ class Bicis extends ChangeNotifier {
         .doc("currentStatus")
         .collection("info")
         .doc('$bikeNumber')
-        .update({"holder": holder});
+        .update({"holder": holder, "isApproved": isRequestApproved});
     notifyListeners();
   }
-
-  Future<String> approveRequest(int _bikeNumber) async {
-    try {
-      final bike = await _bikes.doc('$_bikeNumber').get();
-      final _id = bike.data()!['requestID'] as String;
-      await _bikes
-          .doc('$_bikeNumber')
-          .collection('bookingHistory')
-          .doc(_id)
-          .update({"isApproved": true});
-      await _bikes.doc('$_bikeNumber').update({"isRequestApproved": true});
-      return "Bici concedida!";
-    } catch (e) {
-      return "Algo salió mal";
-    }
-  }
-
-//Holders functions
-  // Future<String> _getHolder(int _bikeNumber) async {
-  //   try {
-  //     final _bikeData = await _bikes.doc('$_bikeNumber').get();
-  //     if (_bikeData.data() == null) return "Algo salió mal";
-  //     final _holder = _bikeData.data()!['holder'] as String?;
-  //     return _holder ?? '';
-  //   } catch (e) {
-  //     return "Algo salió mal";
-  //   }
-  // }
 
   Future<List<Map<String, dynamic>>> getStatus() async {
     final _info = await _bikes.doc('currentStatus').collection('info').get();
@@ -132,20 +155,9 @@ class Bicis extends ChangeNotifier {
       final element = e.data();
       _data.then((value) => value.add(element));
     }
-    _data.then((e) {
-      print(e);
-    });
     notifyListeners();
     return _data;
   }
-
-  // Future<int?> getBikeByHolder(String username) async {
-  //   for (int i = 0; i < _numberOfBikes; i++) {
-  //     final _holder = await _getHolder(i);
-  //     if (_holder == username) return i + 1;
-  //   }
-  //   return null;
-  // }
 
   Future<bool?> _checkAvailability(int bikeNumber) async {
     try {
@@ -163,14 +175,4 @@ class Bicis extends ChangeNotifier {
       return null;
     }
   }
-
-  // Future<bool?> isHolder(String username) async {
-  //   try {
-  //     final _query = await _bikes.where('holder', isEqualTo: username).get();
-  //     if (_query.size == 0) return false;
-  //     return true;
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
 }
