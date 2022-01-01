@@ -46,8 +46,10 @@ app.*.map.json
 /android/app/release
 
 
-#google-sevices
+##Credentials
+#google-sevices (firebase)
 /android/app/google-services.json
+/web/firebase_credentials.js
 
 #google-sheets-credentials
 /lib/sheets/sheets_credentials.dart

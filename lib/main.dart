@@ -3,7 +3,8 @@ import 'package:ceib/auth/auth_wrapper.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
 import 'package:ceib/screens/auth/reset_password_screen.dart';
-import 'package:ceib/screens/categories/bicis_screen.dart';
+import 'package:ceib/screens/categories/bicis_screens/bicis_screen.dart';
+import 'package:ceib/screens/categories/bicis_screens/bicis_screen_admin.dart';
 import 'package:ceib/screens/categories/lavarropas_screen.dart';
 import 'package:ceib/screens/categories/raquetas_screen.dart';
 import 'package:ceib/screens/categories/ski_screen.dart';
@@ -77,6 +78,8 @@ class _MyAppState extends State<MyApp> {
                   LavarropasScreen.routeName: (context) =>
                       const LavarropasScreen(),
                   BicisScreen.routeName: (context) => const BicisScreen(),
+                  BicisAdminScreen.routeName: (context) =>
+                      const BicisAdminScreen(),
                   SkiScreen.routeName: (context) => const SkiScreen(),
                   RaquetasScreen.routeName: (context) => const RaquetasScreen(),
                 },

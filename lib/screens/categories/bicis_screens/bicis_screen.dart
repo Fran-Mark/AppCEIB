@@ -2,7 +2,6 @@ import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/models/turno_bici.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/bicis.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,20 +14,26 @@ class BicisScreen extends StatelessWidget {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser!;
     final _bikeBookingsCollection = Provider.of<Bicis>(context);
 
-    Future<void> _bookBike(int _bikeNumber) async {
+    Future<void> _requestBike(int _bikeNumber) async {
       final _request = BiciRequest(
           userEmail: _user.email!,
           username: _user.displayName!,
           bikeNumber: _bikeNumber,
           requestDate: DateTime.now());
-      final _result = await _bikeBookingsCollection.bookBike(_request);
+      final _result = await _bikeBookingsCollection.requestBike(_request);
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
 
-    Future<void> _returnBike(int _bikeNumber) async {
-      final _result = await _bikeBookingsCollection.returnBike(_bikeNumber);
+    Future<void> _requestReturn(int _bikeNumber) async {
+      final _result = await _bikeBookingsCollection.requestReturn(_bikeNumber);
 
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildSnackBar(context: context, text: _result));
+    }
+
+    Future<void> _cancelRequest(int _bikeNumber) async {
+      final _result = await _bikeBookingsCollection.cancelRequest(_bikeNumber);
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
     }
@@ -45,35 +50,54 @@ class BicisScreen extends StatelessWidget {
                 child: ListTile(
                     leading: Text("Bici ${index + 1}"),
                     trailing: FutureBuilder(
-                      future: _bikeBookingsCollection.getAllHolders(),
+                      future: _bikeBookingsCollection.getStatus(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
-                          final _holdersDoc = snapshot.data
-                              as DocumentSnapshot<Map<String, dynamic>>?;
-                          if (_holdersDoc == null ||
-                              _holdersDoc.data() == null) {
+                          final _status =
+                              snapshot.data as List<Map<String, dynamic>>?;
+                          if (_status == null) {
                             return const Icon(Icons.error);
                           }
-                          final _holder = _holdersDoc.data()!;
+                          final _holders =
+                              _status.map((e) => e['holder']).toList();
+                          final _requestsStatus = _status
+                              .map((e) => e['isApproved'] as bool)
+                              .toList();
+
                           final _isHolder =
-                              _holder.containsValue(_user.displayName);
-                          if (_holder['${index + 1}'] == _user.displayName) {
-                            return TextButton(
-                                onPressed: () {
-                                  final _bikeNumber = index + 1;
-                                  _returnBike(_bikeNumber);
-                                },
-                                child: const Text("Ya la devolví!"));
+                              _holders.contains(_user.displayName);
+                          if (_holders[index] == _user.displayName) {
+                            final _bikeNumber = index + 1;
+                            if (_requestsStatus[index]) {
+                              return TextButton(
+                                  onPressed: () {
+                                    _requestReturn(_bikeNumber);
+                                  },
+                                  child: const Text("Iniciar devolución!"));
+                            } else {
+                              return FittedBox(
+                                child: Row(
+                                  children: [
+                                    const Text("Esperando aprobación"),
+                                    TextButton(
+                                        onPressed: () {
+                                          _cancelRequest(_bikeNumber);
+                                        },
+                                        child: const Text("Cancelar"))
+                                  ],
+                                ),
+                              );
+                            }
                           } else if (_isHolder) {
                             return const Text(
-                              "Ya reservaste una bici",
+                              "Ya pediste una bici",
                               style: TextStyle(color: Colors.grey),
                             );
-                          } else if (_holder['${index + 1}'] == "")
+                          } else if (_holders[index] == "")
                             return TextButton(
                                 onPressed: () {
                                   final _bikeNumber = index + 1;
-                                  _bookBike(_bikeNumber);
+                                  _requestBike(_bikeNumber);
                                 },
                                 child: const Text("Reservar!"));
                           else {
