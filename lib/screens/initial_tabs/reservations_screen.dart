@@ -38,18 +38,22 @@ class ReservationsScreen extends StatelessWidget {
                   const ReservationCategory(
                     title: "Bicis",
                     imageName: "bicis",
+                    enabled: false,
                   ),
                 const ReservationCategory(
                   title: "Lavarropas",
                   imageName: "lavarropas",
+                  enabled: false,
                 ),
                 const ReservationCategory(
                   title: "Ski",
                   imageName: 'snow',
+                  enabled: false,
                 ),
                 const ReservationCategory(
                   title: "Raquetas",
                   imageName: "raquetas",
+                  enabled: false,
                 )
               ],
             );
