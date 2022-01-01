@@ -4,6 +4,7 @@ import 'package:ceib/sheets/sheets_api.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../../extensions/user_extension.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -66,9 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       return InkWell(
-          onTap: () {
+          onTap: () async {
             //Uncomment to allow username editing. Will affect booking systems
-            // _toggleEditing();
+            final _isAllowed = await _user!.canChangeName();
+            if (_isAllowed) {
+              _toggleEditing();
+            }
           },
           child: Text(
             _user!.displayName!,

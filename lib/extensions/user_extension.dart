@@ -23,4 +23,17 @@ extension UserExtension on User {
       return false;
     }
   }
+
+  Future<bool> canChangeName() async {
+    final _permissionsCollection =
+        FirebaseFirestore.instance.collection('permissions');
+    try {
+      final _query = await _permissionsCollection.doc('changeUsername').get();
+      final _names = _query.data()!;
+      if (_names[email] == true) return true;
+      return false;
+    } on Exception {
+      return false;
+    }
+  }
 }
