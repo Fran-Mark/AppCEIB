@@ -8,7 +8,6 @@ import 'package:ceib/widgets/my_alert_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../extensions/user_extension.dart';
@@ -66,42 +65,56 @@ class EventsScreen extends StatelessWidget {
                     description: e['description'] as String,
                     date: DateTime.parse(e['date'] as String),
                     isUrgent: e['isUrgent'] as bool);
+                return Stack(
+                  alignment: AlignmentDirectional.topEnd,
+                  children: [
+                    EventItem(event: _event),
+                    FutureBuilder(
+                        future: _user?.isEventsEditor(),
+                        builder: (context, isEditor) {
+                          final _isEditor = isEditor.data as bool?;
 
-                return Slidable(
-                  actionExtentRatio: .2,
-                  secondaryActions: [
-                    IconSlideAction(
-                      caption: 'Cerrar',
-                      color: Colors.black,
-                      icon: Icons.close,
-                      onTap: () {},
-                    ),
-                    IconSlideAction(
-                      caption: 'Editar',
-                      color: Colors.blue,
-                      icon: Icons.edit,
-                      onTap: () {
-                        Navigator.of(context)
-                            .pushNamed(EditEvent.routeName, arguments: e);
-                      },
-                    ),
-                    IconSlideAction(
-                      caption: 'Eliminar',
-                      color: Colors.red,
-                      icon: Icons.remove,
-                      onTap: () => showDialog(
-                          context: context,
-                          builder: (context) {
-                            return MyAlertDialog(
-                              title: "Seguro que querés eliminarlo?",
-                              content: "surestuart",
-                              handler: () => _deleteEvent(_event, _user!),
+                          if (_isEditor == true)
+                            return Positioned(
+                              bottom: 15,
+                              right: 15,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {
+                                        Navigator.of(context).pushNamed(
+                                            EditEvent.routeName,
+                                            arguments: e);
+                                      },
+                                      icon: const Icon(
+                                        Icons.edit,
+                                        color: Colors.redAccent,
+                                      )),
+                                  IconButton(
+                                      onPressed: () => showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return MyAlertDialog(
+                                              title:
+                                                  "Seguro que querés eliminarlo?",
+                                              content: "Surestuart",
+                                              handler: () =>
+                                                  _deleteEvent(_event, _user!),
+                                            );
+                                          }),
+                                      icon: const Icon(
+                                        Icons.delete_outline_outlined,
+                                        color: Colors.redAccent,
+                                      ))
+                                ],
+                              ),
                             );
-                          }),
-                    )
+                          else
+                            return Container();
+                        })
                   ],
-                  actionPane: const SlidableDrawerActionPane(),
-                  child: EventItem(event: _event),
                 );
               }).toList(),
             );
