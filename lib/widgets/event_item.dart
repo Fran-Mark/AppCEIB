@@ -1,13 +1,40 @@
+import 'package:ceib/extensions/datetime_extension.dart';
+import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/models/event.dart';
+import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/providers/events.dart';
+import 'package:ceib/screens/edit_event_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../extensions/datetime_extension.dart';
+import 'package:provider/provider.dart';
+import 'my_alert_dialog.dart';
 
 class EventItem extends StatelessWidget {
-  const EventItem({required this.event});
-  final Event event;
+  const EventItem({required this.eventReference, required this.isEditor});
+  final QueryDocumentSnapshot<Object?> eventReference;
+  final bool isEditor;
+
   @override
   Widget build(BuildContext context) {
+    final _eventsData = Provider.of<Events>(context);
+
+    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
+    final _event = Event(
+        id: eventReference.id,
+        title: eventReference['title'] as String,
+        description: eventReference['description'] as String,
+        date: DateTime.parse(eventReference['date'] as String),
+        isUrgent: eventReference['isUrgent'] as bool);
+
+    Future<void> _deleteEvent(Event event, User user) async {
+      Navigator.of(context).pop();
+      final result = await _eventsData.deleteEvent(event, user);
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildSnackBar(context: context, text: result));
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Card(
@@ -15,7 +42,7 @@ class EventItem extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Container(
           decoration: BoxDecoration(
-              border: event.isUrgent
+              border: _event.isUrgent
                   ? Border.all(color: Colors.red, width: 2)
                   : null,
               borderRadius: BorderRadius.circular(10)),
@@ -30,13 +57,13 @@ class EventItem extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          event.title,
+                          _event.title,
                           textAlign: TextAlign.left,
                           style: GoogleFonts.alfaSlabOne(fontSize: 20),
                         ),
                       ),
                     ),
-                    if (event.isUrgent)
+                    if (_event.isUrgent)
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 15),
                         child: Container(
@@ -47,9 +74,32 @@ class EventItem extends StatelessWidget {
                             style: GoogleFonts.secularOne(color: Colors.white),
                           ),
                         ),
-                      )
-                    else
-                      Container()
+                      ),
+                    if (isEditor)
+                      IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed(EditEvent.routeName,
+                                arguments: eventReference);
+                          },
+                          icon: const Icon(
+                            Icons.edit,
+                            color: Colors.redAccent,
+                          )),
+                    if (isEditor)
+                      IconButton(
+                          onPressed: () => showDialog(
+                              context: context,
+                              builder: (context) {
+                                return MyAlertDialog(
+                                  title: "Seguro que querés eliminarlo?",
+                                  content: "Surestuart",
+                                  handler: () => _deleteEvent(_event, _user!),
+                                );
+                              }),
+                          icon: const Icon(
+                            Icons.delete_outline_outlined,
+                            color: Colors.redAccent,
+                          ))
                   ],
                 ),
               ),
@@ -61,7 +111,7 @@ class EventItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    event.date.formatDate(),
+                    _event.date.formatDate(),
                     style: GoogleFonts.hindMadurai(),
                   ),
                 ),
@@ -72,7 +122,7 @@ class EventItem extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 8),
                         child: Text(
-                          event.description,
+                          _event.description,
                           style: GoogleFonts.hindMadurai(),
                         ))),
               ])

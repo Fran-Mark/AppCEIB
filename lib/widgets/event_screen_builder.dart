@@ -67,10 +67,14 @@ class _EventBuilderState extends State<EventBuilder> {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
-
+    String _title;
+    if (widget.event != null)
+      _title = "Editar Evento";
+    else
+      _title = "Nuevo Evento";
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Nuevo Evento"),
+        title: Text(_title),
         centerTitle: true,
       ),
       body: Padding(
