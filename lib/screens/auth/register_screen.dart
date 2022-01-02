@@ -3,6 +3,7 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../sheets/sheets_api.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -36,18 +37,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
       return;
     }
     _form.currentState?.save();
-    final _user = await Provider.of<AuthServices>(context, listen: false)
-        .register(_emailController.text.trim(), _passwordController.text);
+    final _esSocio = await SheetsAPI.esSocio(_emailController.text);
+    if (_esSocio) {
+      final _user = await Provider.of<AuthServices>(context, listen: false)
+          .register(_emailController.text.trim(), _passwordController.text);
 
-    if (_user == null) {
-      final _authProvider = Provider.of<AuthServices>(context, listen: false);
-      if (_authProvider.errorMessage != "") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          buildSnackBar(context: context, text: _authProvider.errorMessage),
-        );
+      if (_user == null) {
+        final _authProvider = Provider.of<AuthServices>(context, listen: false);
+        if (_authProvider.errorMessage != "") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            buildSnackBar(context: context, text: _authProvider.errorMessage),
+          );
+        }
+      } else {
+        Navigator.of(context).pop();
       }
     } else {
-      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(buildSnackBar(
+          context: context, text: "No estás en nuestra base de datos :("));
     }
   }
 

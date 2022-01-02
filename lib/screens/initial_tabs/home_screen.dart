@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       return InkWell(
           onTap: () async {
-            //Uncomment to allow username editing. Will affect booking systems
             final _isAllowed = await _user!.canChangeName();
             if (_isAllowed) {
               _toggleEditing();
