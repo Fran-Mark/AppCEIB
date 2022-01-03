@@ -49,8 +49,18 @@ class EventItem extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              if (_event.isUrgent)
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  decoration: const BoxDecoration(color: Colors.red),
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    "IMPORTANTE",
+                    style: GoogleFonts.secularOne(color: Colors.white),
+                  ),
+                ),
               Padding(
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 5),
                 child: Row(
                   children: [
                     Expanded(
@@ -58,48 +68,11 @@ class EventItem extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
                           _event.title,
-                          textAlign: TextAlign.left,
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.alfaSlabOne(fontSize: 20),
                         ),
                       ),
                     ),
-                    if (_event.isUrgent)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15),
-                        child: Container(
-                          decoration: const BoxDecoration(color: Colors.red),
-                          padding: const EdgeInsets.all(5),
-                          child: Text(
-                            "IMPORTANTE",
-                            style: GoogleFonts.secularOne(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    if (isEditor)
-                      IconButton(
-                          onPressed: () {
-                            Navigator.of(context).pushNamed(EditEvent.routeName,
-                                arguments: eventReference);
-                          },
-                          icon: const Icon(
-                            Icons.edit,
-                            color: Colors.redAccent,
-                          )),
-                    if (isEditor)
-                      IconButton(
-                          onPressed: () => showDialog(
-                              context: context,
-                              builder: (context) {
-                                return MyAlertDialog(
-                                  title: "Seguro que querés eliminarlo?",
-                                  content: "Surestuart",
-                                  handler: () => _deleteEvent(_event, _user!),
-                                );
-                              }),
-                          icon: const Icon(
-                            Icons.delete_outline_outlined,
-                            color: Colors.redAccent,
-                          ))
                   ],
                 ),
               ),
@@ -116,16 +89,48 @@ class EventItem extends StatelessWidget {
                   ),
                 ),
               ),
-              Row(children: [
-                Expanded(
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 5, horizontal: 8),
-                        child: Text(
-                          _event.description,
-                          style: GoogleFonts.hindMadurai(),
-                        ))),
-              ])
+              Row(
+                children: [
+                  Expanded(
+                      child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 5, horizontal: 8),
+                          child: Text(
+                            _event.description,
+                            style: GoogleFonts.hindMadurai(),
+                          ))),
+                ],
+              ),
+              if (isEditor) const Divider(),
+              if (isEditor)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed(EditEvent.routeName,
+                              arguments: eventReference);
+                        },
+                        icon: const Icon(
+                          Icons.edit,
+                          color: Colors.redAccent,
+                        )),
+                    IconButton(
+                        onPressed: () => showDialog(
+                            context: context,
+                            builder: (context) {
+                              return MyAlertDialog(
+                                title: "Seguro que querés eliminarlo?",
+                                content: "Surestuart",
+                                handler: () => _deleteEvent(_event, _user!),
+                              );
+                            }),
+                        icon: const Icon(
+                          Icons.delete_outline_outlined,
+                          color: Colors.redAccent,
+                        ))
+                  ],
+                ),
             ],
           ),
         ),

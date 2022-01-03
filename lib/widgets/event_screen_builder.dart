@@ -84,6 +84,7 @@ class _EventBuilderState extends State<EventBuilder> {
             child: ListView(children: [
               TextFormField(
                   decoration: const InputDecoration(labelText: "Título"),
+                  maxLines: null,
                   initialValue: widget.event != null
                       ? widget.event!['title'] as String
                       : '',
@@ -108,9 +109,9 @@ class _EventBuilderState extends State<EventBuilder> {
                   initialValue: widget.event != null
                       ? widget.event!['description'] as String
                       : '',
-                  textInputAction: TextInputAction.done,
+                  textInputAction: TextInputAction.newline,
                   keyboardType: TextInputType.multiline,
-                  maxLines: 3,
+                  maxLines: null,
                   validator: (description) {
                     if (description!.isEmpty) return 'Escribe una descripción';
                     if (description.length < 5)
