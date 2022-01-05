@@ -84,7 +84,7 @@ class EventItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    _event.date.formatDate(),
+                    _event.date?.formatDate() ?? "Hola",
                     style: GoogleFonts.hindMadurai(),
                   ),
                 ),

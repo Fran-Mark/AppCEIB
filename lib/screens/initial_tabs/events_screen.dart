@@ -19,7 +19,7 @@ class EventsScreen extends StatelessWidget {
         builder: (context, isEditor) {
           var _isEditorSnapshot = isEditor.data as bool?;
           _isEditorSnapshot ??= false;
-          return Stack(alignment: AlignmentDirectional.bottomEnd, children: [
+          return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
             StreamBuilder(
                 stream:
                     FirebaseFirestore.instance.collection('events').snapshots(),

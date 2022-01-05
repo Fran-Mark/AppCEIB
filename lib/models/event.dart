@@ -3,12 +3,16 @@ class Event {
     required this.id,
     required this.title,
     required this.description,
-    required this.date,
+    this.date,
+    this.place,
+    this.link,
     this.isUrgent = false,
   });
   final String id;
-  final DateTime date;
   final String title;
   final String description;
+  final DateTime? date;
+  final String? place;
+  final String? link;
   bool isUrgent;
 }
