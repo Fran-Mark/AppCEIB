@@ -1,12 +1,13 @@
 import 'package:ceib/helpers/helper_functions.dart';
-import 'package:ceib/helpers/strings.dart';
 import 'package:ceib/models/event.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/events.dart';
+import 'package:ceib/widgets/animated_icon.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:date_field/date_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../widgets/checkbox_form_field.dart';
 
@@ -28,16 +29,25 @@ class _EventBuilderState extends State<EventBuilder> {
   final _linkFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
 
+  //Form values
+  String _idValue = '';
+  String _titleValue = '';
+  String _descriptionValue = '';
+  DateTime? _dateValue;
+  String? _placeValue;
+  String? _linkValue;
+  bool _isUrgentValue = false;
+
   //State vars
   bool _dateVisibility = false;
   bool _placeVisibility = false;
   bool _linkVisibility = false;
-  DateTime? _dateValue;
-  String? _placeValue;
-  String? _linkValue;
-
-  var _eventBuilder =
-      Event(id: '', title: '', description: '', date: DateTime.now());
+  String _dateVisibilityText = "Agregar Fecha";
+  String _placeVisibilityText = "Agregar Lugar";
+  String _linkVisibilityText = "Agregar Link";
+  Color _dateColor = Colors.red;
+  Color _placeColor = Colors.red;
+  Color _linkColor = Colors.red;
 
   @override
   void dispose() {
@@ -49,12 +59,62 @@ class _EventBuilderState extends State<EventBuilder> {
 
   @override
   void initState() {
-    final _date = widget.event?['date'] as String?;
-    if (_date != null) {
-      _dateVisibility = true;
-      _dateValue = DateTime.parse(_date);
+    final _id = widget.event?.id;
+    final _title = widget.event?.get('title') as String?;
+    final _description = widget.event?['description'] as String?;
+    final _isUrgent = widget.event?['isUrgent'] as bool?;
+    String? _date;
+    String? _place;
+    String? _link;
+    try {
+      _date = widget.event?['date'] as String?;
+    } on Exception {
+      _date = null;
     }
+    try {
+      _place = widget.event?['place'] as String?;
+    } on Exception {
+      _place = null;
+    }
+    try {
+      _link = widget.event?['link'] as String?;
+    } on Exception {
+      _link = null;
+    }
+
+    if (_id != null) {
+      _idValue = _id;
+    }
+    if (_title != null) {
+      _titleValue = _title;
+    }
+    if (_description != null) {
+      _descriptionValue = _description;
+    }
+    if (_date != null && _date != 'null') {
+      _toggleDateVisibility();
+      _dateValue = DateTime.tryParse(_date);
+    }
+    if (_place != null) {
+      _togglePlaceVisibility();
+      _placeValue = _place;
+    }
+    if (_link != null) {
+      _toggleLinkVisibility();
+      _linkValue = _link;
+    }
+    if (_isUrgent != null) {
+      _isUrgentValue = _isUrgent;
+    }
+
     super.initState();
+  }
+
+  void _updateInvisibleValues() {
+    //Es necesario porque onSaved es llamada cuando algo no es visible
+    if (!_dateVisibility) _dateValue = null;
+    if (!_placeVisibility) _placeValue = null;
+    if (!_linkVisibility) _linkValue = null;
   }
 
   Future<void> _newEntry(User? user) async {
@@ -63,7 +123,16 @@ class _EventBuilderState extends State<EventBuilder> {
       return;
     }
     _form.currentState?.save();
+    _updateInvisibleValues();
     if (user == null) return;
+    final _eventBuilder = Event(
+        id: _idValue,
+        title: _titleValue,
+        description: _descriptionValue,
+        date: _dateValue,
+        place: _placeValue,
+        link: _linkValue,
+        isUrgent: _isUrgentValue);
     final result = await Provider.of<Events>(context, listen: false)
         .addEvent(_eventBuilder, user);
     Navigator.of(context).pop();
@@ -78,7 +147,16 @@ class _EventBuilderState extends State<EventBuilder> {
       return;
     }
     _form.currentState?.save();
+    _updateInvisibleValues();
     if (user == null) return;
+    final _eventBuilder = Event(
+        id: _idValue,
+        title: _titleValue,
+        description: _descriptionValue,
+        date: _dateValue,
+        place: _placeValue,
+        link: _linkValue,
+        isUrgent: _isUrgentValue);
     final result = await Provider.of<Events>(context, listen: false)
         .updateEvent(user, _eventBuilder, widget.event!);
     Navigator.of(context).pop();
@@ -90,6 +168,39 @@ class _EventBuilderState extends State<EventBuilder> {
   void _toggleDateVisibility() {
     setState(() {
       _dateVisibility = !_dateVisibility;
+      if (_dateVisibility) {
+        _dateVisibilityText = 'Quitar fecha';
+        _dateColor = Colors.grey;
+      } else {
+        _dateVisibilityText = 'Agregar fecha';
+        _dateColor = Colors.red;
+      }
+    });
+  }
+
+  void _togglePlaceVisibility() {
+    setState(() {
+      _placeVisibility = !_placeVisibility;
+      if (_placeVisibility) {
+        _placeVisibilityText = 'Quitar lugar';
+        _placeColor = Colors.grey;
+      } else {
+        _placeVisibilityText = 'Agregar lugar';
+        _placeColor = Colors.red;
+      }
+    });
+  }
+
+  void _toggleLinkVisibility() {
+    setState(() {
+      _linkVisibility = !_linkVisibility;
+      if (_linkVisibility) {
+        _linkVisibilityText = 'Quitar link';
+        _linkColor = Colors.grey;
+      } else {
+        _linkVisibilityText = 'Agregar link';
+        _linkColor = Colors.red;
+      }
     });
   }
 
@@ -111,23 +222,10 @@ class _EventBuilderState extends State<EventBuilder> {
           child: Form(
             key: _form,
             child: ListView(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  ElevatedButton(
-                      onPressed: _toggleDateVisibility,
-                      child: Text("Agregar Fecha")),
-                  ElevatedButton(
-                      onPressed: _toggleDateVisibility,
-                      child: Text("Agregar Fecha")),
-                ],
-              ),
               TextFormField(
                   decoration: const InputDecoration(labelText: "Título"),
                   maxLines: null,
-                  initialValue: widget.event != null
-                      ? widget.event!['title'] as String
-                      : '',
+                  initialValue: _titleValue,
                   textInputAction: TextInputAction.next,
                   onFieldSubmitted: (_) {
                     FocusScope.of(context).requestFocus(_descriptionFocusNode);
@@ -138,17 +236,11 @@ class _EventBuilderState extends State<EventBuilder> {
                     }
                   },
                   onSaved: (title) {
-                    _eventBuilder = Event(
-                        id: _eventBuilder.id,
-                        title: title!,
-                        description: _eventBuilder.description,
-                        date: _eventBuilder.date);
+                    _titleValue = title!;
                   }),
               TextFormField(
                   decoration: const InputDecoration(labelText: 'Descripción'),
-                  initialValue: widget.event != null
-                      ? widget.event!['description'] as String
-                      : '',
+                  initialValue: _descriptionValue,
                   textInputAction: TextInputAction.newline,
                   keyboardType: TextInputType.multiline,
                   maxLines: null,
@@ -159,89 +251,133 @@ class _EventBuilderState extends State<EventBuilder> {
                   },
                   focusNode: _descriptionFocusNode,
                   onSaved: (description) {
-                    _eventBuilder = Event(
-                        id: _eventBuilder.id,
-                        title: _eventBuilder.title,
-                        description: description!,
-                        date: _eventBuilder.date);
+                    _descriptionValue = description!;
                   }),
               Visibility(
                 visible: _dateVisibility,
                 child: DateTimeFormField(
                   initialValue: _dateValue,
                   decoration: const InputDecoration(
-                    labelText: 'Cuándo? (opcional)',
+                    labelText: 'Cuándo?',
                     suffixIcon: Icon(Icons.calendar_today),
                   ),
-                  validator: (fecha) {
+                  validator: (date) {
                     if (_dateVisibility) {
-                      if (fecha == null) {
+                      if (date == null) {
                         return 'Ingresa una fecha';
                       }
-                      if (fecha.isBefore(DateTime.now())) {
+                      if (date.isBefore(DateTime.now())) {
                         return 'No podés crear eventos en el pasado';
                       }
                     }
                   },
                   onSaved: (date) {
-                    if (_dateVisibility) {
-                      _eventBuilder = Event(
-                          id: _eventBuilder.id,
-                          title: _eventBuilder.title,
-                          description: _eventBuilder.description,
-                          date: date!);
+                    //Este chequeo es al pedo porque onSaved no se llama cuando el objeto no es visible. Pero
+                    //lo dejo por posibles cambios
+                    if (_dateVisibility)
+                      _dateValue = date;
+                    else
+                      _dateValue = null;
+                  },
+                ),
+              ),
+              Visibility(
+                visible: _placeVisibility,
+                child: TextFormField(
+                    decoration: const InputDecoration(
+                      labelText: 'Dónde?',
+                    ),
+                    initialValue: _placeValue,
+                    textInputAction: TextInputAction.next,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    validator: (place) {},
+                    focusNode: _placeFocusNode,
+                    onSaved: (place) {
+                      if (_placeVisibility) {
+                        _placeValue = place;
+                      } else
+                        _placeValue = null;
+                    }),
+              ),
+              Visibility(
+                visible: _linkVisibility,
+                child: TextFormField(
+                  decoration: const InputDecoration(
+                    labelText: 'Link:',
+                  ),
+                  initialValue: _linkValue,
+                  textInputAction: TextInputAction.done,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  validator: (link) {
+                    if (link!.isEmpty) {
+                      return 'Agrega un link válido';
+                    }
+                  },
+                  focusNode: _linkFocusNode,
+                  onSaved: (link) {
+                    if (_linkVisibility) {
+                      _linkValue = link;
                     } else {
-                      _eventBuilder = Event(
-                          id: _eventBuilder.id,
-                          title: _eventBuilder.title,
-                          description: _eventBuilder.description,
-                          date: DateTime.parse(referenceDate));
+                      _linkValue = null;
                     }
                   },
                 ),
               ),
-              // TextFormField(
-              //     decoration: const InputDecoration(
-              //       labelText: 'Dónde? (opcional)',
-              //     ),
-              //     initialValue: widget.event != null
-              //         ? widget.event!['place'] as String
-              //         : '',
-              //     textInputAction: TextInputAction.next,
-              //     keyboardType: TextInputType.multiline,
-              //     maxLines: null,
-              //     validator: (place) {},
-              //     focusNode: _placeFocusNode,
-              //     onSaved: (place) {}),
-              // TextFormField(
-              //     decoration: const InputDecoration(
-              //       labelText: 'Link (opcional)',
-              //     ),
-              //     initialValue: widget.event != null
-              //         ? widget.event!['link'] as String
-              //         : '',
-              //     textInputAction: TextInputAction.done,
-              //     keyboardType: TextInputType.multiline,
-              //     maxLines: null,
-              //     validator: (link) {},
-              //     focusNode: _linkFocusNode,
-              //     onSaved: (link) {}),
               CheckboxFormField(
                 title: const Text("Es urgente?"),
                 // ignore: avoid_bool_literals_in_conditional_expressions
-                initialValue: widget.event != null
-                    ? widget.event!['isUrgent'] as bool
-                    : false,
+                initialValue: _isUrgentValue,
                 onSaved: (isUrgent) {
-                  _eventBuilder = Event(
-                      id: _eventBuilder.id,
-                      title: _eventBuilder.title,
-                      description: _eventBuilder.description,
-                      date: _eventBuilder.date,
-                      isUrgent: isUrgent!);
+                  _isUrgentValue = isUrgent!;
                 },
               ),
-              TextButton(
+              Wrap(
+                alignment: WrapAlignment.spaceAround,
+                children: [
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      child: Text(
+                        _dateVisibilityText,
+                        style: TextStyle(color: _dateColor),
+                      ),
+                      onPressed: () {
+                        _toggleDateVisibility();
+                      },
+                    ),
+                  ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      child: Text(
+                        _placeVisibilityText,
+                        style: TextStyle(color: _placeColor),
+                      ),
+                      onPressed: () {
+                        _togglePlaceVisibility();
+                      },
+                    ),
+                  ),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: TextButton(
+                      child: Text(
+                        _linkVisibilityText,
+                        style: TextStyle(color: _linkColor),
+                      ),
+                      onPressed: () {
+                        _toggleLinkVisibility();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
                 onPressed: widget.event == null
                     ? () => _newEntry(_user)
                     : () => _updateEntry(_user),

@@ -25,7 +25,9 @@ class EventItem extends StatelessWidget {
         id: eventReference.id,
         title: eventReference['title'] as String,
         description: eventReference['description'] as String,
-        date: DateTime.parse(eventReference['date'] as String),
+        date: DateTime.tryParse(eventReference['date'] as String),
+        place: eventReference['place'] as String?,
+        link: eventReference['link'] as String?,
         isUrgent: eventReference['isUrgent'] as bool);
 
     Future<void> _deleteEvent(Event event, User user) async {
@@ -84,7 +86,7 @@ class EventItem extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8),
                   child: Text(
-                    _event.date?.formatDate() ?? "Hola",
+                    _event.date?.formatDate() ?? "",
                     style: GoogleFonts.hindMadurai(),
                   ),
                 ),
@@ -101,6 +103,25 @@ class EventItem extends StatelessWidget {
                           ))),
                 ],
               ),
+              if (_event.place != null)
+                Column(
+                  children: [
+                    Divider(),
+                    Row(
+                      children: [Text('Donde?'), Text(_event.place!)],
+                    )
+                  ],
+                ),
+              if (_event.link != null)
+                Column(children: [
+                  Divider(),
+                  Row(
+                    children: [
+                      Text('Link:'),
+                      Text(_event.link!),
+                    ],
+                  )
+                ]),
               if (isEditor) const Divider(),
               if (isEditor)
                 Row(
