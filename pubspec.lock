@@ -93,12 +93,12 @@ packages:
     source: hosted
     version: "3.0.1"
   cupertino_icons:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: cupertino_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.3"
+    version: "1.0.4"
   date_field:
     dependency: "direct main"
     description:
@@ -181,13 +181,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.9.2"
-  flutter_linkify:
+  flutter_markdown:
     dependency: "direct main"
     description:
-      name: flutter_linkify
+      name: flutter_markdown
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.2"
+    version: "0.6.9"
   flutter_native_splash:
     dependency: "direct dev"
     description:
@@ -268,13 +268,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.3"
-  linkify:
-    dependency: transitive
-    description:
-      name: linkify
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.0"
   lint:
     dependency: "direct dev"
     description:
@@ -282,6 +275,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.7.2"
+  markdown:
+    dependency: transitive
+    description:
+      name: markdown
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.0.1"
   matcher:
     dependency: transitive
     description:

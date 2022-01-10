@@ -7,7 +7,7 @@ import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_linkify/flutter_linkify.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
@@ -85,33 +85,32 @@ class EventItem extends StatelessWidget {
                     style: GoogleFonts.secularOne(color: Colors.white),
                   ),
                 ),
-              Row(
-                children: [
-                  Expanded(
-                      child: Padding(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-                    child: SelectableLinkify(
-                      text: _event.description,
-                      style: GoogleFonts.hindMadurai(fontSize: 15.5),
-                      options: const LinkifyOptions(removeWww: true),
-                      linkStyle: GoogleFonts.hindMadurai(
-                          fontSize: 15.5,
-                          color: Colors.red,
-                          decoration: TextDecoration.none),
-                      onOpen: (link) async {
-                        if (await canLaunch(link.url)) {
-                          await launch(link.url);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              buildSnackBar(
-                                  context: context,
-                                  text: "No pude abrir el link"));
+              SizedBox(
+                width: MediaQuery.of(context).size.width,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                  child: MarkdownBody(
+                    data: avoidHeadings(_event.description),
+                    selectable: true,
+                    styleSheet: MarkdownStyleSheet(
+                        p: GoogleFonts.hindMadurai(fontSize: 15.5),
+                        a: GoogleFonts.hindMadurai(
+                            fontSize: 15.5,
+                            color: Colors.red,
+                            decoration: TextDecoration.none)),
+                    onTapLink: (text, href, title) async {
+                      if (href != null) {
+                        if (await canLaunch(href)) {
+                          await launch(href);
                         }
-                      },
-                    ),
-                  )),
-                ],
+                      } else
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            buildSnackBar(
+                                context: context, text: "No launchea"));
+                    },
+                  ),
+                ),
               ),
               if (_event.date != null)
                 Column(
