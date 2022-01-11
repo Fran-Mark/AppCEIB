@@ -107,7 +107,7 @@ class EventItem extends StatelessWidget {
                       } else
                         ScaffoldMessenger.of(context).showSnackBar(
                             buildSnackBar(
-                                context: context, text: "No launchea"));
+                                context: context, text: "No anda el link :("));
                     },
                   ),
                 ),

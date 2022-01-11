@@ -34,7 +34,13 @@ SnackBar buildSnackBar(
 
 AppBar buildAppBar() {
   return AppBar(
-    title: const Text('CEIB'),
+    title: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.white38,
+        child: Image.asset("lib/assets/logo_ceib.png"),
+      ),
+    ),
     centerTitle: true,
   );
 }

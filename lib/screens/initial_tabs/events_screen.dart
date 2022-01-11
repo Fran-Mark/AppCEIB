@@ -35,19 +35,11 @@ class EventsScreen extends StatelessWidget {
                   final _lenght = _events.length;
                   if (_lenght == 0) {
                     return Center(
-                        child: FractionallySizedBox(
-                      heightFactor: .8,
-                      widthFactor: .6,
-                      child: Container(
-                        decoration: BoxDecoration(border: Border.all(width: 2)),
-                        child: Center(
-                          child: Text(
-                            "No hay eventos",
-                            style: GoogleFonts.raleway(fontSize: 40),
-                          ),
-                        ),
+                      child: Text(
+                        "Nada por aquí",
+                        style: GoogleFonts.hindMadurai(fontSize: 30),
                       ),
-                    ));
+                    );
                   }
 
                   return ListView(

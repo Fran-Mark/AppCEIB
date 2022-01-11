@@ -5,6 +5,7 @@ import 'package:ceib/models/turno_bici.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/bicis.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../extensions/user_extension.dart';
 
@@ -70,16 +71,41 @@ class BicisAdminScreen extends StatelessWidget {
 
     return Scaffold(
         appBar: buildAppBar(),
-        body: ListView.builder(
+        body: GridView.builder(
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.all(10),
+            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 10),
             itemCount: 6,
             itemBuilder: (context, index) {
               return Container(
-                margin: const EdgeInsets.all(5),
-                padding: const EdgeInsets.all(5),
-                decoration: BoxDecoration(border: Border.all(width: 2)),
-                child: ListTile(
-                    leading: Text("Bici ${index + 1}"),
-                    trailing: FutureBuilder(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(15),
+                  color: Colors.white,
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.grey,
+                      offset: Offset(0.0, 1.0), //(x,y)
+                      blurRadius: 6.0,
+                    ),
+                  ],
+                ),
+                child: GridTile(
+                    child: Column(
+                  children: [
+                    Expanded(
+                        child: Center(
+                            child: Text(
+                      "Bici ${index + 1}",
+                      style: GoogleFonts.hindMadurai(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ))),
+                    const Divider(
+                      thickness: 1.5,
+                    ),
+                    FutureBuilder(
                       future: _bikeBookingsCollection.getStatus(),
                       builder: (context, snapshot) {
                         if (snapshot.hasData) {
@@ -155,7 +181,9 @@ class BicisAdminScreen extends StatelessWidget {
                         } else
                           return const CircularProgressIndicator.adaptive();
                       },
-                    )),
+                    ),
+                  ],
+                )),
               );
             }));
   }

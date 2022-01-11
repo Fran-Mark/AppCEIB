@@ -26,59 +26,55 @@ class ReservationCategory extends StatelessWidget {
                 buildSnackBar(context: context, text: "No anda todavía"));
           }
         },
-        child: Container(
-          decoration: BoxDecoration(
+        child: Card(
+          elevation: 10,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(15),
-            border: Border.all(),
-          ),
-          child: ColorFiltered(
-              colorFilter: ColorFilter.mode(
-                _color,
-                BlendMode.saturation,
-              ),
-              child: Stack(
-                alignment: AlignmentDirectional.bottomStart,
-                fit: StackFit.expand,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.asset(
+            child: ColorFiltered(
+                colorFilter: ColorFilter.mode(
+                  _color,
+                  BlendMode.saturation,
+                ),
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomStart,
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
                       'lib/assets/$imageName.gif',
                       fit: BoxFit.fill,
                     ),
-                  ),
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: BackdropFilter(
+                    BackdropFilter(
                       filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
                       child: Container(
                         color: Colors.black.withOpacity(0),
                       ),
                     ),
-                  ),
-                  Image.asset(
-                    'lib/assets/$imageName.gif',
-                  ),
-                  Positioned(
-                    bottom: 10,
-                    right: 10,
-                    child: OutlinedText(
-                      text: Text(
-                        title,
-                        style: GoogleFonts.titilliumWeb(
-                          fontSize: 20,
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlign: TextAlign.end,
-                      ),
-                      strokes: [
-                        OutlinedTextStroke(color: Colors.black, width: 5)
-                      ],
+                    Image.asset(
+                      'lib/assets/$imageName.gif',
                     ),
-                  ),
-                ],
-              )),
+                    Positioned(
+                      bottom: 10,
+                      right: 10,
+                      child: OutlinedText(
+                        text: Text(
+                          title,
+                          style: GoogleFonts.titilliumWeb(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.end,
+                        ),
+                        strokes: [
+                          OutlinedTextStroke(color: Colors.black, width: 5)
+                        ],
+                      ),
+                    ),
+                  ],
+                )),
+          ),
         ));
   }
 }

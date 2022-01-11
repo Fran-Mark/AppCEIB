@@ -1,3 +1,4 @@
+import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/screens/initial_tabs/events_screen.dart';
 import 'package:ceib/screens/initial_tabs/feed_screen.dart';
 import 'package:ceib/screens/initial_tabs/home_screen.dart';
@@ -30,13 +31,7 @@ class _MainScreenState extends State<MainScreen> {
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('CEIB'),
-        centerTitle: true,
-        actions: const [
-          LogOutButton(),
-        ],
-      ),
+      appBar: buildAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selected,
         onTap: _select,
