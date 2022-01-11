@@ -1,6 +1,7 @@
 import 'package:ceib/auth/auth_service.dart';
 import 'package:ceib/auth/auth_wrapper.dart';
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/providers/voting.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
 import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:ceib/screens/categories/bicis_screens/bicis_screen.dart';
@@ -47,6 +48,7 @@ class _MyAppState extends State<MyApp> {
           else if (snapshot.connectionState == ConnectionState.done) {
             return MultiProvider(
               providers: [
+                ChangeNotifierProvider.value(value: Voting()),
                 ChangeNotifierProvider.value(value: Bicis()),
                 ChangeNotifierProvider<AuthServices>.value(
                     value: AuthServices()),
