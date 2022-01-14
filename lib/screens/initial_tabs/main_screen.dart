@@ -1,4 +1,6 @@
+import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/screens/initial_tabs/events_screen.dart';
+import 'package:ceib/screens/initial_tabs/feed_screen.dart';
 import 'package:ceib/screens/initial_tabs/home_screen.dart';
 import 'package:ceib/screens/initial_tabs/reservations_screen.dart';
 import 'package:ceib/widgets/logout_button.dart';
@@ -25,19 +27,11 @@ class _MainScreenState extends State<MainScreen> {
       0: HomeScreen(),
       1: EventsScreen(),
       2: ReservationsScreen(),
-      3: Center(
-        child: Text('Odio el Linting'),
-      )
+      3: FeedScreen()
     };
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('CEIB'),
-        centerTitle: true,
-        actions: const [
-          LogOutButton(),
-        ],
-      ),
+      appBar: buildAppBar(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selected,
         onTap: _select,

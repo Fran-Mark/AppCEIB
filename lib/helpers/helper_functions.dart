@@ -34,7 +34,34 @@ SnackBar buildSnackBar(
 
 AppBar buildAppBar() {
   return AppBar(
-    title: const Text('CEIB'),
+    title: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: CircleAvatar(
+        backgroundColor: Colors.white38,
+        child: Image.asset("lib/assets/logo_ceib.png"),
+      ),
+    ),
     centerTitle: true,
   );
+}
+
+String _removeInitialHashtagsAndHyphens(String string) {
+  //Para evitar uso indeseado de markdown
+  final _str = string.trim();
+  if (_str.startsWith('#')) {
+    return _removeInitialHashtagsAndHyphens(_str.substring(1));
+  }
+  if (_str.startsWith('---')) {
+    return _removeInitialHashtagsAndHyphens(_str.substring(3));
+  }
+  return _str;
+}
+
+String avoidHeadings(String string) {
+  final _str = StringBuffer();
+  final _disectedStr = string.split('\n');
+  for (final element in _disectedStr) {
+    _str.write('${_removeInitialHashtagsAndHyphens(element)}\n');
+  }
+  return _str.toString();
 }

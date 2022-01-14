@@ -16,6 +16,8 @@ class Events with ChangeNotifier {
           'title': newEvent.title,
           'description': newEvent.description,
           'date': newEvent.date.toString(),
+          'place': newEvent.place,
+          'link': newEvent.link,
           'isUrgent': newEvent.isUrgent,
         });
         return "Editado!";
@@ -48,6 +50,8 @@ class Events with ChangeNotifier {
           'title': event.title,
           'description': event.description,
           'date': event.date.toString(),
+          'place': event.place,
+          'link': event.link,
           'isUrgent': event.isUrgent,
           'timestamp': DateTime.now().millisecondsSinceEpoch,
           'uid': user.uid,

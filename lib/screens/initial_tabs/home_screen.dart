@@ -1,6 +1,7 @@
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/sheets/sheets_api.dart';
+import 'package:ceib/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -68,7 +69,6 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       return InkWell(
           onTap: () async {
-            //Uncomment to allow username editing. Will affect booking systems
             final _isAllowed = await _user!.canChangeName();
             if (_isAllowed) {
               _toggleEditing();
@@ -95,28 +95,35 @@ class _HomeScreenState extends State<HomeScreen> {
           height: _device.size.height * 0.7,
           width: _device.size.width * 0.8,
           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: Stack(
+            alignment: Alignment.bottomCenter,
             children: [
-              Center(child: _editTitleTextField()),
-              const Divider(),
-              FutureBuilder(
-                  future: _userDebt,
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      final _deuda = snapshot.data as String?;
-                      if (_deuda == '0' || _deuda == "-0.0")
-                        return const Text("No tenés deuda! :)");
-                      else
-                        return Wrap(
-                          children: [
-                            const Text("Tu deuda es: "),
-                            Text("\$$_deuda")
-                          ],
-                        );
-                    } else
-                      return const CircularProgressIndicator();
-                  })
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Center(child: _editTitleTextField()),
+                  const Divider(),
+                  FutureBuilder(
+                      future: _userDebt,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          final _deuda = snapshot.data as String?;
+                          if (_deuda == '0' || _deuda == "-0.0")
+                            return Text(
+                              "No tenés deuda! :)",
+                              style: GoogleFonts.hindMadurai(),
+                            );
+                          else
+                            return Text("Tu deuda es: \$$_deuda",
+                                style: GoogleFonts.hindMadurai(
+                                  color: Colors.red,
+                                ));
+                        } else
+                          return const CircularProgressIndicator();
+                      }),
+                ],
+              ),
+              const LogOutButton()
             ],
           ),
         ),

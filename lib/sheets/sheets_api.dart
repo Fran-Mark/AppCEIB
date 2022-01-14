@@ -9,6 +9,13 @@ class SheetsAPI {
     _sociosSheet = spreadsheet.worksheetByTitle('Socios');
   }
 
+  static Future<bool> esSocio(String email) async {
+    final rowJson =
+        await _sociosSheet!.values.map.rowByKey(email, fromColumn: 1);
+    if (rowJson == null) return false;
+    return true;
+  }
+
   static Future<String> getDebt(String email) async {
     final rowJson =
         await _sociosSheet!.values.map.rowByKey(email, fromColumn: 1);
