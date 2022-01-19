@@ -88,7 +88,7 @@ class _VerticalTextLineState extends State<VerticalTextLine> {
   }
 
   List<Widget> _getCharacters() {
-    const List<Widget> textWidgets = [];
+    final List<Widget> textWidgets = [];
 
     for (final character in _characters) {
       textWidgets.add(Text(character,
