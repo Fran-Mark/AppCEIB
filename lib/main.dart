@@ -38,7 +38,7 @@ Future<void> main() async {
       await Firebase.initializeApp();
       runApp(MyApp());
     } on Exception {
-      runApp(ErrorWidget());
+      runApp(const NoConnectionWidget());
     }
   } else {
     runApp(const NoConnectionWidget());
