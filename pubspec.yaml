@@ -27,9 +27,11 @@ dependencies:
   date_field: ^2.0.1
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
+  firebase_messaging: ^11.2.5
   flutter:
     sdk: flutter
   
+  flutter_local_notifications: ^9.2.0
   flutter_markdown: ^0.6.9
   google_fonts: ^2.1.0
   gsheets: ^0.3.2
@@ -37,6 +39,7 @@ dependencies:
   outlined_text: ^1.0.1
   provider: ^6.0.0
   syncfusion_flutter_calendar: ^19.2.62  
+  universal_html: ^2.0.8
   url_launcher: ^6.0.17
 
 dev_dependencies:

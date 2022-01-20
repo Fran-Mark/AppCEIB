@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/services/notifications/notifications.dart';
 import 'package:ceib/sheets/sheets_api.dart';
 import 'package:ceib/widgets/logout_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../extensions/user_extension.dart';
@@ -125,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       }),
                 ],
               ),
-              const LogOutButton()
+              const LogOutButton(),
             ],
           ),
         ),
