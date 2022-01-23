@@ -57,7 +57,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
               label: "Reservas"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.person, color: Colors.red), label: "Mafalda")
+              icon: Icon(Icons.person, color: Colors.grey), label: "Feed")
         ],
       ),
       body: _navigationHandler[_selected],

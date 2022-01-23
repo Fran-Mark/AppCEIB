@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ceib/providers/connectivity.dart';
+import 'package:ceib/providers/storage.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
 import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:ceib/screens/categories/bicis_screens/bicis_screen.dart';
@@ -20,7 +21,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import './providers/events.dart';
-import './sheets/sheets_api.dart';
+import './services/sheets/sheets_api.dart';
 import 'providers/auth_service.dart';
 import 'providers/bicis.dart';
 import 'screens/auth/register_screen.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Storage()),
         ChangeNotifierProvider.value(
             value: ConnectionStatusSingleton.getInstance()),
         ChangeNotifierProvider.value(value: Bicis()),

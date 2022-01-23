@@ -25,9 +25,11 @@ dependencies:
   #cupertino_icons: ^1.0.2  
   connectivity: ^3.0.6
   date_field: ^2.0.1
+  file_picker: ^4.3.2
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
   firebase_messaging: ^11.2.5
+  firebase_storage: ^10.2.5
   flutter:
     sdk: flutter
   
@@ -86,6 +88,7 @@ flutter:
     - lib/assets/raquetas.gif
     - lib/assets/lavarropas.gif
     - lib/assets/lavarropas_icon.png
+    - lib/assets/steve.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

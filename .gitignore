@@ -52,4 +52,7 @@ app.*.map.json
 /web/firebase_credentials.js
 
 #google-sheets-credentials
-/lib/sheets/sheets_credentials.dart
+/lib/services/sheets/sheets_credentials.dart
+
+/lib/screens/categories/bicis_screens/bicis_button.dart
+/lib/screens/initial_tabs/feed_screen.dart

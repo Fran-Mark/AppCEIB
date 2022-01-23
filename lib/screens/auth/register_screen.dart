@@ -3,7 +3,7 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../sheets/sheets_api.dart';
+import '../../services/sheets/sheets_api.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);

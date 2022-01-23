@@ -1,26 +1,46 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
-        child: Card(
-          elevation: 10,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Column(
-            children: const [
-              Text("Bici 1"),
-              Divider(
-                color: Colors.red,
-                thickness: 2,
+    return Stack(
+      children: [
+        Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
+            child: Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              child: Column(
+                children: [
+                  Text("User / name.surname / hora"),
+                  Divider(
+                    thickness: 2,
+                  ),
+                  Text("Posteo"),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      IconButton(
+                          onPressed: () {},
+                          icon: Icon(CupertinoIcons.bubble_left_bubble_right)),
+                      IconButton(
+                          onPressed: () {}, icon: Icon(CupertinoIcons.heart))
+                    ],
+                  ),
+                ],
               ),
-              //TextButton(onPressed: () {}, child: Text("Reservar"))
-              Text("Hola")
-            ],
-          ),
-        ));
+            )),
+        Positioned(
+            bottom: 20,
+            right: 20,
+            child: FloatingActionButton(
+                tooltip: "Postea algo",
+                child: const Icon(CupertinoIcons.bubble_right_fill),
+                onPressed: () {})),
+      ],
+    );
   }
 }
