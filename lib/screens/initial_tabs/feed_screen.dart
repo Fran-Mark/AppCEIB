@@ -15,19 +15,21 @@ class FeedScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10)),
               child: Column(
                 children: [
-                  Text("User / name.surname / hora"),
-                  Divider(
+                  const Text("User / name.surname / hora"),
+                  const Divider(
                     thickness: 2,
                   ),
-                  Text("Posteo"),
+                  const Text("Posteo"),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       IconButton(
                           onPressed: () {},
-                          icon: Icon(CupertinoIcons.bubble_left_bubble_right)),
+                          icon: const Icon(
+                              CupertinoIcons.bubble_left_bubble_right)),
                       IconButton(
-                          onPressed: () {}, icon: Icon(CupertinoIcons.heart))
+                          onPressed: () {},
+                          icon: const Icon(CupertinoIcons.heart))
                     ],
                   ),
                 ],

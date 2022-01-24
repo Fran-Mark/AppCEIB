@@ -49,10 +49,10 @@ app.*.map.json
 ##Credentials
 #google-sevices (firebase)
 /android/app/google-services.json
-/web/firebase_credentials.js
+/web/index.html
 
 #google-sheets-credentials
 /lib/services/sheets/sheets_credentials.dart
 
 /lib/screens/categories/bicis_screens/bicis_button.dart
-/lib/screens/initial_tabs/feed_screen.dart
+/lib/screens/categories/initial_tabs/feed_screen.dart

@@ -21,11 +21,11 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  cached_network_image: ^3.2.0
   cloud_firestore: ^2.5.2
   #cupertino_icons: ^1.0.2  
   connectivity: ^3.0.6
   date_field: ^2.0.1
-  file_picker: ^4.3.2
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
   firebase_messaging: ^11.2.5
@@ -37,6 +37,8 @@ dependencies:
   flutter_markdown: ^0.6.9
   google_fonts: ^2.1.0
   gsheets: ^0.3.2
+
+  image_picker: ^0.8.4+4
   loading_animations: ^2.2.0
   outlined_text: ^1.0.1
   provider: ^6.0.0

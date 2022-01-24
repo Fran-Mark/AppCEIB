@@ -28,18 +28,14 @@ class _NotificationsWrapperState extends State<NotificationsWrapper> {
     FirebaseMessaging.onMessage.listen((msg) async {
       final _noti = msg.notification;
       if (_noti != null) {
-        print("Nuevo onMessage");
-        print(_noti.body);
-        print(_noti.title);
+        //Haremos algo acá?
       }
       LocalNotificationService.display(msg);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((msg) {
-      print("Notificacion con app abierta");
       final _route = msg.data['route'] as String?;
       if (_route != null) Navigator.of(context).pushNamed(_route);
-      print(_route);
     });
     super.initState();
   }
