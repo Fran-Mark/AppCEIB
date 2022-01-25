@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:ceib/providers/connectivity.dart';
 import 'package:ceib/providers/storage.dart';
+import 'package:ceib/providers/user_data.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
 import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:ceib/screens/categories/bicis_screens/bicis_screen.dart';
@@ -11,10 +12,8 @@ import 'package:ceib/screens/categories/ski_screen.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/screens/no_connection_screen.dart';
-import 'package:ceib/services/auth/auth_service.dart';
 import 'package:ceib/services/notifications/notifications_wrapper.dart';
 import 'package:ceib/widgets/error_screen_wrapper.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +34,7 @@ Future<void> main() async {
   final connectionStatus = ConnectionStatusSingleton.getInstance();
   connectionStatus.initialize();
   final _isConnected = await connectionStatus.checkConnection();
+
   if (_isConnected) {
     try {
       await SheetsAPI.init();
@@ -54,19 +54,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: UserData.getInstance()),
         ChangeNotifierProvider.value(value: Storage()),
         ChangeNotifierProvider.value(
             value: ConnectionStatusSingleton.getInstance()),
         ChangeNotifierProvider.value(value: Bicis()),
         ChangeNotifierProvider<AuthServices>.value(value: AuthServices()),
         ChangeNotifierProvider.value(value: Events()),
-        Provider<AuthenticationService>(
-          create: (_) => AuthenticationService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-            create: (context) =>
-                context.read<AuthenticationService>().authStateChanges,
-            initialData: null)
       ],
       child: MaterialApp(
         title: 'App del CEIB',

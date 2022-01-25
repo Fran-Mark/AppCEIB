@@ -4,25 +4,31 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-class Debt extends StatelessWidget {
+class Debt extends StatefulWidget {
   const Debt({Key? key}) : super(key: key);
 
   @override
+  State<Debt> createState() => _DebtState();
+}
+
+class _DebtState extends State<Debt> {
+  @override
   Widget build(BuildContext context) {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
-    final _userDebt = SheetsAPI.getDebt(_user!.email!);
+    final _userDebt = SheetsAPI.updateDebt(_user!.email!);
+    final _cachedDebt = SheetsAPI.debt;
+
     return FutureBuilder(
         future: _userDebt,
         builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            final _deuda = snapshot.data as String?;
-            if (_deuda == '0' || _deuda == "-0.0")
+          if (snapshot.hasData || _cachedDebt != null) {
+            if (_cachedDebt == '0' || _cachedDebt == "-0.0")
               return Text(
                 "No tenés deuda! :)",
                 style: GoogleFonts.hindMadurai(),
               );
             else
-              return Text("Tu deuda es: \$$_deuda",
+              return Text("Tu deuda es: \$$_cachedDebt",
                   style: GoogleFonts.hindMadurai(
                     color: Colors.red,
                   ));

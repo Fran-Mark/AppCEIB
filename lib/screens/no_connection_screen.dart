@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'package:ceib/helpers/helper_functions.dart';
+import 'package:ceib/widgets/loading_ceib.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:loading_animations/loading_animations.dart';
-
 import '../main.dart';
 import '../providers/connectivity.dart';
 
@@ -55,22 +54,7 @@ class _NoConnectionWidgetState extends State<NoConnectionWidget> {
         body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Stack(
-              alignment: Alignment.center,
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.transparent,
-                  child: Image.asset("lib/assets/logo_ceib.png"),
-                ),
-                LoadingDoubleFlipping.circle(
-                  borderSize: 8,
-                  size: 120,
-                  backgroundColor: Colors.transparent,
-                  borderColor: Colors.red[200]!,
-                ),
-              ],
-            ),
+            const LoadingCEIB(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(

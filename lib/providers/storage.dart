@@ -4,23 +4,10 @@ import 'package:flutter/material.dart';
 
 class Storage with ChangeNotifier {
   final _storage = FirebaseStorage.instance;
-  /*
-  * Idea de implementar un stream para ver evolución de una tarea
-  */
-  // UploadTask? _workingTask;
-
-  // Stream? get currentTask {
-  //   if (currentTask != null) {
-  //     return _workingTask!.snapshotEvents;
-  //   } else
-  //     return null;
-  // }
 
   Future<String> uploadImage(File img, String path) async {
     try {
       final _task = _storage.ref(path).putFile(img);
-      // _workingTask = _task;
-      //final _task = _storage.ref(path).putData(data);
       await _task.whenComplete(() {});
 
       notifyListeners();

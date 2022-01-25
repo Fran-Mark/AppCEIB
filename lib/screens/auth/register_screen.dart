@@ -124,8 +124,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextFormField(
                       controller: _emailController,
                       textInputAction: TextInputAction.next,
-                      validator: (email) {
-                        if (email!.isEmpty) {
+                      validator: (val) {
+                        val ??= "";
+                        final email = val.trim();
+                        if (email.isEmpty) {
                           return "Ingresa el email";
                         } else if (email.endsWith('@ib.edu.ar')) {
                           _emailController.text = email;
