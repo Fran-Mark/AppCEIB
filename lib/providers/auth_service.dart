@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../extensions/string_extension.dart';
@@ -10,7 +11,8 @@ class AuthServices with ChangeNotifier {
   bool get isLoading => _isLoading;
   String get errorMessage => _errorMessage;
 
-  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  final firebaseAuth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
 
   Future<void> reloadData(User user) async {
     isLoading = true;
@@ -19,6 +21,7 @@ class AuthServices with ChangeNotifier {
       isLoading = false;
     } catch (e) {
       //TODO: Dar algún feedback
+      isLoading = false;
     }
     notifyListeners();
   }
@@ -34,21 +37,28 @@ class AuthServices with ChangeNotifier {
         await user.sendEmailVerification();
         final displayName = createDisplayName(user);
         await user.updateDisplayName(displayName);
+        await _firestore.collection('users').doc(user.uid).set({
+          "uid": user.uid,
+          "displayName": displayName,
+          "email": user.email,
+        });
       }
       isLoading = false;
-
+      notifyListeners();
       return user;
     } on SocketException {
       isLoading = false;
       errorMessage =
           "No tenés conexión a internet :'(. Entrá a login.cnea.gob.ar:4100";
+      return null;
     } on FirebaseAuthException catch (e) {
       isLoading = false;
       errorMessage = translateMessage(e);
+      return null;
     } catch (e) {
       errorMessage = 'Algo salió mal';
+      return null;
     }
-    notifyListeners();
   }
 
   Future<User?> login(String email, String password) async {
@@ -76,6 +86,7 @@ class AuthServices with ChangeNotifier {
       errorMessage = 'Algo salió mal';
     }
     notifyListeners();
+    return null;
   }
 
   Future<void> logout() async {
@@ -108,6 +119,7 @@ class AuthServices with ChangeNotifier {
   }
 
   Stream<User> get user => firebaseAuth.authStateChanges().map((event) {
+        notifyListeners();
         return event!;
       });
 }

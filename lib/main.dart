@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ceib/providers/connectivity.dart';
+import 'package:ceib/providers/posteos.dart';
 import 'package:ceib/providers/storage.dart';
 import 'package:ceib/providers/user_data.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: Posteos()),
         ChangeNotifierProvider.value(value: UserData.getInstance()),
         ChangeNotifierProvider.value(value: Storage()),
         ChangeNotifierProvider.value(

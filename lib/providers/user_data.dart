@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -101,6 +102,39 @@ class UserData with ChangeNotifier {
   Future<void> refreshImageURL() async {
     imageURL = await getImageURL();
     notifyListeners();
+  }
+
+  Future<String> uploadImg(File img) async {
+    try {
+      final _task =
+          _storage.ref('/profile-pictures/${_user!.email}').putFile(img);
+      await _task.whenComplete(() {});
+      final _url = await _storage
+          .ref('/profile-pictures/${_user!.email}')
+          .getDownloadURL();
+      await _firestore
+          .collection('users')
+          .doc(_user?.uid)
+          .update({"imgURL": _url});
+      notifyListeners();
+      return "Foto subida";
+    } on Exception {
+      return "Algo salió mal";
+    }
+  }
+
+  Future<String> deleteImg() async {
+    try {
+      await _storage.ref('/profile-pictures/${_user?.email}').delete();
+      await _firestore
+          .collection('users')
+          .doc(_user?.uid)
+          .update({"imgURL": null});
+      notifyListeners();
+      return "Foto borrada";
+    } on Exception {
+      return "Algo salió mal";
+    }
   }
 
   Future<void> init() async {
