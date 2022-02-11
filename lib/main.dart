@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:ceib/providers/connectivity.dart';
+import 'package:ceib/providers/other_users_info.dart';
 import 'package:ceib/providers/posteos.dart';
 import 'package:ceib/providers/storage.dart';
 import 'package:ceib/providers/user_data.dart';
@@ -12,6 +13,7 @@ import 'package:ceib/screens/categories/raquetas_screen.dart';
 import 'package:ceib/screens/categories/ski_screen.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/initial_tabs/main_screen.dart';
+import 'package:ceib/screens/new_post.dart';
 import 'package:ceib/screens/no_connection_screen.dart';
 import 'package:ceib/services/notifications/notifications_wrapper.dart';
 import 'package:ceib/widgets/error_screen_wrapper.dart';
@@ -55,6 +57,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider.value(value: OtherUsersInfo()),
         ChangeNotifierProvider.value(value: Posteos()),
         ChangeNotifierProvider.value(value: UserData.getInstance()),
         ChangeNotifierProvider.value(value: Storage()),
@@ -85,6 +88,7 @@ class MyApp extends StatelessWidget {
           BicisAdminScreen.routeName: (context) => const BicisAdminScreen(),
           SkiScreen.routeName: (context) => const SkiScreen(),
           RaquetasScreen.routeName: (context) => const RaquetasScreen(),
+          NewPostScreen.routeName: (context) => const NewPostScreen(),
         },
         onUnknownRoute: (_) {
           return MaterialPageRoute(builder: (_) => ErrorScreenWrapper());

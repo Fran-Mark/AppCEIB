@@ -75,7 +75,7 @@ class UserData with ChangeNotifier {
   }
 
   Future<void> initChangeUsernamePermissions() async {
-    isSportsEditor = await _user!.canChangeName();
+    canChangeUsername = await _user!.canChangeName();
     canChangeNamePermissions = _firestore
         .collection('permissions')
         .doc('changeUsername')

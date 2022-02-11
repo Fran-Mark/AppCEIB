@@ -16,8 +16,13 @@ extension UserExtension on User {
         FirebaseFirestore.instance.collection('permissions');
     try {
       final _query = await _permissionsCollection.doc('sports').get();
-      final _names = _query.data()!;
-      if (_names[email] == true) return true;
+      final _names = _query.data();
+      if (_names == null) {
+        return false;
+      }
+      if (_names[email] == true) {
+        return true;
+      }
       return false;
     } on Exception {
       return false;

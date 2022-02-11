@@ -22,8 +22,8 @@ class EventsScreen extends StatelessWidget {
               return const Center(child: CircularProgressIndicator.adaptive());
 
             final _events = snapshot.data!.docs;
-            final _lenght = _events.length;
-            if (_lenght == 0) {
+            final _length = _events.length;
+            if (_length == 0) {
               return Center(
                 child: Text(
                   "Nada por aquí",
@@ -32,14 +32,17 @@ class EventsScreen extends StatelessWidget {
               );
             }
 
-            return ListView(
-              physics: const BouncingScrollPhysics(),
-              children: _events.map((e) {
+            return ListView.builder(
+              physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics()),
+              itemCount: _length,
+              itemBuilder: (context, index) {
+                final _eventReference = _events[index];
                 return EventItem(
-                  eventReference: e,
+                  eventReference: _eventReference,
                   isEditor: _isEventsEditor,
                 );
-              }).toList(),
+              },
             );
           }),
       if (_isEventsEditor == true)

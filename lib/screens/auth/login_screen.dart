@@ -63,134 +63,130 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final _loginProvider = Provider.of<AuthServices>(context);
     final _device = MediaQuery.of(context);
-    return SafeArea(
-      child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Form(
-              key: _form,
-              child: SizedBox(
-                width:
-                    _device.size.width > 800 ? 680 : _device.size.width * 0.85,
-                child: Column(children: [
-                  Image.asset(
-                    "lib/assets/logo_ceib.png",
-                    height: 200,
-                    width: 200,
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Form(
+            key: _form,
+            child: SizedBox(
+              width: _device.size.width > 800 ? 680 : _device.size.width * 0.85,
+              child: Column(children: [
+                Image.asset(
+                  "lib/assets/logo_ceib.png",
+                  height: 200,
+                  width: 200,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  "Bienvenido a la app del CEIB",
+                  style: GoogleFonts.alfaSlabOne(fontSize: 22),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text('Logueate para entrar',
+                    style: GoogleFonts.patrickHandSc(fontSize: 20)),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _emailController,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted: (_) {
+                    FocusScope.of(context).requestFocus(_focusPassword);
+                  },
+                  validator: (email) {
+                    if (email!.isEmpty) {
+                      return "Ingresa el email";
+                    } else {
+                      _emailController.text = email;
+                    }
+                    return null;
+                  },
+                  decoration: InputDecoration(
+                      hintText: "Email",
+                      prefixIcon: const Icon(Icons.email),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  focusNode: _focusPassword,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _saveForm(),
+                  validator: (password) {
+                    if (password!.isEmpty) {
+                      return "Ingresa una contraseña";
+                    } else {
+                      _passwordController.text = password;
+                    }
+                    return null;
+                  },
+                  controller: _passwordController,
+                  obscureText: _isHidden,
+                  decoration: InputDecoration(
+                      suffixIcon: InkWell(
+                        onTap: _toggleHidePassword,
+                        child: _isHidden
+                            ? const Icon(CupertinoIcons.eye_slash_fill)
+                            : const Icon(CupertinoIcons.eye),
+                      ),
+                      hintText: "Contraseña",
+                      prefixIcon: const Icon(Icons.password),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Center(
+                  child: MaterialButton(
+                    onPressed: () => _saveForm(),
+                    color: Theme.of(context).primaryColor,
+                    height: 60,
+                    minWidth: _loginProvider.isLoading ? null : double.infinity,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20)),
+                    child: _loginProvider.isLoading
+                        ? const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white))
+                        : const Text(
+                            "Ingresar",
+                            style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
                   ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Bienvenido a la app del CEIB",
-                    style: GoogleFonts.alfaSlabOne(fontSize: 22),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Text('Logueate para entrar',
-                      style: GoogleFonts.patrickHandSc(fontSize: 20)),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    textInputAction: TextInputAction.next,
-                    onFieldSubmitted: (_) {
-                      FocusScope.of(context).requestFocus(_focusPassword);
-                    },
-                    validator: (email) {
-                      if (email!.isEmpty) {
-                        return "Ingresa el email";
-                      } else {
-                        _emailController.text = email;
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: "Email",
-                        prefixIcon: const Icon(Icons.email),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    focusNode: _focusPassword,
-                    textInputAction: TextInputAction.done,
-                    onFieldSubmitted: (_) => _saveForm(),
-                    validator: (password) {
-                      if (password!.isEmpty) {
-                        return "Ingresa una contraseña";
-                      } else {
-                        _passwordController.text = password;
-                      }
-                      return null;
-                    },
-                    controller: _passwordController,
-                    obscureText: _isHidden,
-                    decoration: InputDecoration(
-                        suffixIcon: InkWell(
-                          onTap: _toggleHidePassword,
-                          child: _isHidden
-                              ? const Icon(CupertinoIcons.eye_slash_fill)
-                              : const Icon(CupertinoIcons.eye),
-                        ),
-                        hintText: "Contraseña",
-                        prefixIcon: const Icon(Icons.password),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10))),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                    child: MaterialButton(
-                      onPressed: () => _saveForm(),
-                      color: Theme.of(context).primaryColor,
-                      height: 60,
-                      minWidth:
-                          _loginProvider.isLoading ? null : double.infinity,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: _loginProvider.isLoading
-                          ? const CircularProgressIndicator(
-                              valueColor:
-                                  AlwaysStoppedAnimation<Color>(Colors.white))
-                          : const Text(
-                              "Ingresar",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Wrap(
-                    alignment: WrapAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () => Navigator.of(context).pushNamed(
-                              RegisterScreen.routeName,
-                              arguments: _emailController.text),
-                          child: const Text('No tenés cuenta? Registrate')),
-                      TextButton(
-                          onPressed: () => Navigator.of(context).pushNamed(
-                              ResetPasswordScreen.routeName,
-                              arguments: _emailController.text),
-                          child: const Text('Me olvidé la contraseña')),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                ]),
-              ),
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                Wrap(
+                  alignment: WrapAlignment.center,
+                  children: [
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pushNamed(
+                            RegisterScreen.routeName,
+                            arguments: _emailController.text),
+                        child: const Text('No tenés cuenta? Registrate')),
+                    TextButton(
+                        onPressed: () => Navigator.of(context).pushNamed(
+                            ResetPasswordScreen.routeName,
+                            arguments: _emailController.text),
+                        child: const Text('Me olvidé la contraseña')),
+                  ],
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+              ]),
             ),
           ),
         ),

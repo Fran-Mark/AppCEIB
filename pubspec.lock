@@ -464,6 +464,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.2.0"
+  many_like:
+    dependency: "direct main"
+    description:
+      name: many_like
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.0"
   markdown:
     dependency: transitive
     description:
@@ -584,7 +591,7 @@ packages:
     source: hosted
     version: "4.4.0"
   platform:
-    dependency: "direct overridden"
+    dependency: transitive
     description:
       name: platform
       url: "https://pub.dartlang.org"
