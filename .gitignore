@@ -49,8 +49,8 @@ app.*.map.json
 ##Credentials
 #google-sevices (firebase)
 /android/app/google-services.json
-/web/index.html
-
+web/index.html
+ios/Runner/GoogleService-Info.plist
 #google-sheets-credentials
 /lib/services/sheets/sheets_credentials.dart
 

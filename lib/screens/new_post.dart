@@ -4,6 +4,7 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/user_data.dart';
 import 'package:ceib/widgets/posteo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/posteos.dart';
@@ -20,8 +21,23 @@ class _NewPostScreenState extends State<NewPostScreen> {
   final _data = TextEditingController();
 
   @override
+  void initState() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.initState();
+  }
+
+  @override
   void dispose() {
     _data.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight
+    ]);
     super.dispose();
   }
 
@@ -70,7 +86,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
                 decoration: InputDecoration(
                     counterText: "Seguro tenés algo muy interesante para decir",
                     alignLabelWithHint: true,
-                    floatingLabelAlignment: FloatingLabelAlignment.center,
+                    //floatingLabelAlignment: FloatingLabelAlignment.center,
                     hintText: "Escribí algo...",
                     label: const Text("Nuevo Posteo"),
                     border: OutlineInputBorder(

@@ -58,7 +58,7 @@ class Posteos with ChangeNotifier {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> posteos() {
-    return _posteos.orderBy('date').snapshots();
+    return _posteos.orderBy('date', descending: true).snapshots();
   }
 
   Future<void> addLike(String postID, String uid) async {

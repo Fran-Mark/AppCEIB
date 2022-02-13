@@ -2,7 +2,7 @@ import 'dart:async';
 // ignore: avoid_web_libraries_in_flutter
 
 import 'dart:io';
-import 'package:connectivity/connectivity.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:universal_html/html.dart';
 

@@ -43,5 +43,12 @@
 		<false/>
 		<key>UIStatusBarHidden</key>
 		<true/>
+		<key>NSPhotoLibraryUsageDescription</key>
+		<string>Pick profile picture</string>
+		<key>LSApplicationQueriesSchemes</key>
+		<array>
+		<string>https</string>
+		<string>http</string>
+		</array>
 	</dict>
 </plist>
