@@ -13,10 +13,10 @@ class HomeScreen extends StatelessWidget {
 
     return Center(
       child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-                color: const Color.fromRGBO(255, 230, 234, 1), width: 10),
-            borderRadius: BorderRadius.circular(20)),
+        // decoration: BoxDecoration(
+        //     border: Border.all(
+        //         color: const Color.fromRGBO(255, 230, 234, 1), width: 10),
+        //     borderRadius: BorderRadius.circular(20)),
         height: _device.size.height * 0.7,
         width: _device.size.width * 0.8,
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
