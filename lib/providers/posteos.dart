@@ -4,27 +4,9 @@ import 'package:flutter/material.dart';
 
 class Posteos with ChangeNotifier {
   final _posteos = FirebaseFirestore.instance.collection("posteos");
-
-  Future<List<Posteo>> getPosteos(int amount, String uid) async {
-    final _query = await _posteos.orderBy('date').limit(amount).get();
-    final docs = _query.docs;
-    final List<Posteo> _list = [];
-    for (final element in docs) {
-      final _docData = element.data();
-      final _likeList = _docData['likedBy'] as List<String>;
-      final _isLiked = _likeList.contains(uid);
-      final _posteo = Posteo(
-        postID: element.id,
-        data: _docData['data'] as String?,
-        date: DateTime.tryParse(_docData['date'] as String),
-        likeCount: _docData['likesCount'] as int?,
-        uid: _docData["uid"] as String,
-        isLiked: _isLiked,
-      );
-      _list.add(_posteo);
-    }
-    return _list;
-  }
+  final _userCollection = FirebaseFirestore.instance.collection('users');
+  Map<String, Map<String, String?>>? _cachedValues;
+  final _numberOfLoadedPosts = 200;
 
   Future<String> uploadPost(Posteo posteo) async {
     try {
@@ -58,7 +40,41 @@ class Posteos with ChangeNotifier {
   }
 
   Stream<QuerySnapshot<Map<String, dynamic>>> posteos() {
-    return _posteos.orderBy('date', descending: true).snapshots();
+    return _posteos
+        .orderBy('date', descending: true)
+        .limit(_numberOfLoadedPosts)
+        .snapshots();
+  }
+
+  Map<String, Map<String, String?>>? get cachedPosts {
+    return _cachedValues;
+  }
+
+  Future<void> updateCachedData() async {
+    final _snapshot = await posteos().first;
+    Map<String, Map<String, String?>>? _initialMap;
+    _snapshot.docs.forEach((element) async {
+      final _postID = element.id;
+      final _data = element.data();
+      final _uid = _data['uid'] as String?;
+      if (_uid == null) return;
+      final _userDoc = await _userCollection.doc(_uid).get();
+      final _userData = _userDoc.data();
+      if (_userData == null) return;
+      final _displayName = _userData['displayName'] as String;
+      final _imgURL = _userData['imgURL'] as String?;
+      final _map = {
+        //"postID": _postID,
+        "displayName": _displayName,
+        "imgURL": _imgURL
+      };
+      _initialMap ??= {};
+      _initialMap!.putIfAbsent(_postID, () => _map);
+      if (_initialMap!.length == _snapshot.docs.length) {
+        _cachedValues = _initialMap;
+        notifyListeners();
+      }
+    });
   }
 
   Future<void> addLike(String postID, String uid) async {

@@ -1,5 +1,6 @@
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/posteos.dart';
+import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/screens/new_post.dart';
 import 'package:ceib/widgets/posteo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -10,6 +11,7 @@ import 'package:provider/provider.dart';
 
 class FeedScreen extends StatelessWidget {
   const FeedScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final _posteos = Provider.of<Posteos>(context).posteos();
@@ -41,8 +43,11 @@ class FeedScreen extends StatelessWidget {
                   itemCount: _length,
                   itemBuilder: (context, index) {
                     final _info = _posts[index].data() as Map<String, dynamic>?;
-                    if (_info == null)
-                      return const Center(child: Text("Algo salió mal"));
+                    if (_info == null) {
+                      Navigator.of(context)
+                          .popAndPushNamed(MainScreen.routeName);
+                      return const Text("Algo salió mal");
+                    }
 
                     final uid = _user?.uid;
                     final _likeList = _info['likedBy'] as List<dynamic>?;
@@ -58,23 +63,6 @@ class FeedScreen extends StatelessWidget {
                     );
                   });
             }),
-        // FutureBuilder(
-        //     future: _posteos,
-        //     builder: (context, snapshot) {
-        //       if (snapshot.hasData) {
-        //         final _posteosSnapshot = snapshot.data as List<Posteo>?;
-        //         return ListView.builder(
-        //           itemCount: 1,
-        //           itemBuilder: (context, index) {
-        //             if (_posteosSnapshot == null) return Container();
-        //             return _posteosSnapshot[index];
-        //           },
-        //           physics: const BouncingScrollPhysics(),
-        //         );
-        //       } else
-        //         return const Center(
-        //             child: CircularProgressIndicator.adaptive());
-        //     }),
         Positioned(
             bottom: 20,
             right: 20,

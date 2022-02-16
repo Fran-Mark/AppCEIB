@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/posteos.dart';
 
-class Posteo extends StatelessWidget {
+class Posteo extends StatefulWidget {
   const Posteo(
       {Key? key,
       required this.data,
@@ -26,16 +26,24 @@ class Posteo extends StatelessWidget {
   final String? data;
   final DateTime? date;
   final String uid;
+
   final bool isLiked;
   final int? likeCount;
+
+  @override
+  State<Posteo> createState() => _PosteoState();
+}
+
+class _PosteoState extends State<Posteo> {
   @override
   Widget build(BuildContext context) {
-    final _otherUsersInfo = Provider.of<OtherUsersInfo>(context);
     final _posteos = Provider.of<Posteos>(context);
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
+    final _future = _posteos.updateCachedData();
+    final _usersInfo = _posteos.cachedPosts;
 
     Future<void> _deletePost() async {
-      final _result = await _posteos.deletePost(postID);
+      final _result = await _posteos.deletePost(widget.postID);
 
       ScaffoldMessenger.of(context)
           .showSnackBar(buildSnackBar(context: context, text: _result));
@@ -53,16 +61,17 @@ class Posteo extends StatelessWidget {
           });
     }
 
+    final _imgURL = _usersInfo?[widget.postID]?['imgURL'] ??
+        'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg';
+
+    final _displayName = _usersInfo?[widget.postID]?['displayName'] ?? "nulo";
+
     return FutureBuilder(
-        future: _otherUsersInfo.getUserInfo(uid),
+        future: _future,
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data == null) {
+          if (_usersInfo == null) {
             return const Center(child: CircularProgressIndicator.adaptive());
           }
-          final _info = snapshot.data as Map<String, String?>?;
-          String? _imgURL = _info?['imgURL'];
-          _imgURL ??=
-              'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg';
           return Padding(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
               child: Card(
@@ -94,12 +103,12 @@ class Posteo extends StatelessWidget {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Text("${_info?['displayName']}",
+                                        Text(_displayName,
                                             style:
                                                 GoogleFonts.barlowSemiCondensed(
                                                     fontWeight:
                                                         FontWeight.bold)),
-                                        if (uid == _user?.uid)
+                                        if (widget.uid == _user?.uid)
                                           IconButton(
                                               constraints: const BoxConstraints(
                                                   maxHeight: 25),
@@ -113,7 +122,7 @@ class Posteo extends StatelessWidget {
                                       height: 8,
                                     ),
                                     MarkdownBody(
-                                      data: avoidHeadings(data),
+                                      data: avoidHeadings(widget.data),
                                     ),
                                   ]),
                             ),
@@ -130,12 +139,13 @@ class Posteo extends StatelessWidget {
                           Row(
                             children: [
                               LikeButtonForPosts(
-                                  postID: postID,
-                                  likesCount: likeCount ?? 0,
-                                  isLiked: isLiked),
-                              if (likeCount != 0 && likeCount != null)
+                                  postID: widget.postID,
+                                  likesCount: widget.likeCount ?? 0,
+                                  isLiked: widget.isLiked),
+                              if (widget.likeCount != 0 &&
+                                  widget.likeCount != null)
                                 Text(
-                                  '$likeCount',
+                                  '${widget.likeCount}',
                                   style: TextStyle(color: Colors.grey[600]),
                                 ),
                             ],

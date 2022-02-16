@@ -8,7 +8,6 @@ import 'package:ceib/screens/initial_tabs/reservations_screen.dart';
 import 'package:ceib/services/sheets/sheets_api.dart';
 import 'package:ceib/widgets/loading_ceib.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -79,7 +78,7 @@ class _MainScreenState extends State<MainScreen> {
                       ),
                       label: "Reservas"),
                   BottomNavigationBarItem(
-                      icon: Icon(Icons.person, color: Colors.grey),
+                      icon: Icon(Icons.person, color: Colors.red),
                       label: "Feed")
                 ],
               ),
