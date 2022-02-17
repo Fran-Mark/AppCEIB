@@ -232,6 +232,7 @@ class _EventBuilderState extends State<EventBuilder> {
                     if (title!.isEmpty) {
                       return 'Ingresa un título';
                     }
+                    return null;
                   },
                   onSaved: (title) {
                     _titleValue = title!;
@@ -246,6 +247,7 @@ class _EventBuilderState extends State<EventBuilder> {
                     if (description!.isEmpty) return 'Escribe una descripción';
                     if (description.length < 5)
                       return 'Dale, escribí más de 5 caracteres';
+                    return null;
                   },
                   focusNode: _descriptionFocusNode,
                   onSaved: (description) {
@@ -268,6 +270,7 @@ class _EventBuilderState extends State<EventBuilder> {
                         return 'No podés crear eventos en el pasado';
                       }
                     }
+                    return null;
                   },
                   onSaved: (date) {
                     //Este chequeo es al pedo porque onSaved no se llama cuando el objeto no es visible. Pero
@@ -289,7 +292,6 @@ class _EventBuilderState extends State<EventBuilder> {
                     textInputAction: TextInputAction.next,
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
-                    validator: (place) {},
                     focusNode: _placeFocusNode,
                     onSaved: (place) {
                       if (_placeVisibility) {
@@ -312,6 +314,7 @@ class _EventBuilderState extends State<EventBuilder> {
                     if (link!.isEmpty) {
                       return 'Agrega un link válido';
                     }
+                    return null;
                   },
                   focusNode: _linkFocusNode,
                   onSaved: (link) {

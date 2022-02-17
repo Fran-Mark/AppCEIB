@@ -4,9 +4,15 @@ import './sheets_credentials.dart';
 class SheetsAPI {
   static final _gSheets = GSheets(credentials);
   static Worksheet? _sociosSheet;
-  static Future init() async {
+  static String? debt;
+
+  static Future<void> init() async {
     final spreadsheet = await _gSheets.spreadsheet(spreadsheetId);
     _sociosSheet = spreadsheet.worksheetByTitle('Socios');
+  }
+
+  static Future<void> updateDebt(String email) async {
+    debt = await getDebt(email);
   }
 
   static Future<bool> esSocio(String email) async {

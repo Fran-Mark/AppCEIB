@@ -92,6 +92,11 @@ class BicisScreen extends StatelessWidget {
 
                           final _isHolder =
                               _holders.contains(_user.displayName);
+
+                          /**
+                               * Posible mejora
+                               * BicisReservationButton(index, _holders, _requestStatus)
+                               */
                           if (_holders[index] == _user.displayName) {
                             final _bikeNumber = index + 1;
                             if (_requestsStatus[index]) {

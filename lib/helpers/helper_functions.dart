@@ -57,7 +57,8 @@ String _removeInitialHashtagsAndHyphens(String string) {
   return _str;
 }
 
-String avoidHeadings(String string) {
+String avoidHeadings(String? string) {
+  if (string == null) return '';
   final _str = StringBuffer();
   final _disectedStr = string.split('\n');
   for (final element in _disectedStr) {

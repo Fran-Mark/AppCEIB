@@ -21,20 +21,31 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  cached_network_image: ^3.2.0
   cloud_firestore: ^2.5.2
   #cupertino_icons: ^1.0.2  
+  connectivity_plus: ^2.2.0
   date_field: ^2.0.1
   firebase_auth: ^3.1.1
   firebase_core: ^1.6.0
+  firebase_messaging: ^11.2.5
+  firebase_storage: ^10.2.5
   flutter:
     sdk: flutter
   
+  flutter_local_notifications: ^9.2.0
   flutter_markdown: ^0.6.9
   google_fonts: ^2.1.0
   gsheets: ^0.3.2
+
+  image_picker: ^0.8.4+4
+  loading_animations: ^2.2.0
+  many_like: ^1.0.0
   outlined_text: ^1.0.1
   provider: ^6.0.0
+  skeleton_loader: ^2.0.0+4
   syncfusion_flutter_calendar: ^19.2.62  
+  universal_html: ^2.0.8
   url_launcher: ^6.0.17
 
 dev_dependencies:
@@ -43,6 +54,9 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^1.0.0
+
+# dependency_overrides:
+#   platform: ^3.1.0
   
 
 flutter_icons:
@@ -81,6 +95,7 @@ flutter:
     - lib/assets/raquetas.gif
     - lib/assets/lavarropas.gif
     - lib/assets/lavarropas_icon.png
+    - lib/assets/steve.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
