@@ -90,4 +90,18 @@ class Posteos with ChangeNotifier {
       'likedBy': FieldValue.arrayRemove([uid])
     });
   }
+
+  Future<List<Map<String, String?>>> getComments(String postID) async {
+    final _allComentsSnapshot =
+        await _posteos.doc(postID).collection("comments").get();
+    final _comments = _allComentsSnapshot.docs.map((e) {
+      final _data = e.data();
+      final Map<String, String?> _comment = {
+        "data": _data["data"] as String?,
+        "uid": _data["uid"] as String
+      };
+      return _comment;
+    }).toList();
+    return _comments;
+  }
 }
