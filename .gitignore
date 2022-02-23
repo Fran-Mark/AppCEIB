@@ -53,6 +53,12 @@ web/index.html
 ios/Runner/GoogleService-Info.plist
 #google-sheets-credentials
 /lib/services/sheets/sheets_credentials.dart
+#firebase web hosting
+.firebase
+.github
+.firebaserc
+firebase.json
+
 
 /lib/screens/categories/bicis_screens/bicis_button.dart
 /lib/screens/categories/initial_tabs/feed_screen.dart
