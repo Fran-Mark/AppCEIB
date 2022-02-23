@@ -34,7 +34,7 @@ SnackBar buildSnackBar(
 
 AppBar buildAppBar() {
   return AppBar(
-    backgroundColor: Colors.blue,
+    backgroundColor: Colors.green,
     title: Padding(
       padding: const EdgeInsets.all(8.0),
       child: CircleAvatar(
