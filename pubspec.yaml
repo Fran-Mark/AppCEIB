@@ -62,7 +62,7 @@ dev_dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "lib/assets/logo_ceib.png"
+  image_path: "lib/assets/logo_ceib_blanco.png"
 
 
 flutter_native_splash:

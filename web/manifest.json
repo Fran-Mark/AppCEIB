@@ -1,6 +1,6 @@
 {
-    "name": "ceib",
-    "short_name": "ceib",
+    "name": "App del CEIB",
+    "short_name": "CEIB",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

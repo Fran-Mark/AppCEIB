@@ -53,6 +53,7 @@ class Posteos with ChangeNotifier {
   Future<void> updateCachedData() async {
     final _snapshot = await posteos().first;
     Map<String, Map<String, String?>>? _initialMap;
+    // ignore: avoid_function_literals_in_foreach_calls
     _snapshot.docs.forEach((element) async {
       final _postID = element.id;
       final _data = element.data();

@@ -44,16 +44,15 @@ class Posteo extends StatelessWidget {
         builder: (context, snapshot) {
           if (_usersInfo == null) {
             return SkeletonLoader(
-                period: Duration(seconds: 2),
                 builder: PostLayout(
-                  data: data,
-                  displayName: _displayName,
-                  imgURL: _imgURL,
-                  isLiked: isLiked,
-                  likeCount: likeCount,
-                  postID: postID,
-                  uid: uid,
-                ));
+              data: data,
+              displayName: _displayName,
+              imgURL: _imgURL,
+              isLiked: isLiked,
+              likeCount: likeCount,
+              postID: postID,
+              uid: uid,
+            ));
           }
           return Padding(
             padding: const EdgeInsets.only(left: 10, right: 10, top: 8),
