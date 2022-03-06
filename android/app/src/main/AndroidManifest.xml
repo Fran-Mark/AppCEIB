@@ -27,7 +27,7 @@
 </queries>
 
    <application
-        android:label="ceib"
+        android:label="CEIB"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
