@@ -44,9 +44,18 @@ class FeedScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final _info = _posts[index].data() as Map<String, dynamic>?;
                     if (_info == null) {
-                      Navigator.of(context)
-                          .popAndPushNamed(MainScreen.routeName);
-                      return const Text("Algo salió mal");
+                      return Center(
+                        child: Column(
+                          children: [
+                            const Text("Algo salió mal"),
+                            TextButton(
+                              onPressed: () => Navigator.of(context)
+                                  .pushNamed(MainScreen.routeName),
+                              child: const Text("Volver"),
+                            )
+                          ],
+                        ),
+                      );
                     }
 
                     final uid = _user?.uid;

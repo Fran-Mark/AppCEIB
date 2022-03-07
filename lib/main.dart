@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'App del CEIB',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
             primarySwatch: Colors.red,
             textTheme: TextTheme(

@@ -20,6 +20,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late final Future<bool> futureData;
   var _selected = 0;
   void _select(int index) {
     setState(() {
@@ -32,7 +33,9 @@ class _MainScreenState extends State<MainScreen> {
       await UserData.getInstance().init();
       await SheetsAPI.updateDebt(email);
       return true;
-    } on Exception {
+    } on Exception catch (e) {
+      //Esto se trigerea de manera azarosa
+      print(e);
       return false;
     }
   }
