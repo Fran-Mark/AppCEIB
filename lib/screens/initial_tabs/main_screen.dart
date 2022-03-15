@@ -8,6 +8,7 @@ import 'package:ceib/screens/initial_tabs/reservations_screen.dart';
 import 'package:ceib/services/sheets/sheets_api.dart';
 import 'package:ceib/widgets/loading_ceib.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +20,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  late final Future<bool> futureData;
   var _selected = 0;
   void _select(int index) {
     setState(() {
@@ -31,9 +33,18 @@ class _MainScreenState extends State<MainScreen> {
       await UserData.getInstance().init();
       await SheetsAPI.updateDebt(email);
       return true;
-    } on Exception {
+    } on Exception catch (e) {
+      //Esto se trigerea de manera azarosa
+      print(e);
       return false;
     }
+  }
+
+  @override
+  void initState() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
+    super.initState();
   }
 
   @override

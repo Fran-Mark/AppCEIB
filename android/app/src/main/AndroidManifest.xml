@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ceib">
+    package="com.ceib.app">
 
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 <!-- url_launcher permissions-->
@@ -27,7 +27,7 @@
 </queries>
 
    <application
-        android:label="ceib"
+        android:label="CEIB"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

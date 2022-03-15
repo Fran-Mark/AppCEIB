@@ -53,6 +53,7 @@ class Posteos with ChangeNotifier {
   Future<void> updateCachedData() async {
     final _snapshot = await posteos().first;
     Map<String, Map<String, String?>>? _initialMap;
+    // ignore: avoid_function_literals_in_foreach_calls
     _snapshot.docs.forEach((element) async {
       final _postID = element.id;
       final _data = element.data();
@@ -89,5 +90,19 @@ class Posteos with ChangeNotifier {
       'likesCount': FieldValue.increment(-1),
       'likedBy': FieldValue.arrayRemove([uid])
     });
+  }
+
+  Future<List<Map<String, String?>>> getComments(String postID) async {
+    final _allComentsSnapshot =
+        await _posteos.doc(postID).collection("comments").get();
+    final _comments = _allComentsSnapshot.docs.map((e) {
+      final _data = e.data();
+      final Map<String, String?> _comment = {
+        "data": _data["data"] as String?,
+        "uid": _data["uid"] as String
+      };
+      return _comment;
+    }).toList();
+    return _comments;
   }
 }
