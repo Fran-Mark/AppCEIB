@@ -1,4 +1,4 @@
-import '../helpers/helper_functions.dart';
+import 'package:ceib/helpers/helper_functions.dart';
 
 extension DateTimeExtension on DateTime {
   String formatDate() {

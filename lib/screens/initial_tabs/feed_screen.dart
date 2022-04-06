@@ -42,8 +42,9 @@ class FeedScreen extends StatelessWidget {
                       parent: BouncingScrollPhysics()),
                   itemCount: _length,
                   itemBuilder: (context, index) {
-                    final _info = _posts[index].data() as Map<String, dynamic>?;
-                    if (_info == null) {
+                    final _postData =
+                        _posts[index].data() as Map<String, dynamic>?;
+                    if (_postData == null) {
                       return Center(
                         child: Column(
                           children: [
@@ -59,15 +60,15 @@ class FeedScreen extends StatelessWidget {
                     }
 
                     final uid = _user?.uid;
-                    final _likeList = _info['likedBy'] as List<dynamic>?;
+                    final _likeList = _postData['likedBy'] as List<dynamic>?;
 
                     final _isLiked = _likeList?.contains(uid) ?? false;
                     return Posteo(
                       postID: _posts[index].id,
-                      data: _info['data'] as String?,
-                      date: DateTime.tryParse(_info['date'] as String),
-                      uid: _info['uid'] as String,
-                      likeCount: _info['likesCount'] as int?,
+                      data: _postData['data'] as String?,
+                      date: DateTime.tryParse(_postData['date'] as String),
+                      uid: _postData['uid'] as String,
+                      likeCount: _postData['likesCount'] as int?,
                       isLiked: _isLiked,
                     );
                   });

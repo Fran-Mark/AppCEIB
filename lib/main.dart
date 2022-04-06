@@ -1,10 +1,15 @@
 import 'dart:async';
+
+import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/providers/bicis.dart';
 import 'package:ceib/providers/connectivity.dart';
+import 'package:ceib/providers/events.dart';
 import 'package:ceib/providers/other_users_info.dart';
 import 'package:ceib/providers/posteos.dart';
 import 'package:ceib/providers/storage.dart';
 import 'package:ceib/providers/user_data.dart';
 import 'package:ceib/screens/auth/login_screen.dart';
+import 'package:ceib/screens/auth/register_screen.dart';
 import 'package:ceib/screens/auth/reset_password_screen.dart';
 import 'package:ceib/screens/categories/bicis_screens/bicis_screen.dart';
 import 'package:ceib/screens/categories/bicis_screens/bicis_screen_admin.dart';
@@ -13,21 +18,17 @@ import 'package:ceib/screens/categories/raquetas_screen.dart';
 import 'package:ceib/screens/categories/ski_screen.dart';
 import 'package:ceib/screens/edit_event_screen.dart';
 import 'package:ceib/screens/initial_tabs/main_screen.dart';
+import 'package:ceib/screens/new_event.dart';
 import 'package:ceib/screens/new_post.dart';
 import 'package:ceib/screens/no_connection_screen.dart';
 import 'package:ceib/services/notifications/notifications_wrapper.dart';
+import 'package:ceib/services/sheets/sheets_api.dart';
 import 'package:ceib/widgets/error_screen_wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import './providers/events.dart';
-import './services/sheets/sheets_api.dart';
-import 'providers/auth_service.dart';
-import 'providers/bicis.dart';
-import 'screens/auth/register_screen.dart';
-import 'screens/new_event.dart';
 
 //Futura implementación de handler para notificaciones de background
 Future<void> _backgroundHandler(RemoteMessage msg) async {}

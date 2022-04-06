@@ -1,10 +1,10 @@
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/services/sheets/sheets_api.dart';
+import 'package:ceib/widgets/policies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../services/sheets/sheets_api.dart';
-import '../../widgets/policies.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
