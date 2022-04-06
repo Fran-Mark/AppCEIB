@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 String stringifyDate(DateTime date) {
-  return '${date.day.toString()}/${date.month.toString()}/${date.year.toString()}';
+  String month;
+  if (date.month < 10) {
+    month = '0${date.month}';
+  } else {
+    month = '${date.month}';
+  }
+  return '${date.day.toString()}/$month/${date.year.toString()}';
 }
 
 SnackBar buildSnackBar(

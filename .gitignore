@@ -43,6 +43,7 @@ app.*.map.json
 # Dev related
 changelog_tmp.txt
 bug_log.txt
+todo.txt
 
 # Android Studio will place build artifacts here
 /android/app/debug

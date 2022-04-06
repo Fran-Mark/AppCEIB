@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:ceib/screens/initial_tabs/events_screen.dart';
+import 'package:ceib/screens/initial_tabs/main_screen.dart';
+import 'package:ceib/services/notifications/notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +11,45 @@ import '../models/event.dart';
 
 class Events with ChangeNotifier {
   final _eventsCollection = FirebaseFirestore.instance.collection('events');
+  final _eventsStream = FirebaseFirestore.instance
+      .collection('events')
+      .orderBy('timestamp', descending: true)
+      .snapshots();
+
+  late StreamSubscription _subs;
+  late DateTime _lastTimestamp;
+
+  @override
+  void dispose() {
+    _subs.cancel();
+    super.dispose();
+  }
+
+  DateTime _computeLastTimestamp(QuerySnapshot<Map<String, dynamic>> event) {
+    if (event.docs.isNotEmpty) {
+      return DateTime.parse(event.docs[0].data()['timestamp'] as String);
+    }
+    return DateTime(2019);
+  }
+
+  void init() async {
+    final _lastEvent = await _eventsCollection
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .get();
+    _lastTimestamp = _computeLastTimestamp(_lastEvent);
+
+    _subs = _eventsStream.listen((snapshot) {
+      final _newTimestamp = _computeLastTimestamp(snapshot);
+      if (_newTimestamp.isAfter(_lastTimestamp)) {
+        _lastTimestamp = _newTimestamp;
+        LocalNotificationService.displayLocalNotification(
+            "Anuncio nuevo!", "Se publicó un nuevo anuncio, entrá para leerlo",
+            payload: MainScreen.routeName);
+        notifyListeners();
+      }
+    });
+  }
 
   Future<String> updateEvent(
       User user, Event newEvent, DocumentSnapshot originalEvent) async {
@@ -53,7 +97,7 @@ class Events with ChangeNotifier {
           'place': event.place,
           'link': event.link,
           'isUrgent': event.isUrgent,
-          'timestamp': DateTime.now().millisecondsSinceEpoch,
+          'timestamp': DateTime.now().toString(),
           'uid': user.uid,
           'username': user.displayName
         });
@@ -64,5 +108,9 @@ class Events with ChangeNotifier {
     } catch (e) {
       return "Algo salió mal";
     }
+  }
+
+  Stream<QuerySnapshot> get eventsStream {
+    return _eventsStream;
   }
 }

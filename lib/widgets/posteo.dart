@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ceib/extensions/datetime_extension.dart';
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/widgets/like_for_posts.dart';
@@ -48,6 +49,7 @@ class Posteo extends StatelessWidget {
               data: data,
               displayName: _displayName,
               imgURL: _imgURL,
+              date: date!,
               isLiked: isLiked,
               likeCount: likeCount,
               postID: postID,
@@ -60,6 +62,7 @@ class Posteo extends StatelessWidget {
                 data: data,
                 displayName: _displayName,
                 imgURL: _imgURL,
+                date: date!,
                 isLiked: isLiked,
                 likeCount: likeCount,
                 postID: postID,
@@ -77,6 +80,7 @@ class PostLayout extends StatelessWidget {
       required this.postID,
       required this.uid,
       required this.data,
+      required this.date,
       required this.likeCount,
       required this.isLiked})
       : super(key: key);
@@ -85,13 +89,14 @@ class PostLayout extends StatelessWidget {
   final String postID;
   final String uid;
   final String? data;
+  final DateTime date;
   final int? likeCount;
   final bool isLiked;
+
   @override
   Widget build(BuildContext context) {
     final _posteos = Provider.of<Posteos>(context);
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
-
     Future<void> _deletePost() async {
       final _result = await _posteos.deletePost(postID);
 
@@ -139,9 +144,18 @@ class PostLayout extends StatelessWidget {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(displayName,
-                                    style: GoogleFonts.barlowSemiCondensed(
-                                        fontWeight: FontWeight.bold)),
+                                Expanded(
+                                  child: Text(displayName,
+                                      style: GoogleFonts.barlowSemiCondensed(
+                                          fontWeight: FontWeight.bold)),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                    date.formatDate(),
+                                    style: GoogleFonts.hindMadurai(),
+                                  ),
+                                ),
                                 if (uid == _user?.uid)
                                   IconButton(
                                       constraints:
@@ -157,6 +171,12 @@ class PostLayout extends StatelessWidget {
                             ),
                             MarkdownBody(
                               data: avoidHeadings(data),
+                              styleSheet: MarkdownStyleSheet(
+                                  p: GoogleFonts.hindMadurai(fontSize: 15.5),
+                                  a: GoogleFonts.hindMadurai(
+                                      fontSize: 15.5,
+                                      color: Colors.red,
+                                      decoration: TextDecoration.none)),
                             ),
                           ]),
                     ),
@@ -187,7 +207,7 @@ class PostLayout extends StatelessWidget {
                           style: TextStyle(color: Colors.grey[600]),
                         ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ],

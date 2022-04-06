@@ -6,8 +6,12 @@ extension DateTimeExtension on DateTime {
     final now = DateTime.now();
     final inOneDay = now.add(const Duration(days: 1));
     final day = stringifyDate(date);
-
-    final hour = '${date.hour}:${date.minute}';
+    String hour;
+    if (date.minute < 10) {
+      hour = '${date.hour}:0${date.minute}';
+    } else {
+      hour = '${date.hour}:$minute';
+    }
 
     final today = stringifyDate(now);
 

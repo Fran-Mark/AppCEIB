@@ -30,7 +30,7 @@ class _NotificationsWrapperState extends State<NotificationsWrapper> {
       if (_noti != null) {
         //Haremos algo acá?
       }
-      LocalNotificationService.display(msg);
+      LocalNotificationService.displayRemoteNotification(msg);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((msg) {

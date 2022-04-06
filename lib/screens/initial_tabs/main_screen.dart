@@ -7,6 +7,7 @@ import 'package:ceib/screens/initial_tabs/home_screen.dart';
 import 'package:ceib/screens/initial_tabs/reservations_screen.dart';
 import 'package:ceib/services/sheets/sheets_api.dart';
 import 'package:ceib/widgets/loading_ceib.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -15,12 +16,13 @@ import 'package:provider/provider.dart';
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
   static const routeName = 'main-screen';
+
   @override
   _MainScreenState createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
-  late final Future<bool> futureData;
+  late Future<bool> _futureData;
   var _selected = 0;
   void _select(int index) {
     setState(() {
@@ -34,8 +36,6 @@ class _MainScreenState extends State<MainScreen> {
       await SheetsAPI.updateDebt(email);
       return true;
     } on Exception catch (e) {
-      //Esto se trigerea de manera azarosa
-      print(e);
       return false;
     }
   }
@@ -44,12 +44,17 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: SystemUiOverlay.values);
+    final _user = FirebaseAuth.instance.currentUser!.email;
+    _futureData = _initUserData(_user!);
+    final args = ModalRoute.of(context)?.settings.arguments as int?;
+    if (args != null) {
+      _selected = args;
+    }
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
     const _navigationHandler = {
       0: HomeScreen(),
       1: EventsScreen(),
@@ -58,7 +63,7 @@ class _MainScreenState extends State<MainScreen> {
     };
 
     return FutureBuilder(
-        future: _initUserData(_user!.email!),
+        future: _futureData,
         builder: (context, future) {
           if (future.data == true)
             return Scaffold(
@@ -100,7 +105,7 @@ class _MainScreenState extends State<MainScreen> {
               appBar: buildAppBar(),
               body: Center(
                 child: Text(
-                  "Algo salió mal :(",
+                  "Algo salió mal :'(",
                   style: GoogleFonts.hindMadurai(fontSize: 50),
                 ),
               ),
