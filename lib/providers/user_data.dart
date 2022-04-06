@@ -53,22 +53,24 @@ class UserData with ChangeNotifier {
         .doc('sports')
         .snapshots()
         .listen((event) {
-      if (event.data() != null) {
-        isSportsEditor = _ckeckForPermissions(event.data()!);
+      final _data = event.data();
+      if (_data != null) {
+        isSportsEditor = _ckeckForPermissions(_data);
         notifyListeners();
       }
     });
   }
 
   Future<void> initEventsPermissions() async {
-    isSportsEditor = await _user!.isEventsEditor();
+    isEventsEditor = await _user!.isEventsEditor();
     eventsPermissions = _firestore
         .collection('permissions')
         .doc('events')
         .snapshots()
         .listen((event) {
-      if (event.data() != null) {
-        isEventsEditor = _ckeckForPermissions(event.data()!);
+      final _data = event.data();
+      if (_data != null) {
+        isEventsEditor = _ckeckForPermissions(_data);
         notifyListeners();
       }
     });

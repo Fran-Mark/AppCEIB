@@ -40,6 +40,10 @@ app.*.symbols
 # Obfuscation related
 app.*.map.json
 
+# Dev related
+changelog_tmp.txt
+bug_log.txt
+
 # Android Studio will place build artifacts here
 /android/app/debug
 /android/app/profile
@@ -61,4 +65,3 @@ firebase.json
 
 
 /lib/screens/categories/bicis_screens/bicis_button.dart
-/lib/screens/categories/initial_tabs/feed_screen.dart

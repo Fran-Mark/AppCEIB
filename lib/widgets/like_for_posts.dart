@@ -1,10 +1,9 @@
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/providers/posteos.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:many_like/many_like.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/posteos.dart';
 
 class LikeButtonForPosts extends StatefulWidget {
   const LikeButtonForPosts(
@@ -25,6 +24,7 @@ class _LikeButtonForPostsState extends State<LikeButtonForPosts> {
   late Color _color;
   late Duration duration;
   late bool isLiked;
+  bool _isProcessing = false;
   void setIcons() {
     setState(() {
       if (isLiked) {
@@ -46,7 +46,7 @@ class _LikeButtonForPostsState extends State<LikeButtonForPosts> {
     super.initState();
   }
 
-  void toggleLike() {
+  void _toggleLikeIconState() {
     setState(() {
       isLiked = !isLiked;
       setIcons();
@@ -59,11 +59,15 @@ class _LikeButtonForPostsState extends State<LikeButtonForPosts> {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
 
     Future<void> _toggleLike() async {
-      toggleLike();
-      if (isLiked)
+      if (_isProcessing) return;
+      _toggleLikeIconState();
+      _isProcessing = true;
+      if (isLiked) {
         await _posteos.addLike(widget.postID, _user!.uid);
-      else
+      } else {
         await _posteos.removeLike(widget.postID, _user!.uid);
+      }
+      _isProcessing = false;
     }
 
     return ManyLikeButton(

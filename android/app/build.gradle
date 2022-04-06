@@ -43,7 +43,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.ceib.app"
-        minSdkVersion 21 //Originalmente 15
+        minSdkVersion 23 //Originalmente 15
         targetSdkVersion 30
         multiDexEnabled true //Para pasar el límite de 64k de FB
         versionCode flutterVersionCode.toInteger()
