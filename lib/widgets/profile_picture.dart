@@ -68,50 +68,26 @@ class _ProfilePictureState extends State<ProfilePicture> {
     if (_isUploading) {
       return const CircularProgressIndicator.adaptive();
     }
+
+    String _link;
     if (_imgURL != null) {
-      return Stack(
-        clipBehavior: Clip.none,
-        alignment: AlignmentDirectional.bottomEnd,
-        children: [
-          InkWell(
-              onLongPress: _confirmDelete,
-              child: CircleAvatar(
-                  backgroundColor: Colors.grey[350],
-                  radius: 70,
-                  backgroundImage: CachedNetworkImageProvider(_imgURL))),
-          Positioned(
-            right: -10,
-            bottom: -10,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(
-                      color: const Color.fromRGBO(255, 230, 234, 1))),
-              child: IconButton(
-                onPressed: _selectImage,
-                icon: const Icon(
-                  Icons.edit,
-                  size: 23,
-                ),
-                color: Colors.red,
-              ),
-            ),
-          ),
-        ],
-      );
+      _link = _imgURL;
     } else {
-      return Stack(
-        clipBehavior: Clip.none,
-        alignment: AlignmentDirectional.bottomEnd,
-        children: [
-          const CircleAvatar(
-            radius: 50,
-            backgroundImage: CachedNetworkImageProvider(
-                'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg'),
-          ),
+      _link =
+          'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg';
+    }
+
+    return Stack(
+      clipBehavior: Clip.none,
+      alignment: AlignmentDirectional.bottomEnd,
+      children: [
+        InkWell(
+            onLongPress: _imgURL != null ? _confirmDelete : null,
+            child: CircleAvatar(
+                backgroundColor: Colors.grey[350],
+                radius: 70,
+                backgroundImage: CachedNetworkImageProvider(_link))),
+        if (!kIsWeb)
           Positioned(
             right: -10,
             bottom: -10,
@@ -133,8 +109,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
               ),
             ),
           ),
-        ],
-      );
-    }
+      ],
+    );
   }
 }

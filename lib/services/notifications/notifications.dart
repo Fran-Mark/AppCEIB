@@ -17,15 +17,15 @@ class LocalNotificationService {
     });
   }
 
-  static void display(RemoteMessage message) async {
+  static void displayRemoteNotification(RemoteMessage message) async {
     try {
       final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
 
       const notificationDetails = NotificationDetails(
           android: AndroidNotificationDetails(
-        "easyapproach",
-        "easyapproach channel",
-        channelDescription: "this is our channel",
+        "main_channel",
+        "main",
+        channelDescription: "the main channel",
         importance: Importance.max,
         priority: Priority.high,
       ));
@@ -40,5 +40,27 @@ class LocalNotificationService {
     } on Exception {
       return;
     }
+  }
+
+  static void displayLocalNotification(String title, String body,
+      {String? payload}) async {
+    final id = DateTime.now().millisecondsSinceEpoch ~/ 1000;
+
+    const notificationDetails = NotificationDetails(
+        android: AndroidNotificationDetails(
+      "main_channel",
+      "main",
+      channelDescription: "the main channel",
+      importance: Importance.max,
+      priority: Priority.high,
+    ));
+
+    await _notificationsPlugin.show(
+      id,
+      title,
+      body,
+      notificationDetails,
+      payload: payload,
+    );
   }
 }

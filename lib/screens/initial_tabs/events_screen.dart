@@ -1,3 +1,4 @@
+import 'package:ceib/providers/events.dart';
 import 'package:ceib/providers/user_data.dart';
 import 'package:ceib/widgets/event_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,10 +12,11 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _isEventsEditor = Provider.of<UserData>(context).isEventsEditor;
+    final _eventsStream = Provider.of<Events>(context).eventsStream;
 
     return Stack(alignment: AlignmentDirectional.bottomCenter, children: [
       StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('events').snapshots(),
+          stream: _eventsStream,
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData)
               return const Center(child: CircularProgressIndicator.adaptive());

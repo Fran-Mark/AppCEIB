@@ -28,6 +28,8 @@ class EventItem extends StatelessWidget {
         id: eventReference.id,
         title: eventReference['title'] as String,
         description: eventReference['description'] as String,
+        author: eventReference['username'] as String,
+        timestamp: DateTime.parse(eventReference['timestamp'] as String),
         date: DateTime.tryParse(eventReference['date'] as String),
         place: eventReference['place'] as String?,
         link: eventReference['link'] as String?,
@@ -85,6 +87,18 @@ class EventItem extends StatelessWidget {
                     style: GoogleFonts.secularOne(color: Colors.white),
                   ),
                 ),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Publicado por: ${_event.author}"),
+                    Text(_event.timestamp.formatDate())
+                  ],
+                ),
+              ),
+              const Divider(),
               SizedBox(
                 width: MediaQuery.of(context).size.width,
                 child: Padding(

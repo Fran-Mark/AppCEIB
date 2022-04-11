@@ -31,6 +31,8 @@ class _EventBuilderState extends State<EventBuilder> {
   String _idValue = '';
   String _titleValue = '';
   String _descriptionValue = '';
+  String _authorValue = '';
+  DateTime _timestampValue = DateTime.now();
   DateTime? _dateValue;
   String? _placeValue;
   String? _linkValue;
@@ -60,10 +62,16 @@ class _EventBuilderState extends State<EventBuilder> {
     final _id = widget.event?.id;
     final _title = widget.event?.get('title') as String?;
     final _description = widget.event?['description'] as String?;
+    final _author = widget.event?['username'] as String?;
+    final _possibleTimestamp = widget.event?['timestamp'] as String?;
+    DateTime? _timestamp;
     final _isUrgent = widget.event?['isUrgent'] as bool?;
     String? _date;
     String? _place;
     String? _link;
+    if (_possibleTimestamp != null) {
+      _timestamp = DateTime.tryParse(_possibleTimestamp);
+    }
     try {
       _date = widget.event?['date'] as String?;
     } on Exception {
@@ -88,6 +96,12 @@ class _EventBuilderState extends State<EventBuilder> {
     }
     if (_description != null) {
       _descriptionValue = _description;
+    }
+    if (_author != null) {
+      _authorValue = _author;
+    }
+    if (_timestamp != null) {
+      _timestampValue = _timestamp;
     }
     if (_date != null && _date != 'null') {
       _toggleDateVisibility();
@@ -127,6 +141,8 @@ class _EventBuilderState extends State<EventBuilder> {
         id: _idValue,
         title: _titleValue,
         description: _descriptionValue,
+        author: _authorValue,
+        timestamp: _timestampValue,
         date: _dateValue,
         place: _placeValue,
         link: _linkValue,
@@ -151,6 +167,8 @@ class _EventBuilderState extends State<EventBuilder> {
         id: _idValue,
         title: _titleValue,
         description: _descriptionValue,
+        author: _authorValue,
+        timestamp: _timestampValue,
         date: _dateValue,
         place: _placeValue,
         link: _linkValue,

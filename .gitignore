@@ -43,6 +43,7 @@ app.*.map.json
 # Dev related
 changelog_tmp.txt
 bug_log.txt
+todo.txt
 
 # Android Studio will place build artifacts here
 /android/app/debug
@@ -51,6 +52,7 @@ bug_log.txt
 
 
 ##Credentials
+firebase_options.dart
 #google-sevices (firebase)
 /android/app/google-services.json
 web/index.html

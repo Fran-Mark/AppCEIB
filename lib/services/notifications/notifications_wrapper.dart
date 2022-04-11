@@ -1,5 +1,6 @@
 import 'package:ceib/services/auth/auth_wrapper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import './notifications.dart';
@@ -16,6 +17,9 @@ class _NotificationsWrapperState extends State<NotificationsWrapper> {
   void initState() {
     LocalNotificationService.initialize(context);
 
+    //subscribe to topic no está implementado para web
+    if (!kIsWeb) FirebaseMessaging.instance.subscribeToTopic("main_topic");
+
     FirebaseMessaging.instance.getInitialMessage().then((msg) {
       if (msg != null) {
         final _route = msg.data['route'] as String?;
@@ -30,7 +34,7 @@ class _NotificationsWrapperState extends State<NotificationsWrapper> {
       if (_noti != null) {
         //Haremos algo acá?
       }
-      LocalNotificationService.display(msg);
+      LocalNotificationService.displayRemoteNotification(msg);
     });
 
     FirebaseMessaging.onMessageOpenedApp.listen((msg) {
