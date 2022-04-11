@@ -52,6 +52,7 @@ todo.txt
 
 
 ##Credentials
+firebase_options.dart
 #google-sevices (firebase)
 /android/app/google-services.json
 web/index.html

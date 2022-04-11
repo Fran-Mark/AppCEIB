@@ -31,6 +31,7 @@ class _DisplayNameState extends State<DisplayName> {
   @override
   Widget build(BuildContext context) {
     final _user = Provider.of<AuthServices>(context).firebaseAuth.currentUser;
+
     Future<String> _updateDisplayName(String _name) async {
       try {
         await _user!.updateDisplayName(_name);
@@ -40,8 +41,11 @@ class _DisplayNameState extends State<DisplayName> {
       }
     }
 
+    if (_user!.displayName == null) {
+      _updateDisplayName("Nombre desconocido");
+    }
     if (_editingController.text == "") {
-      _editingController.text = _user!.displayName!;
+      _editingController.text = _user.displayName!;
     }
     if (_isEditingText)
       return Center(
@@ -64,13 +68,13 @@ class _DisplayNameState extends State<DisplayName> {
       );
     return InkWell(
         onTap: () async {
-          final _isAllowed = await _user!.canChangeName();
+          final _isAllowed = await _user.canChangeName();
           if (_isAllowed) {
             _toggleEditing();
           }
         },
         child: Text(
-          _user!.displayName!,
+          _user.displayName!,
           style: GoogleFonts.raleway(fontSize: 25),
           textAlign: TextAlign.center,
         ));

@@ -14,8 +14,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key, this.tabNumber}) : super(key: key);
   static const routeName = 'main-screen';
+
+  final int? tabNumber;
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -46,10 +48,10 @@ class _MainScreenState extends State<MainScreen> {
         overlays: SystemUiOverlay.values);
     final _user = FirebaseAuth.instance.currentUser!.email;
     _futureData = _initUserData(_user!);
-    final args = ModalRoute.of(context)?.settings.arguments as int?;
-    if (args != null) {
-      _selected = args;
+    if (widget.tabNumber != null) {
+      _selected = widget.tabNumber!;
     }
+
     super.initState();
   }
 

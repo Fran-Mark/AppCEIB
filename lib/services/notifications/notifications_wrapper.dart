@@ -1,5 +1,6 @@
 import 'package:ceib/services/auth/auth_wrapper.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import './notifications.dart';
@@ -15,6 +16,9 @@ class _NotificationsWrapperState extends State<NotificationsWrapper> {
   @override
   void initState() {
     LocalNotificationService.initialize(context);
+
+    //subscribe to topic no está implementado para web
+    if (!kIsWeb) FirebaseMessaging.instance.subscribeToTopic("main_topic");
 
     FirebaseMessaging.instance.getInitialMessage().then((msg) {
       if (msg != null) {

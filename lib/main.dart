@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:ceib/firebase_options.dart';
 import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/bicis.dart';
 import 'package:ceib/providers/connectivity.dart';
@@ -42,7 +43,8 @@ Future<void> main() async {
   if (_isConnected) {
     try {
       await SheetsAPI.init();
-      await Firebase.initializeApp();
+      await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform);
       FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
       runApp(MyApp());
     } on Exception {
@@ -91,6 +93,9 @@ class MyApp extends StatelessWidget {
           SkiScreen.routeName: (context) => const SkiScreen(),
           RaquetasScreen.routeName: (context) => const RaquetasScreen(),
           NewPostScreen.routeName: (context) => const NewPostScreen(),
+          "/event-route": (context) => const MainScreen(
+                tabNumber: 1,
+              ),
         },
         onUnknownRoute: (_) {
           return MaterialPageRoute(builder: (_) => ErrorScreenWrapper());
