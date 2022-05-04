@@ -74,7 +74,7 @@ class _ProfilePictureState extends State<ProfilePicture> {
       _link = _imgURL;
     } else {
       _link =
-          'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg';
+          'https://firebasestorage.googleapis.com/v0/b/app-del-ceib.appspot.com/o/profile-pictures%2Fdefault.jpeg?alt=media&token=eb6455da-d4eb-4c92-beca-9c2f070d7dfb';
     }
 
     return Stack(

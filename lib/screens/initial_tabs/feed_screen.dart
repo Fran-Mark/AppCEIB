@@ -2,7 +2,7 @@ import 'package:ceib/providers/auth_service.dart';
 import 'package:ceib/providers/posteos.dart';
 import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/screens/new_post.dart';
-import 'package:ceib/widgets/posteo.dart';
+import 'package:ceib/widgets/posteos/posteo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -62,6 +62,8 @@ class FeedScreen extends StatelessWidget {
                     final uid = _user?.uid;
                     final _likeList = _postData['likedBy'] as List<dynamic>?;
 
+                    final _comments = _postData['comments'] as List<dynamic>?;
+
                     final _isLiked = _likeList?.contains(uid) ?? false;
                     return Posteo(
                       postID: _posts[index].id,
@@ -70,6 +72,7 @@ class FeedScreen extends StatelessWidget {
                       uid: _postData['uid'] as String,
                       likeCount: _postData['likesCount'] as int?,
                       isLiked: _isLiked,
+                      comments: _comments,
                     );
                   });
             }),

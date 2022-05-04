@@ -1,4 +1,4 @@
-import 'package:ceib/widgets/posteo.dart';
+import 'package:ceib/widgets/posteos/posteo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -92,17 +92,35 @@ class Posteos with ChangeNotifier {
     });
   }
 
-  Future<List<Map<String, String?>>> getComments(String postID) async {
-    final _allComentsSnapshot =
-        await _posteos.doc(postID).collection("comments").get();
-    final _comments = _allComentsSnapshot.docs.map((e) {
-      final _data = e.data();
-      final Map<String, String?> _comment = {
-        "data": _data["data"] as String?,
-        "uid": _data["uid"] as String
-      };
-      return _comment;
-    }).toList();
-    return _comments;
+  Future<void> addComment(String postID, String uid, String comment) async {
+    final _userData = await _userCollection.doc(uid).get();
+    final _imgURL = _userData.data()!['imgURL'] as String;
+    final _displayName = _userData.data()!['displayName'] as String;
+
+    await _posteos.doc(postID).update({
+      'comments': FieldValue.arrayUnion([
+        {
+          'uid': uid,
+          'displayName': _displayName,
+          'comment': comment,
+          'timeStamp': DateTime.now().toString(),
+          'imgURL': _imgURL
+        }
+      ])
+    });
   }
+
+  // Future<List<Map<String, String?>>> getComments(String postID) async {
+  //   final _allComentsSnapshot =
+  //       await _posteos.doc(postID).collection("comments").get();
+  //   final _comments = _allComentsSnapshot.docs.map((e) {
+  //     final _data = e.data();
+  //     final Map<String, String?> _comment = {
+  //       "data": _data["data"] as String?,
+  //       "uid": _data["uid"] as String
+  //     };
+  //     return _comment;
+  //   }).toList();
+  //   return _comments;
+  // }
 }

@@ -22,6 +22,7 @@ import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/screens/new_event.dart';
 import 'package:ceib/screens/new_post.dart';
 import 'package:ceib/screens/no_connection_screen.dart';
+import 'package:ceib/screens/post_comments.dart';
 import 'package:ceib/services/notifications/notifications_wrapper.dart';
 import 'package:ceib/services/sheets/sheets_api.dart';
 import 'package:ceib/widgets/error_screen_wrapper.dart';
@@ -96,6 +97,7 @@ class MyApp extends StatelessWidget {
           "/event-route": (context) => const MainScreen(
                 tabNumber: 1,
               ),
+          PostCommentsScreen.routeName: (context) => const PostCommentsScreen(),
         },
         onUnknownRoute: (_) {
           return MaterialPageRoute(builder: (_) => ErrorScreenWrapper());

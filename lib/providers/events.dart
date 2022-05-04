@@ -1,13 +1,12 @@
 import 'dart:async';
 
-import 'package:ceib/screens/initial_tabs/events_screen.dart';
+import 'package:ceib/extensions/user_extension.dart';
+import 'package:ceib/models/event.dart';
 import 'package:ceib/screens/initial_tabs/main_screen.dart';
 import 'package:ceib/services/notifications/notifications.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import '../extensions/user_extension.dart';
-import '../models/event.dart';
 
 class Events with ChangeNotifier {
   final _eventsCollection = FirebaseFirestore.instance.collection('events');

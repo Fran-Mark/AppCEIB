@@ -113,6 +113,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.15.0"
+  comment_tree:
+    dependency: "direct main"
+    description:
+      name: comment_tree
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.0"
   connectivity_plus:
     dependency: "direct main"
     description:

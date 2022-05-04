@@ -72,3 +72,10 @@ String avoidHeadings(String? string) {
   }
   return _str.toString();
 }
+
+String checkImageURL(String? url) {
+  if (url == null)
+    return 'https://static.planetminecraft.com/files/resource_media/screenshot/1244/steve_4048323.jpg';
+
+  return url;
+}

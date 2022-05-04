@@ -1,13 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ceib/helpers/helper_functions.dart';
 import 'package:ceib/providers/auth_service.dart';
+import 'package:ceib/providers/posteos.dart';
 import 'package:ceib/providers/user_data.dart';
-import 'package:ceib/widgets/posteo.dart';
+import 'package:ceib/widgets/posteos/posteo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import '../providers/posteos.dart';
 
 class NewPostScreen extends StatefulWidget {
   const NewPostScreen({Key? key}) : super(key: key);
@@ -60,6 +59,7 @@ class _NewPostScreenState extends State<NewPostScreen> {
           date: DateTime.now(),
           likeCount: 0,
           isLiked: false,
+          comments: List.empty(),
           uid: _user!.uid,
           postID: '');
       final _result = await _posteos.uploadPost(_posteo);
